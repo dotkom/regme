@@ -4,13 +4,13 @@ body {
   background-image: url("../img/splash_bg.png");
   background-repeat: repeat;
   background-position: fixed center;
-  font-family: Helvetica, sans-serif;
+  font-family: "Open Sans", sans-serif;
   padding: 25px;
 }
 h1 {
-  text-align: center;
   color: #efefef;
-  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 22px;
 }
 #input {
   display: block;
