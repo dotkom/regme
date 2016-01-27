@@ -1,3 +1,28 @@
-a h1 {
-  color: blue;
+body {
+  color: #efefef;
+  background-color: #efefef;
+  background-image: url("../img/splash_bg.png");
+  background-repeat: repeat;
+  background-position: fixed center;
+  font-family: Helvetica, sans-serif;
+  padding: 25px;
+}
+h1 {
+  text-align: center;
+  color: #efefef;
+  text-transform: uppercase;
+}
+#input {
+  display: block;
+  margin: 0px auto;
+  font-size: 25px;
+  height: 50px;
+  min-width: 500px;
+}
+.row {
+  margin-bottom: 25px;
+  text-align: center;
+}
+#options {
+  display: none;
 }
