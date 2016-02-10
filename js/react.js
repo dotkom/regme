@@ -1,10 +1,11 @@
-// (1, 'Sosialt'),
-// (2, 'Bedriftspresentasjon'),
-// (3, 'Kurs'),
-// (4, 'Utflukt'),
-// (5, 'Ekskursjon'),
-// (6, 'Internt'),
-// (7, 'Annet')
+// Types of events:
+// 1 = Sosialt
+// 2 = Bedriftspresentasjon
+// 3 = Kurs
+// 4 = Utflukt
+// 5 = Ekskursjon
+// 6 = Internt
+// 7 = Annet
 
 var UserList = React.createClass({
     getInitialState: function () {
