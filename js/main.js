@@ -1,8 +1,4 @@
 $(document).ready(function () {
-
-	// placeholder
-    console.log("JavaScript is still working. Maybe.");
-
     // Enter key binding in the input field
     $('#input').keypress(function (key) {
         if (key.which === 13) {
@@ -10,8 +6,12 @@ $(document).ready(function () {
         }
     });
 
+    $('#go').on('click', function (e) {
+        console.log("ENTERED");
+    });
+
     // Options button
-    $('#toggle_options').on('click', function (e) {
+    $('#options_button').on('click', function (e) {
         $('#options').fadeToggle(200);
         $('#input').focus();
     });
