@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>RegMe</title>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>RegMe</title>
 
-        <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 
-        <!-- placeholder, should be less, not css here -->
-        <link rel="stylesheet" type="text/css" href="css/main.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
-		<script src="js/react.js" type="text/babel"></script>
-    </head>
-    <body>
-        <div><img src="img/online_logo.png" alt="logo"></div>
-        <div class="row">
-            <h1>Registrer deg selv</h1>
-            <input type="text" id="input" autofocus placeholder="Skriv inn RFID eller brukernavn" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="logonav">
+      <img src="img/online_logo.png" alt="Image" id="event_image">
+    </div>
+    <div class="container">
+      <br><br>
+      <h1 id="title">Registrer deg selv!</h1>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="input-group">
+            <input id="input" type="text" class="form-control" autofocus placeholder="Scan RFID eller skriv inn brukernavn...">
+            <span class="input-group-btn">
+              <button id="go" class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div><!-- end inputgroup -->
+          <br>
+          <div>
+            <button type="button" class="btn btn-default btn-lg" id="options_button">
+              <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Alternativer
+            </button>
+          </div>
+        </div><!-- end col -->
+      </div><!-- end row -->
+      <div class="row" id="options">
+        <div class="col-md-12">
+          <p>
+            uhuhuhuhu
+          </p>
         </div>
-        <div class="row">
-            <button id="toggle_options">Alternativer</button>
-        </div>
-        <div class="row" id="options">
-            <p>
-                Dette er en option som ikke skal være synlig før man trykker på alternativer.
-            </p>
-        </div>
-    </body>
+      </div><!-- end row -->
+    </div>
+    <!-- jQuery + Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+  </body>
 </html>
