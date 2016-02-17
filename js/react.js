@@ -193,7 +193,7 @@ var UserLists = React.createClass({
     handleSort: function (func) {
         this.setState({
             sort: (this.state.sort === "asc" ? "desc" : "asc"),
-            sortBy: func,
+            sortedBy: func,
             data: this.state.data.map(function (event) {
                 event.attendance_event.users = event.attendance_event.users.sort(sortBy[func][(this.state.sort === "asc" ? "desc" : "asc")])
                 
@@ -204,7 +204,7 @@ var UserLists = React.createClass({
     
     render: function () {
         var eventNames = this.state.data.map(function (event, index) {
-            return <button className="event-name btn" onClick={this.handleClick.bind(this, index)} listItem={index} key={index}>{event.title}</button>
+            return <button className={ "btn" + (this.state.selectedIndex === index ? " btn-default" : "") } onClick={this.handleClick.bind(this, index)} listItem={index} key={index}>{event.title}</button>
         }, this);
         
         var usersRegistered = [],
@@ -219,8 +219,8 @@ var UserLists = React.createClass({
         
         return (
             <div className="col-md-12">{ eventNames }<br/>
-                <button className="btn" onClick={ this.handleSort.bind(this, "username") }>Sorter etter navn</button>
-                <button className="btn" onClick={ this.handleSort.bind(this, "date") }>Sorter etter dato</button>
+                <button className={ "btn" + (this.state.sortedBy === "username" ? " btn-default" : "") } onClick={ this.handleSort.bind(this, "username") }>Sorter etter navn</button>
+                <button className={ "btn" + (this.state.sortedBy === "date" ? " btn-default" : "") } onClick={ this.handleSort.bind(this, "date") }>Sorter etter dato</button>
                 <UserList title={ (usersListed.length > 0 ? usersRegistered.length + " har møtt" : "Alle har møtt!") } users={ usersRegistered } />
                 <UserList title={ (usersRegistered.length > 0 ? usersListed.length + " har ikke møtt" : "Ingen har møtt") } users={ usersListed } />
                 <UserList title="Venteliste" empty="Ingen på venteliste" users={ usersWaiting } />
