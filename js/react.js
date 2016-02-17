@@ -10,74 +10,76 @@
 var API_KEY = "derp",
     API_BASE_URL = "http://localhost";
 
-// API module, has a private doRequest method, and public get and set methods
-
-/*
-TABLE OF CONTENTS
-=================
-
-Private:
------------------
-- doRequest
-
-Public:
------------------
-- get_events
-- get_user_by_username
-- get_user_by_rfid
-- set_attended
-- patch_user
-- update_event
-
-*/
-
-// Does a request based in input parameters
-var doRequest = function (type, dataType, url, params, data, callback) {
-    $.ajax({
-        type: type,
-        dataType: dataType,
-        contentType: "application/json",
-        data: data,
-        url: API_BASE_URL + url + params,
-        success: function (return_data) {
-            if (debug) console.log(return_data);
-            callback(return_data);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.status === 202 || xhr.status === 204 || xhr.status === 304) {
-                callback(xhr);
-            }
-            else {
-                callback(null);
-            }
+function dateFormatter (date, format) {
+    
+    if (typeof date === 'string') {
+        
+        var format = (typeof format === 'string' ? format : 'dag DD.MM.YYYY (HH:MM:SS)'),
+            dager = ["Man", "Tirs", "Ons", "Tors", "Fre", "Lør", "Søn"],
+            d = new Date(date.replace(/-/g, '/').replace(/T/g, ' ').replace(/Z/g, '')),
+            formatted = format.replace(new RegExp("da[gy]", "ig"), dager[d.getDay()]);
+        
+        for(var i = 5; i > 0; i--) {
+            formatted = formatted.replace(new RegExp("(^|\\W)y{" + i + ",}($|\\W)", "ig"), "$1" + digits(d.getFullYear(), i) + "$2")
+                                 .replace(new RegExp("(^|\\W)m{" + i + ",}($|\\W)", "ig"), "$1" + digits(d.getMonth()+1, i) + "$2")
+                                 .replace(new RegExp("(^|\\W)d{" + i + ",}($|\\W)", "ig"), "$1" + digits(d.getDate(), i) + "$2")
+                                 .replace(new RegExp("(^|\\W)h{" + i + ",}($|\\W)", "ig"), "$1" + digits(d.getHours(), i) + "$2")
+                                 .replace(new RegExp("(^|\\W)m{" + i + ",}($|\\W)", "ig"), "$1" + digits(d.getMinutes(), i) + "$2")
+                                 .replace(new RegExp("(^|\\W)s{" + i + ",}($|\\W)", "ig"), "$1" + digits(d.getSeconds(), i) + "$2");
         }
-    });
+        
+        return formatted;
+    }
+    
+    return '';
 }
 
-var apicalls = {
-    // Gets event list
-    get_events: function () {
-        return doRequest("GET", "json", "/api/rfid/events/", "?api_key=" + API_KEY + "&event_end__gte=" + tools.today() + "&order_by=event_start&limit=4", {}, events.events_callback);
+function digits (number, places) {
+    var places = (typeof places === 'number' ? places : 2);
+    
+    return (Array(places).join("0") + number).slice(-(places));
+}
+
+var sortBy = {
+    date: {
+        asc: function (user1, user2) {
+            var time1 = user1.timestamp,
+                time2 = user2.timestamp;
+
+            if (time1 > time2) return 1;
+            if (time1 < time2) return -1;
+
+            return 0;
+        },
+        desc: function (user2, user1) {
+            var time1 = user1.timestamp,
+                time2 = user2.timestamp;
+
+            if (time1 > time2) return 1;
+            if (time1 < time2) return -1;
+
+            return 0;
+        }
     },
-    // Gets user object by username
-    get_user_by_username: function (username) {
-        return doRequest("GET", "json", "/api/rfid/user/", "?username=" + username + "&api_key=" + API_KEY, {}, tools.user_callback);
-    },
-    // Gets user object by rfid
-    get_user_by_rfid: function (rfid) {
-        return doRequest("GET", "json", "/api/rfid/user/", "?rfid=" + rfid + "&api_key=" + API_KEY, {}, tools.user_callback);
-    },
-    // Sets an attendee as attended
-    set_attended: function (attendee) {
-        return doRequest("PATCH", "json", attendee.resource_uri, "?api_key=" + API_KEY, "{\"attended\": true}", events.attend_callback);
-    },
-    // Updates the RFID field on a user
-    patch_user: function (user, rfid) {
-        return doRequest("PATCH", "json", user.resource_uri, "?api_key=" + API_KEY, '{"rfid": "' + rfid + '"}', tools.patch_user_callback);
-    },
-    // Updates an event with new info
-    update_event: function (event) {
-        return doRequest("GET", "json", event.resource_uri, "?api_key=" + API_KEY, {}, events.update_event_callback);
+    username: {
+        asc: function (user1, user2) {
+            var time1 = user1.user.first_name.toLowerCase(),
+                time2 = user2.user.first_name.toLowerCase();
+
+            if (time1 > time2) return 1;
+            if (time1 < time2) return -1;
+
+            return 0;
+        },
+        desc: function (user2, user1) {
+            var time1 = user1.user.first_name.toLowerCase(),
+                time2 = user2.user.first_name.toLowerCase();
+            
+            if (time1 > time2) return 1;
+            if (time1 < time2) return -1;
+            
+            return 0;
+        }
     }
 }
 
@@ -89,11 +91,83 @@ var UserList = React.createClass({
         };
     },
     
+    render: function () {
+        
+        if (this.props.users.length > 0) {
+            var List = (
+                    this.props.users.map(function (user, index) {
+                    return (
+                        <tr className="user-item" key={index}>
+                            <td className="text-left">{ [user.user.first_name, user.user.last_name].join(" ") }</td>
+                            <td className="text-left">{ user.user.username }</td>
+                            <td className="text-right">{ dateFormatter(user.timestamp, 'day DD/MM/YY (HH:MM:SS)') }</td>
+                        </tr>
+                    );
+                }, this)
+            );
+
+            return (
+                <div>
+                    <h3>{ this.props.title }</h3>
+                    <table className="mdl-data-table mdl-js-data-table table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Navn</th>
+                                <th>Brukernavn</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>{ List }</tbody>
+                    </table>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <h3>{ this.props.empty }</h3>
+                </div>
+            );
+        }
+    }
+});
+
+var UserLists = React.createClass({
+    getInitialState: function () {
+        return {
+            data: [],
+            selectedIndex: null,
+            sortedBy: "username",
+            sort: "asc"
+        };
+    },
+    
     componentDidMount: function () {
-        $.get("js/data.json", function (data) {
+        this.request = $.get("js/data.json", function (data) {
             var events = data.events.filter(function (event) {
                 return (event.attendance_event != null)
+            }).map(function (event) {
+                
+                if (event.attendance_event.waitlist) {
+                    event.attendance_event.listed = event.attendance_event.users.slice(0, event.attendance_event.max_capacity)
+                    event.attendance_event.registered = event.attendance_event.listed.filter(function (user) {
+                        return user.attended;
+                    });
+                    event.attendance_event.listed = event.attendance_event.listed.filter(function (user) {
+                        return !user.attended;
+                    });
+                    event.attendance_event.waiting = event.attendance_event.users.slice(event.attendance_event.max_capacity);
+                }
+                
+                event.attendance_event.registered = event.attendance_event.registered.sort(sortBy.username.asc);
+                event.attendance_event.listed = event.attendance_event.listed.sort(sortBy.username.asc);
+                event.attendance_event.waiting = event.attendance_event.waiting.sort(sortBy.username.asc);
+                
+                //event.attendance_event.listed = event.attendance_event.listed.
+                
+                return event;
             });
+            
+            document.querySelector('#title').innerHTML = events[0].title;
             
             if (this.isMounted()) {
                 this.setState({
@@ -104,32 +178,58 @@ var UserList = React.createClass({
         }.bind(this));
     },
     
-    handleClick: function () {
+    componentWillUnmount: function () {
+        this.request.abort();
+    },
+    
+    handleClick: function (i) {
+        document.querySelector('#title').innerHTML = this.state.data[i].title;
+        
         this.setState({
-            selectedIndex: 1
+            selectedIndex: i
+        });
+    },
+    
+    handleSort: function (func) {
+        this.setState({
+            sort: (this.state.sort === "asc" ? "desc" : "asc"),
+            sortBy: func,
+            data: this.state.data.map(function (event) {
+                event.attendance_event.users = event.attendance_event.users.sort(sortBy[func][(this.state.sort === "asc" ? "desc" : "asc")])
+                
+                return event;
+            }, this)
         });
     },
     
     render: function () {
         var eventNames = this.state.data.map(function (event, index) {
-            return <div className="event-name" listItem=index key=index>{event.title}</div>
-        });
+            return <button className="event-name btn" onClick={this.handleClick.bind(this, index)} listItem={index} key={index}>{event.title}</button>
+        }, this);
         
-        var usersData = [];
+        var usersRegistered = [],
+            usersListed = [],
+            usersWaiting = [];
         
         if (typeof this.state.selectedIndex === "number") {
-            usersData = this.state.data[this.state.selectedIndex].attendance_event.users.map(function (user) {
-                return React.createElement('li',
-                                           { className: "user-item", key: user.id },
-                                           "User: " + user.user.first_name + ", rfid: " + user.user.rfid)
-            });
+            usersRegistered = this.state.data[this.state.selectedIndex].attendance_event.registered;
+            usersListed = this.state.data[this.state.selectedIndex].attendance_event.listed;
+            usersWaiting = this.state.data[this.state.selectedIndex].attendance_event.waiting;
         }
         
-        return <div>{ eventNames }<ul>{ usersData }</ul></div>;
+        return (
+            <div className="col-md-12">{ eventNames }<br/>
+                <button className="btn" onClick={ this.handleSort.bind(this, "username") }>Sorter etter navn</button>
+                <button className="btn" onClick={ this.handleSort.bind(this, "date") }>Sorter etter dato</button>
+                <UserList title={ (usersListed.length > 0 ? usersRegistered.length + " har møtt" : "Alle har møtt!") } users={ usersRegistered } />
+                <UserList title={ (usersRegistered.length > 0 ? usersListed.length + " har ikke møtt" : "Ingen har møtt") } users={ usersListed } />
+                <UserList title="Venteliste" empty="Ingen på venteliste" users={ usersWaiting } />
+            </div>
+        );
     }
 });
 
 ReactDOM.render(
-    React.createElement(UserList, null),
+    <UserLists />,
     document.querySelector('#options')
 );
