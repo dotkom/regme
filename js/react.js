@@ -158,11 +158,9 @@ var UserLists = React.createClass({
                     event.attendance_event.waiting = event.attendance_event.users.slice(event.attendance_event.max_capacity);
                 }
                 
-                event.attendance_event.registered = event.attendance_event.registered.sort(sortBy.username.asc);
+                event.attendance_event.registered = event.attendance_event.registered.sort(sortBy.date.asc);
                 event.attendance_event.listed = event.attendance_event.listed.sort(sortBy.username.asc);
                 event.attendance_event.waiting = event.attendance_event.waiting.sort(sortBy.username.asc);
-                
-                //event.attendance_event.listed = event.attendance_event.listed.
                 
                 return event;
             });
@@ -195,7 +193,9 @@ var UserLists = React.createClass({
             sort: (this.state.sort === "asc" ? "desc" : "asc"),
             sortedBy: func,
             data: this.state.data.map(function (event) {
-                event.attendance_event.users = event.attendance_event.users.sort(sortBy[func][(this.state.sort === "asc" ? "desc" : "asc")])
+                event.attendance_event.registered = event.attendance_event.registered.sort(sortBy[func][(this.state.sort === "asc" ? "desc" : "asc")])
+                event.attendance_event.listed = event.attendance_event.listed.sort(sortBy[func][(this.state.sort === "asc" ? "desc" : "asc")])
+                event.attendance_event.waiting = event.attendance_event.waiting.sort(sortBy[func][(this.state.sort === "asc" ? "desc" : "asc")])
                 
                 return event;
             }, this)
@@ -219,8 +219,12 @@ var UserLists = React.createClass({
         
         return (
             <div className="col-md-12">{ eventNames }<br/>
-                <button className={ "btn" + (this.state.sortedBy === "username" ? " btn-default" : "") } onClick={ this.handleSort.bind(this, "username") }>Sorter etter navn</button>
-                <button className={ "btn" + (this.state.sortedBy === "date" ? " btn-default" : "") } onClick={ this.handleSort.bind(this, "date") }>Sorter etter dato</button>
+                <button className={ "btn" + (this.state.sortedBy === "username" ? " btn-default" : "") } onClick={ this.handleSort.bind(this, "username") }>
+                    <span className={ "glyphicon glyphicon-chevron-"+(this.state.sort === "asc" ? "up" : "down") }></span>
+                    Sorter etter navn</button>
+                <button className={ "btn" + (this.state.sortedBy === "date" ? " btn-default" : "") } onClick={ this.handleSort.bind(this, "date") }>
+                    <span className={ "glyphicon glyphicon-chevron-"+(this.state.sort !== "asc" ? "up" : "down") }></span>
+                    Sorter etter dato</button>
                 <UserList title={ (usersListed.length > 0 ? usersRegistered.length + " har møtt" : "Alle har møtt!") } users={ usersRegistered } />
                 <UserList title={ (usersRegistered.length > 0 ? usersListed.length + " har ikke møtt" : "Ingen har møtt") } users={ usersListed } />
                 <UserList title="Venteliste" empty="Ingen på venteliste" users={ usersWaiting } />
