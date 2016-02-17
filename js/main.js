@@ -5,14 +5,4 @@ $(document).ready(function () {
             console.log("ENTERED"); // placeholder
         }
     });
-
-    $('#go').on('click', function (e) {
-        console.log("ENTERED");
-    });
-
-    // Options button
-    $('#options_button').on('click', function (e) {
-        $('#options').fadeToggle(200);
-        $('#input').focus();
-    });
 });
