@@ -3,9 +3,8 @@ App for self-registration at events.
 
 # Todo
 General:
-* Go BACK to MDL? (4th redesign)
-* Become as feature "complete" as rfidera
-* Feedback - What should RegMe have that isn't already in rfidera?
+- [ ] Re-re-re-redesign the site to work with Material Design Lite
+- [ ] Become as feature "complete" as rfidera
 
 API:
 - [ ] Setup api (OAuth2.0, config, keys)
