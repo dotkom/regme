@@ -1,34 +1,27 @@
 body {
   color: #555;
   background-color: #efefef;
+  border-color: #555;
 }
-h1 {
-  color: #555;
-  font-weight: 300;
+#input_div {
+  width: 100%;
 }
-#logonav {
-  background-color: #004b80;
-  padding: 25px;
+#input{
+  border-bottom: 1px solid #555;
 }
-#input {
+#options_button {
   display: block;
   margin: 0px auto;
-  font-size: 25px;
   height: 50px;
-  min-width: 500px;
-}
-#go, #options_button {
-  display: block;
-  margin: 0px auto;
-  font-size: 25px;
-  height: 50px;
-  background-color: #ee7810;
   color: #fff;
-}
-.row {
-  margin-bottom: 25px;
-  text-align: center;
 }
 #options {
   display: none;
+}
+.mdl-textfield.is-disabled.is-disabled .mdl-textfield__label, .mdl-textfield__label, fieldset[disabled] .mdl-textfield .mdl-textfield__label {
+  color: inherit;
+}
+.mdl-layout__header{
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
