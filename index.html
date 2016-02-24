@@ -7,8 +7,7 @@
     
     <title>RegMe</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/material.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.js"></script>
@@ -16,48 +15,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
     <script src="js/react.js" type="text/babel"></script>
-    
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="js/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script type="text/javascript" src="js/main.js"></script>
   </head>
   <body>
-    <div id="logonav">
-      <img src="img/logo.png" alt="Image" id="event_image">
-    </div>
-    <div class="container">
-      <br><br>
-      <h1 id="title">Registrer deg selv!</h1>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="input-group">
-            <input id="input" type="text" class="form-control" autofocus placeholder="Scan RFID eller skriv inn brukernavn...">
-            <span class="input-group-btn">
-              <button id="go" class="btn btn-default" type="button">Go!</button>
-            </span>
-          </div><!-- end inputgroup -->
-          <br>
-          <div>
-            <button type="button" class="btn btn-default btn-lg" id="options_button">
-              <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Alternativer
-            </button>
-          </div>
-        </div><!-- end col -->
-      </div><!-- end row -->
-      <div class="row" id="options">
-        <div class="col-md-12">
-          <p>
-            uhuhuhuhu
-          </p>
+    <!--  -->
+    <div class="mdl-layout mdl-js-layout">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <img src="img/logo.png">
         </div>
-      </div><!-- end row -->
+      </header>
+      <br><br><br>
+      <main class="mdl-layout__content">
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--3-col"></div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <h4 class="mdl-typography--display-1">Placeholder - event name</h4>
+            <!-- Placeholder: Add progressbar here to show when system is ready -->
+            <form action="#">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="input_div">
+                <input class="mdl-textfield__input mdl-typography--display-1" type="text" id="input" autofocus>
+                <label class="mdl-textfield__label" for="input">Skriv inn RFID eller brukernavn...</label>
+              </div>
+            </form>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="options_button">Alternativer</button>
+            <div id="options">
+              <p>
+                Placeholder - options
+              </p>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col"></div>
+        </div>
+      </main>
     </div>
-    <!-- jQuery + Bootstrap -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
   </body>
 </html>
