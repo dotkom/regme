@@ -1,2 +1,7 @@
 js/data.json
 config.json
+
+.idea
+node_modules/
+
+regme.min.*
