@@ -21,3 +21,8 @@ Focus on:
 
 Feedback:
 - [ ] 
+
+Code:
+- [ ] Makefile for the project
+- [ ] JSdoc docstrings
+- [ ] Formatted after standard.js format
