@@ -12,4 +12,12 @@ API:
 - [ ] Fetch real data (Just fetch once, then use async api-calls later)
 - [ ] Change react.js to find right fields in api-json
 - [ ] Read-api-calls to fetch data asynchronously
-- [ ] Put-api-calls to add users
+- [ ] Register rfid to user-objects
+
+Focus on:
+- [ ] If rfid returns more than 1 user, log as errors, remove rfid field from invalid user, and notify about the case
+- [ ] Handholding: Notify user about their state, guide them every step which is nessesary
+- [ ] Printing pdf with more information about allergies and meet-up
+
+Feedback:
+- [ ] 
