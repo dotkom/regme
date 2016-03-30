@@ -1,5 +1,5 @@
 # Custom settings
-js/data.json
+src/data.json
 config.json
 config.json.new
 .idea/

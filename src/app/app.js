@@ -12,6 +12,12 @@
 //import ReactDOM from 'react-dom'
 var $ = window.jQuery
 
+/**
+ *
+ * @param date
+ * @param format
+ * @returns {*}
+ */
 function dateFormatter (date, format) {
   if (typeof date === 'string') {
     format = (typeof format === 'string' ? format : 'dag DD.MM.YYYY (HH:MM:SS)')
@@ -34,14 +40,31 @@ function dateFormatter (date, format) {
   return ''
 }
 
+/**
+ *
+ * @param number
+ * @param places
+ * @returns {string}
+ */
 function digits (number, places) {
   places = (typeof places === 'number' ? places : 2)
 
   return (Array(places).join('0') + number).slice(-(places))
 }
 
+/**
+ *
+ * @type {{date: {asc: sortBy.date.asc, desc: sortBy.date.desc}, username: {asc: sortBy.username.asc, desc: sortBy.username.desc}}}
+ */
 var sortBy = {
   date: {
+
+    /**
+     *
+     * @param user1
+     * @param user2
+     * @returns {number}
+     */
     asc: function (user1, user2) {
       var time1 = user1.timestamp
       var time2 = user2.timestamp
@@ -51,6 +74,13 @@ var sortBy = {
 
       return 0
     },
+
+    /**
+     *
+     * @param user2
+     * @param user1
+     * @returns {number}
+     */
     desc: function (user2, user1) {
       var time1 = user1.timestamp
       var time2 = user2.timestamp
@@ -62,6 +92,13 @@ var sortBy = {
     }
   },
   username: {
+
+    /**
+     *
+     * @param user1
+     * @param user2
+     * @returns {number}
+     */
     asc: function (user1, user2) {
       var time1 = user1.user.first_name.toLowerCase()
       var time2 = user2.user.first_name.toLowerCase()
@@ -71,6 +108,13 @@ var sortBy = {
 
       return 0
     },
+
+    /**
+     *
+     * @param user2
+     * @param user1
+     * @returns {number}
+     */
     desc: function (user2, user1) {
       var time1 = user1.user.first_name.toLowerCase()
       var time2 = user2.user.first_name.toLowerCase()
@@ -82,7 +126,7 @@ var sortBy = {
     }
   }
 }
-
+/*
 var UserList = React.createClass({
   getInitialState: function () {
     return {
@@ -129,7 +173,7 @@ var UserList = React.createClass({
     }
   }
 })
-
+* /
 var UserLists = React.createClass({
   getInitialState: function () {
     return {
@@ -236,7 +280,7 @@ var UserLists = React.createClass({
     )
   }
 })
-
+*/
 ReactDOM.render(
   <UserLists />,
   document.querySelector('#options')
