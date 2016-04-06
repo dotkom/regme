@@ -10,7 +10,7 @@ var UserLists extends React.Component {
   }
 
   componentDidMount () {
-    this.request = $.get('js/data.json', function (data) {
+    this.request = $.get('src/data.json', function (data) {
       var events = data.events.filter(function (event) {
         return (event.attendance_event != null)
       }).map(function (event) {
