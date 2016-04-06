@@ -23,13 +23,13 @@ class UserList extends React.Component {
 
       return (
         <div>
-          <h3>{this.props.title}</h3>
+          <h5>{this.props.title}</h5>
           <table className='mdl-data-table mdl-js-data-table table table-hover table-responsive'>
             <thead>
               <tr>
                 <th>Navn</th>
                 <th>Brukernavn</th>
-                <th></th>
+                <th>Dato</th>
               </tr>
             </thead>
             <tbody>{List}</tbody>
@@ -39,7 +39,7 @@ class UserList extends React.Component {
     } else {
       return (
         <div>
-          <h3>{this.props.empty}</h3>
+          <h5>{this.props.empty}</h5>
         </div>
       )
     }
