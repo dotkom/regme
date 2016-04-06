@@ -8,7 +8,7 @@
     "deploy": "echo \"Deployed\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npm run watch-js & npm run watch-less",
-    "build-js": "cat ./js/main.js | ./node_modules/uglifyjs/bin/uglifyjs -o ./js/regme.min.js",
+    "build-js": "cat ./src/main.js | ./node_modules/uglifyjs/bin/uglifyjs -o ./src/regme.min.js",
     "build-less": "./node_modules/less/bin/lessc ./less/regme.less | ./node_modules/clean-css/bin/cleancss -d -o ./css/regme.min.css",
     "watch-js": "./node_modules/nodemon/bin/nodemon.js -e js -w ./js -x 'npm run build-js'",
     "watch-less": "./node_modules/nodemon/bin/nodemon.js -e less -w ./less -x 'npm run build-less'"
