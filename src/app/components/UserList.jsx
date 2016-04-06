@@ -29,7 +29,7 @@ class UserList extends React.Component {
               <tr>
                 <th>Navn</th>
                 <th>Brukernavn</th>
-                <th></th>
+                <th>Dato</th>
               </tr>
             </thead>
             <tbody>{List}</tbody>
