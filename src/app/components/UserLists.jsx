@@ -32,7 +32,7 @@ var UserLists extends React.Component {
         return event
       })
 
-      // document.querySelector('#title').innerHTML = events[0].title
+      document.querySelector('#title').innerHTML = events[0].title
 
       if (this.isMounted()) {
         this.setState({
@@ -71,7 +71,7 @@ var UserLists extends React.Component {
 
   render () {
     var eventNames = this.state.data.map(function (event, index) {
-      return <button className={'btn' + (this.state.selectedIndex === index ? ' btn-default' : '')}
+      return <button className={'mdl-button mdl-js-button mdl-button--accent mdl-js-ripple-effect btn' + (this.state.selectedIndex === index ? ' btn-default' : '')}
         onClick={this.handleClick}
         listItem={index} key={index}>{event.title}</button>
     }, this)
@@ -87,7 +87,9 @@ var UserLists extends React.Component {
     }
 
     return (
-      <div className='mdl-cell--12-col'>{eventNames}<br/>
+      <div>{eventNames}
+        <br/>
+        <br/>
         <button className={'btn' + (this.state.sortedBy === 'username' ? ' btn-default' : '')}
           onClick={this.handleSort}>
           <span className={'glyphicon glyphicon-chevron-' + (this.state.sort === 'asc' ? 'up' : 'down')}></span>

@@ -151,13 +151,13 @@ var UserList = React.createClass({
 
       return (
         <div>
-          <h3>{this.props.title}</h3>
+          <h5>{this.props.title}</h5>
           <table className='mdl-data-table mdl-js-data-table table table-hover table-responsive'>
             <thead>
               <tr>
                 <th>Navn</th>
                 <th>Brukernavn</th>
-                <th></th>
+                <th>Dato</th>
               </tr>
             </thead>
             <tbody>{List}</tbody>
@@ -167,7 +167,7 @@ var UserList = React.createClass({
     } else {
       return (
         <div>
-          <h3>{this.props.empty}</h3>
+          <h5>{this.props.empty}</h5>
         </div>
       )
     }
@@ -246,7 +246,7 @@ var UserLists = React.createClass({
 
   render: function () {
     var eventNames = this.state.data.map(function (event, index) {
-      return <button className={'btn' + (this.state.selectedIndex === index ? ' btn-default' : '')}
+      return <button className={'mdl-button mdl-js-button mdl-button--accent mdl-js-ripple-effect btn' + (this.state.selectedIndex === index ? ' btn-default' : '')}
         onClick={this.handleClick}
         listItem={index} key={index}>{event.title}</button>
     }, this)
@@ -262,7 +262,9 @@ var UserLists = React.createClass({
     }
 
     return (
-      <div className='mdl-cell--12-col'>{eventNames}<br/>
+      <div>{eventNames}
+        <br/>
+        <br/>
         <button className={'btn' + (this.state.sortedBy === 'username' ? ' btn-default' : '')}
           onClick={this.handleSort}>
           <span className={'glyphicon glyphicon-chevron-' + (this.state.sort === 'asc' ? 'up' : 'down')}></span>
