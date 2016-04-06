@@ -185,7 +185,7 @@ var UserLists = React.createClass({
   },
 
   componentDidMount: function () {
-    this.request = $.get('js/data.json', function (data) {
+    this.request = $.get('src/data.json', function (data) {
       var events = data.events.filter(function (event) {
         return (event.attendance_event != null)
       }).map(function (event) {

@@ -21,7 +21,7 @@ test: build
 
 clean:
 	@echo "[i] Clearing generated files..."
-	rm -rf ./js/regme.min.js
+	rm -rf ./src/regme.min.js
 	rm -rf ./css/regme.min.css
 	@make install
 
