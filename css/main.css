@@ -25,3 +25,16 @@ body {
   padding-bottom: 10px;
   padding-top: 10px;
 }
+.table {
+  width: 100%;
+  color: #555;
+}
+.table td, .table th {
+  text-align: left;
+  height:36px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.table td:last-child, .table th:last-child {
+  text-align: right;
+}
