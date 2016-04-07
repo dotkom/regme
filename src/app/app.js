@@ -282,7 +282,7 @@ var UserLists = React.createClass({
     )
   }
 })
-*/
+* /
 ReactDOM.render(
   <UserLists />,
   document.querySelector('#options')
@@ -293,10 +293,11 @@ ReactDOM.render(
  selectedIndex: React.PropTypes.number,
  sortedBy: React.PropTypes.string,
  sort: React.PropTypes.string
- }*/
+ }* /
 
 UserList.propTypes = {
   users: React.PropTypes.node,
   title: React.PropTypes.string,
   empty: React.PropTypes.node
 }
+*/
