@@ -5,6 +5,7 @@ config.json.new
 .idea/
 regme.min.js
 regme.min.css
+bundle.js
 
 # Default settings for Node.js
 # Logs
