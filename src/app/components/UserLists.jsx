@@ -1,5 +1,5 @@
 
-var UserLists extends React.Component {
+class UserLists extends React.Component {
   getInitialState () {
     return {
       data: [],
