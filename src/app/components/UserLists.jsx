@@ -1,3 +1,5 @@
+import React from 'react'
+import { connect } from 'react-redux'
 
 class UserLists extends React.Component {
   getInitialState () {
