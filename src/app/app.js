@@ -8,8 +8,9 @@
 // 6 = Internt
 // 7 = Annet
 // var API_KEY = 'derp', API_BASE_URL = 'http://localhost'
-//import React from 'react'
-//import ReactDOM from 'react-dom'
+
+import React from 'react'
+import ReactDOM from 'react-dom'
 var $ = window.jQuery
 
 /**
