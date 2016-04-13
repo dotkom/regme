@@ -32,7 +32,7 @@ const App = props => (
  * Must define types for eslint to validate code.
  */
 App.propTypes = {
-    users: React.PropTypes.array,
+    users: React.PropTypes.object,
     regme: React.PropTypes.shape({
         sortBy: React.PropTypes.string,
         sort: React.PropTypes.string,
