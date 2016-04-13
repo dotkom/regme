@@ -4,14 +4,14 @@
  * This is how the logic and components are united.
  */
 
-import React from 'react';
-import { connect } from 'react-redux';
+import React from 'react'
+import { connect } from 'react-redux'
 
 /**
  * Importing the pieces for the first level of components.
  * *This may contain the input-field and logo afterwards.
  */
-//import UserLists from './UserLists';
+import UserLists from './UserLists'
 
 /**
  * Importing spesific functions from actions.
@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
  */
 import {
     sortBy
-} from '../actions';
+} from '../actions'
 
 /**
  * This is the component which carrys the structure.
@@ -31,7 +31,7 @@ const Regme = ( props ) => {
  //const handleClick = (key, asc) => {
  //    console.log(asc, key)
  //    props.dispatch(sortBy(key, asc))
- //};
+ //}
  
   return (
     <div>
@@ -40,4 +40,4 @@ const Regme = ( props ) => {
   )
 }
 
-export default connect()(Regme);
+export default connect()(Regme)
