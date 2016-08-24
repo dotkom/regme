@@ -1,13 +1,3 @@
-# Custom settings
-src/data.json
-config.json
-config.json.new
-.idea/
-regme.min.js
-regme.min.css
-bundle.js
-
-# Default settings for Node.js
 # Logs
 logs
 *.log
@@ -24,6 +14,9 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
+# nyc test coverage
+.nyc_output
+
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
@@ -39,7 +32,12 @@ jspm_packages
 
 # Optional npm cache directory
 .npm
-.npm-global
 
 # Optional REPL history
 .node_repl_history
+
+# Jetbrains
+.idea/
+
+# Bundle and style
+dist/

@@ -2,27 +2,19 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: "./src/app/index.js",
-    output: {
-        path: __dirname,
-        filename: "src/bundle.js"
-    },
-    resolve: {
-        extensions: ['', '.js', '.jsx']
-    },
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loader: 'babel',
-                query: {
-                    presets: ['react', 'es2015']
-                }
-            }
-        ]
-    }
+  entry: "./index.js",
+  output: {
+    path: path.join(__dirname, 'dist'),
+    publicPath: '/dist/',
+    filename: 'bundle.js'
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.js?/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      }
+    ]
+  }
 }
-
-// Need to run:
-// $ npm install webpack-dev-server@1.12.1 -g
