@@ -27,7 +27,7 @@ const Registration = React.createClass({
   render: function () {
     return (
       <div>
-        <div>Registrering!</div>
+        <h3>{ this.props.title }</h3>
         <Status message="Systemet er klar til bruk!"
           time={ this.state.time } />
         <Input placeholder="Skriv inn RFID eller brukernavn..." />
