@@ -9,6 +9,11 @@ const Registration = React.createClass({
         hour: date.getHours()
         ,minute: date.getMinutes()
         ,second: date.getSeconds()
+      },
+      attendees: {
+        listed: 0
+        ,registered: 0
+        ,waiting: 0
       }
     }
   },
@@ -32,6 +37,11 @@ const Registration = React.createClass({
         <Status message="Systemet er klar til bruk!"
           time={ this.state.time } />
         <Input placeholder="Skriv inn RFID eller brukernavn..." />
+        <p>
+          <span>Møtt: { this.state.attendees.registered}</span>
+          &nbsp;- <span>Påmeldt: { this.state.attendees.listed
+            + this.state.attendees.waiting}</span>
+          &nbsp;- <span>Plasser: { this.state.attendees.registered}</span></p>
       </div>
     )
   }
