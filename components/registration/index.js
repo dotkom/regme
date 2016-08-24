@@ -3,11 +3,12 @@ import Status from './status'
 
 const Registration = React.createClass({
   getInitialState: function () {
+    let date = new Date()
     return {
       time: {
-        hour: 0
-        ,minute: 0
-        ,second: 0
+        hour: date.getHours()
+        ,minute: date.getMinutes()
+        ,second: date.getSeconds()
       }
     }
   },
