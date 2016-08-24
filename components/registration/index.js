@@ -12,17 +12,18 @@ const Registration = React.createClass({
       }
     }
   },
+  updateTime: function (evt) {
+    let date = new Date()
+    this.setState(Object.assign({}, this.state, {
+      time: {
+        hour: date.getHours()
+        ,minute: date.getMinutes()
+        ,second: date.getSeconds()
+      }
+    }))
+  },
   componentDidMount: function () {
-    setInterval(() => {
-      let date = new Date()
-      this.setState(Object.assign({}, this.state, {
-        time: {
-          hour: date.getHours()
-          ,minute: date.getMinutes()
-          ,second: date.getSeconds()
-        }
-      }))
-    }, 1000)
+    this.updateTime()
   },
   render: function () {
     return (
