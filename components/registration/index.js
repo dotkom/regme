@@ -1,6 +1,13 @@
 import Input from './input'
 import Status from './status'
 
+/**
+ * Registration view. This is what the user see
+ * as the initial outlook. The component should:
+ *  - Show status of the system.
+ *  - Handle input from user/RFID.
+ *  - Show user stats in numbers. 
+ */
 const Registration = React.createClass({
   getInitialState: function () {
     let date = new Date()
@@ -17,7 +24,12 @@ const Registration = React.createClass({
       }
     }
   },
-  updateTime: function (evt) {
+
+  /**
+   * This is called when the status gets updated
+   * and needs to save the timestamp.
+   */
+  updateTime: function () {
     let date = new Date()
     this.setState(Object.assign({}, this.state, {
       time: {
