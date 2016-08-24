@@ -1,7 +1,8 @@
 const Events = () => {
   return (
     <div>
-      <p>here there be events</p>
+      <h3>Arrangementer</h3>
+      <p>Here's some placeholder text for you.</p>
     </div>
   );
 };

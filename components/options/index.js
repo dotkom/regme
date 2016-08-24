@@ -5,6 +5,7 @@ const Options = () => {
   return (
     <div>
       <Events />
+      <hr />
       <Attendees />
     </div>
   );
