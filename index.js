@@ -6,14 +6,16 @@ import Registration from './components/registration'
 import Options from './components/options'
 
 const App = () => {
-  let title = "Bedrift"
   return(
-    <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <div className='mdl-layout mdl-js-layout mdl-layout--fixed-header'>
       <Header />
-      <main className="mdl-layout__content">
-        <div className="page-content">
-          <Registration title={ title } />
-          <Options />
+      <main className='mdl-layout__content '>
+        <div className='mdl-grid'>
+          <div className='mdl-cell mdl-cell--6-col mdl-cell--3-offset'>
+            <Registration title={ 'Bedrift' } />
+            <hr />
+            <Options />
+          </div>
         </div>
       </main>
     </div>
