@@ -1,7 +1,6 @@
 import Events from './events'
 import Attendees from './attendees'
 
-
 const Options = React.createClass({
   getInitialState: function (){
     return{ showOptions: false }
