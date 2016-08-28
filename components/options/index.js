@@ -21,7 +21,7 @@ const Options = React.createClass({
     }
     return(
       <div>
-        <input type='button' value='Alternativer' onClick={ this.clickHandler } />
+        <a className='mdl-button mdl-js-button mdl-button--raised  mdl-js-ripple-effect mdl-button--accent' onClick={ this.clickHandler }>Alternativer</a>
         { optionBody }
       </div>
     )
