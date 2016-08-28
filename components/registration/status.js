@@ -20,9 +20,9 @@ const Status = ( { message, time } ) => {
   }
 
   return (
-    <div className="color">
-      <div className="left">{ message }</div>
-      <div className="right">{ `${dd(time.hour)}:${dd(time.minute)}:${dd(time.second)}` }</div>
+    <div className='color'>
+      <div className='left'>{ message }</div>
+      <div className='right'>{ `${dd(time.hour)}:${dd(time.minute)}:${dd(time.second)}` }</div>
     </div>
   )
 }
