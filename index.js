@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 require('./styles/base.less')
 
@@ -13,10 +13,11 @@ const App = () => {
       <Header />
       <main className='mdl-layout__content '>
         <div className='mdl-grid'>
-          <div className='mdl-cell mdl-cell--6-col mdl-cell--3-offset'>
-            <Registration title={ 'Bedrift' } />
-            <hr />
-            <Options />
+          <div className='mdl-cell mdl-cell--8-col mdl-cell--2-offset'>
+            <div className='mdl-card mdl-shadow--2dp'>
+              <Registration title={ 'Bedrift' } />
+              <Options />
+            </div>
           </div>
         </div>
       </main>
