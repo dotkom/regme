@@ -47,7 +47,8 @@ const Registration = React.createClass({
       <div>
         <h3>{ this.props.title }</h3>
         <Status message='Systemet er klar til bruk!'
-          time={ this.state.time } />
+          time={ this.state.time }
+          statusCode={ '' } />
         <Input placeholder='Skriv inn RFID eller brukernavn...' />
         <p>
           <span>Møtt: { this.state.attendees.registered}</span>
