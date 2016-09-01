@@ -1,0 +1,32 @@
+.registration-input {
+  transform: scale(2) translateX(25%);
+  margin: 2em auto;
+  width: 50%;
+}
+
+.label-ok {
+  background-color: #090;
+}
+
+.label-progress {
+  background-color: #f80;
+}
+
+.label-danger {
+  background-color: #900;
+}
+
+.label {
+  transition: background-color .2s;
+  color: @white;
+}
+
+.progress-bar {
+  visibility: hidden;
+  width: 100%;
+  opacity: .5;
+}
+
+.label-progress > .progress-bar {
+  visibility: visible;
+}
