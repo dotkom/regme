@@ -10,7 +10,7 @@ const Attendees = () => {
         <List category='Venteliste' />
       </table>
     </div>
-  );
-};
+  )
+}
 
 export default Attendees;
