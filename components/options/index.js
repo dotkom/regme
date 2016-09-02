@@ -3,7 +3,7 @@ import Attendees from './attendees'
 
 const Options = React.createClass({
   getInitialState: function (){
-    return{ showOptions: false }
+    return{ showOptions: true }
   },
   clickHandler: function () {
     this.setState({ showOptions: !this.state.showOptions })
@@ -14,7 +14,6 @@ const Options = React.createClass({
       optionBody = (
         <div>
           <Events />
-          <hr />
           <Attendees />
         </div>
       )
