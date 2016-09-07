@@ -3,7 +3,7 @@ const Header = () => {
     <header className='mdl-layout__header'>
       <div className='mdl-layout__header-row'>
         <span className='mdl-layout__title'>
-          <img src="assets/images/online_logo.svg" alt="Online" />
+          <img src="assets/images/logo_online.svg" alt="Online" />
         </span>
       </div>
     </header>
