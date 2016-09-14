@@ -1,19 +1,33 @@
-const Events = () => {
-  let eventButtons = []
-  for(let i = 0; i < 4; i++){
-    eventButtons.push(
-      <a className='mdl-button mdl-js-button mdl-button--accent mdl-js-ripple-effect' key={i}>Event name</a>
-    )
-  }
-  return (
-    <div>
+import { eventService } from 'services/event';
+
+const Events = React.createClass({
+  getInitialState: function(){
+    let self = this
+    eventService.fetchEvents().then( (events) => {
+      this.setState(Object.assign({},this.state,{events: events}))
+    }).catch( (error) => {
+      console.error(error)
+    })
+    return {
+      events: [{name: "Loading...",id:1}]
+    }
+  },
+  render: function(){
+    let eventButtons = []
+    for(let event of this.state.events){
+      eventButtons.push(
+        <a className='mdl-button mdl-js-button mdl-button--accent mdl-js-ripple-effect' key={event.id}>{event.name}</a>
+      )
+    }
+    return (<div>
       <h3>Arrangementer</h3>
       <div className='event-button-div'>
         { eventButtons }
       </div>
+    </div>)
+  }
+})
 
-    </div>
-  )
-}
 
-export default Events;
+
+export default Events
