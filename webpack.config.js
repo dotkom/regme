@@ -9,6 +9,11 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'bundle.js'
   },
+  resolve: {
+    root: [
+      path.resolve('.')
+    ]
+  },
   module: {
     loaders: [
       {
