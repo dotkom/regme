@@ -1,12 +1,12 @@
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 interface IEventService{
   //Fetch events
-  fetchEvents(): Observable<Event[]>
+  getEvents(): Observable<Event[]>
 }
 
 
-class Event{
+export class Event{
   constructor(name,id){
     this._name = name
     this._id = id
@@ -20,27 +20,41 @@ class Event{
 }
 
 class EventServiceProvider implements IEventService{
+  //_events: Event[]
+  //eventSubject: ReplaySubject = new ReplaySubject(1)
   constructor(){
-    this.events = null
+    //this.events = null
+    this._events = null
+    this.eventSubject = new ReplaySubject(1)
+    this.refresh()  
   }
-  fetchEvents(){
-    if(!this.events){
-      return Observable.fromPromise(fetch("https://online.ntnu.no/api/v1/splash-events/"))
-        .flatMap(r => r.json())
-        .map(r => {
-          this.events = []
-          let count = 0
-          for(let a of r.results){
-            this.events.push(new Event(a.title,count++))
-            if(count > 3){
-              break
-            }  
-          }
-          return this.events
-        })
-      
-    }
-    return Observable.of(this.events)//return new Promise( (ok,fail) => { ok(this.events) } )
+  set events(newEvents: Event[]){
+    console.log("Got events",newEvents);
+    this._events = newEvents;
+    this.eventSubject.next(newEvents);
+  }
+  get events(){
+    return this._events
+  }
+  refresh(){
+    Observable.fromPromise(fetch("https://online.ntnu.no/api/v1/splash-events/"))
+      .switchMap(r => r.json())
+      .map(r => {
+        let newEvents = []
+        let count = 0
+        for(let a of r.results){
+          newEvents.push(new Event(a.title,count++))
+          if(count > 3){
+            break
+          }  
+        }
+        return newEvents;
+      }).subscribe((eventList) => {
+        this.events = eventList
+      })
+  }
+  getEvents(){
+    return this.eventSubject.asObservable()//Observable.of(this.events)//return new Promise( (ok,fail) => { ok(this.events) } )
   }
 }
 //Export singleton, or use static class in future?

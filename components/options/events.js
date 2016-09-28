@@ -7,7 +7,7 @@ const Events = React.createClass({
     }
   },
   componentDidMount: function(){
-    eventService.fetchEvents().subscribe( (events) => {
+    eventService.getEvents().subscribe( (events) => {
       this.setState(Object.assign({},this.state,{events: events}))
     })
   },
