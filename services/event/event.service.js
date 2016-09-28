@@ -29,9 +29,9 @@ class EventServiceProvider implements IEventService{
     this.refresh()  
   }
   set events(newEvents: Event[]){
-    console.log("Got events",newEvents);
-    this._events = newEvents;
-    this.eventSubject.next(newEvents);
+    console.log("Got events",newEvents)
+    this._events = newEvents
+    this.eventSubject.next(newEvents)
   }
   get events(){
     return this._events
@@ -48,7 +48,7 @@ class EventServiceProvider implements IEventService{
             break
           }  
         }
-        return newEvents;
+        return newEvents
       }).subscribe((eventList) => {
         this.events = eventList
       })
