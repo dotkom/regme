@@ -29,7 +29,6 @@ class EventServiceProvider implements IEventService{
     this.refresh()  
   }
   set events(newEvents: Event[]){
-    console.log("Got events",newEvents)
     this._events = newEvents
     this.eventSubject.next(newEvents)
   }
