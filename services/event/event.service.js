@@ -1,3 +1,11 @@
+import { Observable } from 'rxjs';
+
+interface IEventService{
+  //Fetch events
+  fetchEvents(): Observable<Event[]>
+}
+
+
 class Event{
   constructor(name,id){
     this._name = name
@@ -11,19 +19,20 @@ class Event{
   }
 }
 
-class EventServiceProvider{
+class EventServiceProvider implements IEventService{
   constructor(){
     this.events = null
   }
   fetchEvents(){
     if(!this.events){
-      return new Promise( (ok,fail) => {
+      return new Observable( (observer) => {
         this.events = [
           new Event("Event 1",1),
           new Event("Event 1",2),
           new Event("Event 1",3),
           new Event("Event 1",4)]
-        ok(this.events)
+        observer.next(this.events)
+        observer.complete();
       })
       //Get events from api, return promise?
       /*return new Promise( (ok,fail) => {
@@ -38,7 +47,7 @@ class EventServiceProvider{
           });  
         });*/
     }
-    return new Promise( (ok,fail) => { ok(this.events) } )
+    return Observable.of(this.events)//return new Promise( (ok,fail) => { ok(this.events) } )
   }
 }
 //Export singleton, or use static class in future?
