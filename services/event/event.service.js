@@ -1,12 +1,12 @@
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 interface IEventService{
   //Fetch events
-  fetchEvents(): Observable<Event[]>
+  getEvents(): Observable<Event[]>
 }
 
 
-class Event{
+export class Event{
   constructor(name,id){
     this._name = name
     this._id = id
@@ -20,34 +20,41 @@ class Event{
 }
 
 class EventServiceProvider implements IEventService{
+  //_events: Event[]
+  //eventSubject: ReplaySubject = new ReplaySubject(1)
   constructor(){
-    this.events = null
+    //this.events = null
+    this._events = null
+    this.eventSubject = new ReplaySubject(1)
+    this.refresh()  
   }
-  fetchEvents(){
-    if(!this.events){
-      return new Observable( (observer) => {
-        this.events = [
-          new Event("Event 1",1),
-          new Event("Event 1",2),
-          new Event("Event 1",3),
-          new Event("Event 1",4)]
-        observer.next(this.events)
-        observer.complete();
+  set events(newEvents: Event[]){
+    console.log("Got events",newEvents);
+    this._events = newEvents;
+    this.eventSubject.next(newEvents);
+  }
+  get events(){
+    return this._events
+  }
+  refresh(){
+    Observable.fromPromise(fetch("https://online.ntnu.no/api/v1/splash-events/"))
+      .switchMap(r => r.json())
+      .map(r => {
+        let newEvents = []
+        let count = 0
+        for(let a of r.results){
+          newEvents.push(new Event(a.title,count++))
+          if(count > 3){
+            break
+          }  
+        }
+        return newEvents;
+      }).subscribe((eventList) => {
+        this.events = eventList
       })
-      //Get events from api, return promise?
-      /*return new Promise( (ok,fail) => {
-          fetch(SOME_URL,{
-            method: "get"
-          }).then( (respons) => {
-            this.events = [];
-            //push respons into events
-            ok(this.events);
-          }).catch( (respons) = {
-            fail(respons);
-          });  
-        });*/
-    }
-    return Observable.of(this.events)//return new Promise( (ok,fail) => { ok(this.events) } )
+  }
+  getEvents(){
+    return this.eventSubject.asObservable()//Observable.of(this.events)//return new Promise( (ok,fail) => { ok(this.events) } )
   }
 }
 //Export singleton, or use static class in future?
