@@ -30,11 +30,11 @@
     "less-loader": "^2.2.3",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "rxjs": "3.10.3"
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
     "react": "^15.3.0",
-    "react-dom": "^15.3.0"
+    "react-dom": "^15.3.0",
+    "rxjs": "^5.0.0-beta.12"
   }
 }
