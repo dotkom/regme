@@ -67,7 +67,7 @@ class Registration extends Component {
         <Status message='Systemet er klar til bruk!'
           time={ this.state.time }
           statusCode={ this.state.status } />
-        <Input placeholder='Skriv inn RFID eller brukernavn...' />
+        <Input placeholder='Skriv inn RFID eller brukernavn...' onSubmit={console.log} />
         <p>
           <span>Møtt: { this.state.attendees.registered}</span>
           &nbsp;- <span>Påmeldt: { this.state.attendees.listed
