@@ -2,15 +2,14 @@ import { eventService } from 'services/event';
 
 const Events = React.createClass({
   getInitialState: function(){
-    let self = this
-    eventService.fetchEvents().then( (events) => {
-      this.setState(Object.assign({},this.state,{events: events}))
-    }).catch( (error) => {
-      console.error(error)
-    })
     return {
       events: [{name: "Loading...",id:1}]
     }
+  },
+  componentDidMount: function(){
+    eventService.fetchEvents().subscribe( (events) => {
+      this.setState(Object.assign({},this.state,{events: events}))
+    })
   },
   render: function(){
     let eventButtons = []
