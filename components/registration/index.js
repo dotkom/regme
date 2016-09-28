@@ -1,5 +1,7 @@
+import React, { Component } from 'react'
 import Input from './input'
 import Status from './status'
+import { eventService } from 'services/event'
 
 /**
  * Registration view. This is what the user see
@@ -8,47 +10,63 @@ import Status from './status'
  *  - Handle input from user/RFID.
  *  - Show user stats in numbers. 
  */
-const Registration = React.createClass({
-  getInitialState: function () {
+class Registration extends Component {
+  constructor (props) {
+    super(props)
     let date = new Date()
-    return {
+
+    this.state = {
       time: {
-        hour: date.getHours()
-        ,minute: date.getMinutes()
-        ,second: date.getSeconds()
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+        second: date.getSeconds(),
       },
       attendees: {
-        listed: 0
-        ,registered: 0
-        ,waiting: 0
-      }
+        listed: 0,
+        registered: 0,
+        waiting: 0,
+      },
+      status: ''
     }
-  },
+  }
 
   /**
    * This is called when the status gets updated
    * and needs to save the timestamp.
    */
-  updateTime: function () {
+  updateTime () {
     let date = new Date()
     this.setState(Object.assign({}, this.state, {
       time: {
-        hour: date.getHours()
-        ,minute: date.getMinutes()
-        ,second: date.getSeconds()
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+        second: date.getSeconds(),
       }
     }))
-  },
-  componentDidMount: function () {
+  }
+
+  set update (update) {
+    this.setState(Object.assign({}, this.state, update))
+  }
+
+  componentDidMount () {
     this.updateTime()
-  },
-  render: function () {
+
+    eventService.getEvents().subscribe(() => {
+      this.updateTime()
+      this.update = {status: 'OK'}
+    }, error => {
+      this.update = {status: 'ERROR'}
+    })
+  }
+
+  render () {
     return (
       <div>
         <h3>{ this.props.title }</h3>
         <Status message='Systemet er klar til bruk!'
           time={ this.state.time }
-          statusCode={ '' } />
+          statusCode={ this.state.status } />
         <Input placeholder='Skriv inn RFID eller brukernavn...' />
         <p>
           <span>Møtt: { this.state.attendees.registered}</span>
@@ -58,6 +76,6 @@ const Registration = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default Registration
