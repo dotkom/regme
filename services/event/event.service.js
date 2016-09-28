@@ -25,7 +25,6 @@ class EventServiceProvider implements IEventService{
   }
   fetchEvents(){
     if(!this.events){
-      //Example data from splash
       return Observable.fromPromise(fetch("https://online.ntnu.no/api/v1/splash-events/"))
         .flatMap(r => r.json())
         .map(r => {
@@ -34,7 +33,7 @@ class EventServiceProvider implements IEventService{
           for(let a of r.results){
             this.events.push(new Event(a.title,count++))
             if(count > 3){
-              break;
+              break
             }  
           }
           return this.events
