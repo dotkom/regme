@@ -1,5 +1,5 @@
-import { Observable, ReplaySubject } from 'rxjs';
-import { Event } from './event';
+import { Observable, ReplaySubject } from 'rxjs'
+import { Event } from './event'
 import { Attendee } from 'services/attendee'
 interface IEventService{
   //Fetch events
@@ -36,7 +36,7 @@ class EventServiceProvider implements IEventService{
               new Attendee(3,"TestUser4","TestUser4",true),
             ])
           )
-          count++;
+          count++
           if(count > 3){
             break
           }  
