@@ -18,6 +18,9 @@ class Options extends Component {
   set event(event){
     this.setState(Object.assign({},this.state,{selectedEvent: event}))
   }
+  get selectedEvent(){
+    return this.state.selectedEvent
+  }
   render(){
     let optionBody = ''
     if(this.state.showOptions){
