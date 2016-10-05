@@ -1,23 +1,13 @@
 import { Observable, ReplaySubject } from 'rxjs';
-
+import { Event } from './event';
+import { Attendee } from 'services/attendee'
 interface IEventService{
   //Fetch events
   getEvents(): Observable<Event[]>
 }
 
 
-export class Event{
-  constructor(id,name){
-    this._name = name
-    this._id = id
-  }
-  get name(){
-    return this._name
-  }
-  get id(){
-    return this._id
-  }
-}
+
 
 class EventServiceProvider implements IEventService{
   constructor(){
@@ -39,7 +29,13 @@ class EventServiceProvider implements IEventService{
         let newEvents = []
         let count = 0
         for(let a of r.results){
-          newEvents.push(new Event(a.id,a.title))
+          newEvents.push(new Event(a.id,a.title,[
+              new Attendee(0,"TestUser1","TestUser1",true, new Date()),
+              new Attendee(1,"TestUser2","TestUser2",false, new Date()),
+              new Attendee(2,"TestUser3","TestUser3",false),
+              new Attendee(3,"TestUser4","TestUser4",true),
+            ])
+          )
           count++;
           if(count > 3){
             break
@@ -51,8 +47,8 @@ class EventServiceProvider implements IEventService{
       })
   }
   getEvents(){
-    return this.eventSubject.asObservable()//Observable.of(this.events)//return new Promise( (ok,fail) => { ok(this.events) } )
+    return this.eventSubject.asObservable()
   }
 }
-//Export singleton, or use static class in future?
+//Export singleton
 export const eventService = new EventServiceProvider()
