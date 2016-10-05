@@ -1,0 +1,1 @@
+export { Attendee } from './attendee'
