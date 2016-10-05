@@ -12,11 +12,13 @@ class Events extends Component {
 
   componentDidMount () {
     eventService.getEvents().subscribe( ( events ) => {
-      this.setState(Object.assign({}, this.state, { events: events,selected: events[0] }))
+      this.setState(Object.assign({}, this.state, { events: events }),()=>{
+        this.selected = events[0]
+      })
     })
   }
   set selected(event){
-    this.setState(Object.assign({},this.state,{selected: event}))
+    this.setState(Object.assign({},this.state,{ selected: event }))
     if(this.props.onEventChanged){
       this.props.onEventChanged(event)
     }

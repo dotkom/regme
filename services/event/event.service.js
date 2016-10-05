@@ -39,7 +39,8 @@ class EventServiceProvider implements IEventService{
         let newEvents = []
         let count = 0
         for(let a of r.results){
-          newEvents.push(new Event(count++,a.title))
+          newEvents.push(new Event(a.id,a.title))
+          count++;
           if(count > 3){
             break
           }  

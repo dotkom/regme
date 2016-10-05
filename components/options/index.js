@@ -17,7 +17,6 @@ class Options extends Component {
   }
   set event(event){
     this.setState(Object.assign({},this.state,{selectedEvent: event}))
-    console.log(event);
   }
   render(){
     let optionBody = ''
@@ -25,7 +24,7 @@ class Options extends Component {
       optionBody = (
         <div>
           <Events onEventChanged={ (event) => {this.event = event} }/>
-          <Attendees />
+          <Attendees event={ this.selectedEvent }/>
         </div>
       )
     }
