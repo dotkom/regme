@@ -20,10 +20,7 @@ export class Event{
 }
 
 class EventServiceProvider implements IEventService{
-  //_events: Event[]
-  //eventSubject: ReplaySubject = new ReplaySubject(1)
   constructor(){
-    //this.events = null
     this._events = null
     this.eventSubject = new ReplaySubject(1)
     this.refresh()  

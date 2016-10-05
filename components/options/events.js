@@ -15,21 +15,21 @@ class Events extends Component {
       this.setState(Object.assign({}, this.state, { events: events,selected: events[0] }))
     })
   }
-  selectEvent(event){
-    console.log(this,event)
+  set selected(event){
     this.setState(Object.assign({},this.state,{selected: event}))
+    if(this.props.onEventChanged){
+      this.props.onEventChanged(event)
+    }
   }
   render () {
     let eventButtons = []
     for(let event of this.state.events){
       let btnClass = 'mdl-button mdl-js-button mdl-button--accent mdl-js-ripple-effect'
-      let clickEvent = () => {this.selectEvent(event)}
-    
       if(this.state.selected.id === event.id){
         btnClass += ' mdl-button--raised'
       }
       eventButtons.push(
-        <a className={btnClass} onClick={ clickEvent } key={event.id}>{event.name}</a>
+        <a className={btnClass} onClick={ () => {this.selected = event} } key={event.id}>{event.name}</a>
       )
     }
 
