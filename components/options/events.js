@@ -26,7 +26,7 @@ class Events extends Component {
       let clickEvent = () => {this.selectEvent(event)}
     
       if(this.state.selected.id === event.id){
-        btnClass += ' btn-pressed'
+        btnClass += ' mdl-button--raised'
       }
       eventButtons.push(
         <a className={btnClass} onClick={ clickEvent } key={event.id}>{event.name}</a>
