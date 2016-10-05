@@ -7,7 +7,7 @@ interface IEventService{
 
 
 export class Event{
-  constructor(name,id){
+  constructor(id,name){
     this._name = name
     this._id = id
   }
@@ -42,7 +42,7 @@ class EventServiceProvider implements IEventService{
         let newEvents = []
         let count = 0
         for(let a of r.results){
-          newEvents.push(new Event(a.title,count++))
+          newEvents.push(new Event(count++,a.title))
           if(count > 3){
             break
           }  
