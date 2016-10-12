@@ -6,14 +6,19 @@
  * @prop {string} placeholder The placeholder text for the input field.
  */
 const Input = ( { placeholder, onSubmit } ) => {
-  let message = ""
+  let _input = null
+  let setRef = (ref) => {
+    _input = ref
+  }
   let submit = (evt) => {
     evt.preventDefault()
-    onSubmit(message)
-  }
-
-  let change = (evt) => {
-    message = evt.target.value
+    if(_input){
+      onSubmit(_input.value).subscribe( (keepinput) => {
+        if(!keepinput){
+          _input.value = ""
+        }
+      })
+    }
   }
 
   return (
@@ -23,7 +28,7 @@ const Input = ( { placeholder, onSubmit } ) => {
           type="text"
           id="registration-input"
           pattern="[A-Za-z\s]+|[0-9]+"
-          onChange={ change } />
+          ref={setRef} />
         <label className="mdl-textfield__label"
           htmlFor="registration-input">{ placeholder }</label>
         <span className="mdl-textfield__error">Input er ikke gyldig!</span>

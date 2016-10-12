@@ -3,6 +3,7 @@ import Input from './input'
 import Status from './status'
 import { eventService } from 'services/event'
 
+import { Observable } from 'rxjs'
 /**
  * Registration view. This is what the user see
  * as the initial outlook. The component should:
@@ -59,7 +60,9 @@ class Registration extends Component {
       this.update = {status: 'ERROR'}
     })
   }
-
+  handleSubmit(input){
+    return Observable.of(false)
+  }
   render () {
     return (
       <div>
@@ -67,7 +70,7 @@ class Registration extends Component {
         <Status message='Systemet er klar til bruk!'
           time={ this.state.time }
           statusCode={ this.state.status } />
-        <Input placeholder='Skriv inn RFID eller brukernavn...' onSubmit={console.log} />
+        <Input placeholder='Skriv inn RFID eller brukernavn...' onSubmit={ (input) => this.handleSubmit(input) } />
         <p>
           <span>Møtt: { this.state.attendees.registered}</span>
           &nbsp;- <span>Påmeldt: { this.state.attendees.listed
