@@ -1,8 +1,9 @@
 export class Event{
-  constructor(id,name,attendees=[]){
+  constructor(id,name,capacity,attendees=[]){
     this._name = name
     this._id = id
-    this._attendees = attendees //list of all attendees?
+    this._capacity = capacity 
+    this._attendees = attendees
   }
   addAttendee(attendee){
     this._attendees.push(attendee)
@@ -15,5 +16,8 @@ export class Event{
   }
   get id(){
     return this._id
+  }
+  get capacity(){
+    return this._capacity
   }
 }

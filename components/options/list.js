@@ -5,7 +5,7 @@ const List = ({ category, attendees }) => {
   for(let attendee of attendees){
     userList.push(
       <tr key={attendee.id}>
-        <td className='mdl-data-table__cell--non-numeric'>{ ['fornavn', 'etternavn'].join(' ') }</td>
+        <td className='mdl-data-table__cell--non-numeric'>{ [attendee.firstname, attendee.lastname].join(' ') }</td>
         <td className='mdl-data-table__cell--non-numeric'>{ attendee.username }</td>
         <td>dag DD.MM.YYYY (HH:MM:SS)</td>
       </tr>

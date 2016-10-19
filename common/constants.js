@@ -1,0 +1,6 @@
+export const API_BASE = "https://online.ntnu.no/api/v1"
+export const API_EVENTS = "/events"
+export const API_AUTH = "/auth"
+export const API_ATTENDEES = "/attendees"
+export const CLIENT_SECRET = ""
+export const CLIENT_ID = ""

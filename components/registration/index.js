@@ -61,6 +61,9 @@ class Registration extends Component {
     })
   }
   handleSubmit(input){
+    alert(input);
+    //Temp, false clears input field
+    //True keeps input field
     return Observable.of(false)
   }
   render () {
