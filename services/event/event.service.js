@@ -1,6 +1,10 @@
 import { Observable, ReplaySubject } from 'rxjs'
 import { Event } from './event'
-import { Attendee } from 'services/attendee'
+import { Attendee } from './attendee'
+
+import { API_BASE, API_EVENTS } from 'common/constants'
+import { http } from 'services/net'
+
 interface IEventService{
   //Fetch events
   getEvents(): Observable<Event[]>
@@ -13,7 +17,7 @@ class EventServiceProvider implements IEventService{
   constructor(){
     this._events = null
     this.eventSubject = new ReplaySubject(1)
-    this.refresh()  
+    this.refresh()
   }
   set events(newEvents: Event[]){
     this._events = newEvents
@@ -23,17 +27,18 @@ class EventServiceProvider implements IEventService{
     return this._events
   }
   refresh(){
-    Observable.fromPromise(fetch("https://online.ntnu.no/api/v1/splash-events/"))
+    let filters = "?ordering=-event_start"
+    Observable.fromPromise(fetch(`${API_BASE}${API_EVENTS}${filters}`))
       .switchMap(r => r.json())
       .map(r => {
         let newEvents = []
         let count = 0
         for(let a of r.results){
           newEvents.push(new Event(a.id,a.title,[
-              new Attendee(0,"TestUser1","TestUser1",true, new Date()),
-              new Attendee(1,"TestUser2","TestUser2",false, new Date()),
-              new Attendee(2,"TestUser3","TestUser3",false),
-              new Attendee(3,"TestUser4","TestUser4",true),
+              new Attendee(0,a.title + "TestUser1","TestUser1",true, new Date()),
+              new Attendee(1,a.title + "TestUser2","TestUser2",false, new Date()),
+              new Attendee(2,a.title + "TestUser3","TestUser3",false),
+              new Attendee(3,a.title + "TestUser4","TestUser4",true),
             ])
           )
           count++
