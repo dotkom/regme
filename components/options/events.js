@@ -23,15 +23,21 @@ class Events extends Component {
       this.props.onEventChanged(event)
     }
   }
+  appendMDL(ref){
+    console.log(ref)
+    if(ref){
+      componentHandler.upgradeElement(ref)
+    }
+  }
   render () {
     let eventButtons = []
     for(let event of this.state.events){
-      let btnClass = 'mdl-button mdl-js-button mdl-button--accent mdl-js-ripple-effect'
+      let btnClass = 'mdl-button mdl-button--accent'
       if(this.state.selected.id === event.id){
         btnClass += ' mdl-button--raised'
       }
       eventButtons.push(
-        <a className={btnClass} onClick={ () => {this.selected = event} } key={event.id}>{event.name}</a>
+        <a ref={(a) => this.appendMDL(a)} className={btnClass} onClick={ () => {this.selected = event} } key={event.id}>{event.name}</a>
       )
     }
 
