@@ -1,1 +1,0 @@
-export { Attendee } from './attendee'
