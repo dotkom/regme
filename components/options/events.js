@@ -24,7 +24,6 @@ class Events extends Component {
     }
   }
   appendMDL(ref){
-    console.log(ref)
     if(ref){
       componentHandler.upgradeElement(ref)
     }
