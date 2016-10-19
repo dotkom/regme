@@ -31,17 +31,23 @@ class HttpService{
       },true).subscribe((data) => {
         this.auth_token = data.access_token;
         //Performe requests from request queue
+        for(let i of this.requestQueue){
+          this.request(i)
+        }
+        this.requestQueue = {}
       },(e)=>{
         console.log("Error",e)
       },() => {
+        //Use a timeout to prevent a feedback loop
         this.waitingForToken = false
       });
     }
   }
-  handleResponse(r){
-    if(r.status != 200){
-      if(r.status == 401 && !noQueue){
+  handleResponse(r,req){
+    if(!r.ok){
+      if(r.status == 401){
         //Add request to queue
+        this.requestQueue.push(req)
         //Renew if not waiting for token
         this.renewToken()
       }
@@ -49,12 +55,19 @@ class HttpService{
     }
     return r.json()
   }
+  request(request){
+    //Add token to request
+    request.headers.set("Authorization", "Bearer " + this.auth_token)
+    return Observable.fromPromise(fetch(request))
+      .flatMap(r => this.handleResponse(r,request))
+  }
   get(url,params){
-    let pUrl = url + HttpService.urlEncode(params);
-    return Observable.fromPromise(fetch(pUrl,{
-        method: 'GET'
-      }))
-      .flatMap(r => this.handleResponse(r))
+    let pUrl = url
+    if(params){
+      pUrl += HttpService.urlEncode(params);
+    }
+    let request = new Request(pUrl,{method:'get'})
+    return this.request(request)
   }
 
   static urlEncode(data){
@@ -68,28 +81,22 @@ class HttpService{
     return "?" + ret
   }
 
-  post(url,body,url_encoded,noQueue): Observable<any>{
+  post(url,body,url_encoded): Observable<any>{
     let pUrl = url
     let pBody = body
-    let headers = new Headers();
+    let headers = new Headers()
     headers.set('Content-Type', 'application/json')
     
     if(url_encoded){
       pUrl += HttpService.urlEncode(pBody)
-    //  pBody = null
       headers.set('Content-Type',"application/x-www-form-urlencoded; charset=UTF-8")
     }
-    let rb = {
-      
-    }
-    return Observable.fromPromise(
-      fetch(pUrl,{
-        method: "POST",
-        body: pBody,
-        headers: headers
-      }))
-        .flatMap(r => this.handleResponse(r))
-    
+    let request = new Request(pUrl,{
+      method: "POST",
+      body: pBody,
+      headers: headers
+    });
+    return this.request(request)
   }
 }
 //Export singleton
