@@ -79,4 +79,10 @@ export class Event{
   get capacity(){
     return this._capacity
   }
+  get registeredCount(){
+    return this._attendingList.length;
+  }
+  get totalCount(){
+    return this._waitList.length + this._notAttendedList.length + this._attendingList.length;
+  }
 }

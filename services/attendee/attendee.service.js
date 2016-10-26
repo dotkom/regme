@@ -51,11 +51,12 @@ class AttendeeServiceProvider implements IAttendeeService{
     }))
   }
 
-  registerRfid(username: string, rfid: string){
+  registerRfid(username: string, rfid: string, event_id:number){
     if(username && rfid && rfid.length > 0 && username.length > 0){
       return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
         rfid: rfid,
-        username: username
+        username: username,
+        event: event_id
       }))
     }
   }

@@ -29,7 +29,7 @@ class App extends Component{
         <main className='mdl-layout__content '>
           <div className='mdl-grid'>
             <div className='mdl-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop mdl-cell--6-col-tablet mdl-cell--1-offset-tablet mdl-cell--4-col-phone'>
-              <Registration event={this.options ? this.options.event : null} title={ 'Bedrift' } />
+              <Registration event={this.options ? this.options.event : null} />
               <Options onOptionsChanged={(options) => this.options = options}/>
             </div>
           </div>

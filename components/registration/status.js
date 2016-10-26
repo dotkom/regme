@@ -38,7 +38,7 @@ const Status = ( { message, time, statusCode } ) => {
       case 'ERROR':
         return message
       default:
-        return 'Laster inn...'
+        return message || 'Laster inn...'
     }
   }
 

@@ -28,12 +28,14 @@ class Registration extends Component {
         minute: date.getMinutes(),
         second: date.getSeconds(),
       },
-      attendees: {
+      event: null,
+      /*attendees: {
         listed: 0,
         registered: 0,
         waiting: 0,
-      },
+      },*/
       status: '',
+      message: null,
       attendee_status: {},
       ivalue: null,
       pRfid: null,
@@ -63,11 +65,11 @@ class Registration extends Component {
   componentDidMount () {
     this.updateTime()
 
-    eventService.getEvents().subscribe(() => {
+    eventService.getEvents().subscribe((events) => {
       this.updateTime()
-      this.update = {status: 'OK'}
+      this.update = {status: 'OK',message: 'Systemet er klar til bruk!'}
     }, error => {
-      this.update = {status: 'ERROR'}
+      this.update = {status: 'ERROR', message: 'Kunne ikke hente inn events!'}
     })
   }
   get attendeeStatus(){
@@ -76,23 +78,29 @@ class Registration extends Component {
   get pRfid(){
     return this.state.pRfid
   }
-  handleUsername(input){
+  static isRfid(rfid){
 
   }
+  /*handleUsername(input){
 
+  }*/
+  get event(){
+    return this.props.event || this.state.event;
+  }
   handleSubmit(input){
     let responseStream = null
-    console.log(this.attendeeStatus.attend_status,this.pRfid)
+    this.update = {status:'WAIT',message: 'Venter...'}
     if(this.attendeeStatus.attend_status == 40){
-      attendeeService.registerRfid(input,this.pRfid).subscribe(v=>{
-        console.log(v)
-      })
+      //Check if is rfid
+      if(!isRfid){
+        responseStream = attendeeService.registerRfid(input,this.pRfid,this.event.id);
+      }
     }
-    else if(this.props.event){
+    else if(this.event){
       this.setState(Object.assign({},this.state,{
         pRfid: input
       }))
-      responseStream = attendeeService.registerAttendee(this.props.event.id,input)
+      responseStream = attendeeService.registerAttendee(this.event.id,input)
         
       /**
        * Get user from rfid ->
@@ -109,28 +117,32 @@ class Registration extends Component {
        */
     }
     if(responseStream){
-      this.handleAttendeeRequest(responseStream)
+      this.handleAttendeeResponse(responseStream)
     }
   }
 
-  handleAttendeeRequest(stream){
+  handleAttendeeResponse(stream){
     stream.subscribe(v => {
-      console.log("Success",v)
+      this.update = {status:'OK',message: v.message}
       this.setState(Object.assign({},this.state,{
         attend_status: v,
         placeholder: "default",
         ivalue: ""
       }))
     },(v) => {
-      console.log("Error ", v)
+      this.update = {status:'ERROR',message: v.message}
       let attendeeStatus = v
-      let placeholder = this.state.placeholder
+      let placeholder = "default"//this.state.placeholder
       let ivalue = ""
-      if(v.attend_status == 40){
-        placeholder = "username"
+      
+      switch(v.attend_status){
+        case 40:
+          placeholder = "username"
+          break;
+        case 30:
+          //venteliste
+          break;
       }
-      console.log(placeholder)
-
       this.setState(Object.assign({},this.state,{
         attendee_status: attendeeStatus,
         placeholder: placeholder,
@@ -139,19 +151,18 @@ class Registration extends Component {
     })
   }
   render () {
-    let event = this.props.event
+    let event = this.event
     return (
       <div>
-        <h3>{ this.props.title } { (event && event.company) ? event.company.name : "" }</h3>
-        <Status message='Systemet er klar til bruk!'
+        <h3>{ event ? event.name : '' } { (event && event.company) ? event.company.name : "" }</h3>
+        <Status message={ this.state.message }
           time={ this.state.time }
           statusCode={ this.state.status } />
         <Input value={ this.state.ivalue } placeholder={Placeholders[this.state.placeholder]} onSubmit={ (input) => this.handleSubmit(input) } />
         <p>
-          <span>Møtt: { this.state.attendees.registered}</span>
-          &nbsp;- <span>Påmeldt: { this.state.attendees.listed
-            + this.state.attendees.waiting}</span>
-          &nbsp;- <span>Plasser: { this.state.attendees.registered}</span></p>
+          <span>Møtt: { event ? event.registeredCount : 0}</span>
+          &nbsp;- <span>Påmeldt: { event ? event.totalCount : 0 }</span>
+          &nbsp;- <span>Plasser: { event ? event.capacity : 0 }</span></p>
       </div>
     )
   }
