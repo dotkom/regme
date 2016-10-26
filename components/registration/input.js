@@ -27,7 +27,7 @@ const Input = ( { placeholder, onSubmit, value } ) => {
         <input className="mdl-textfield__input"
           type="text"
           id="registration-input"
-          pattern="[A-Za-z\s]+|[0-9]+"
+          pattern="[A-Za-z0-9]+"
           ref={setRef} />
         <label className="mdl-textfield__label"
           htmlFor="registration-input">{ placeholder }</label>
