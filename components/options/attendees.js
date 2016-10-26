@@ -1,32 +1,55 @@
+
+import React, { Component } from 'react'
+
 import List from './list'
 
-const Attendees = ( {event} ) => {
-  let hasMeet = []
-  let notMeet = []
-  let waitingList = []
-  let pushTo = null
-  if(event){
-    for(let attendee of event.attendees){
-      if(attendee.isRegistered()){
-        pushTo = hasMeet
-      }else if(attendee.isPrimary()){
-        pushTo = notMeet
-      }else{
-        pushTo = waitingList
-      }
-      pushTo.push(attendee)
+class Attendees extends Component{
+
+  constructor(props){
+    super(props)
+    this.state = {
+      waitlist: [],
+      attending: [],
+      notAttended: []
+    }
+    this.attendeesSub = null
+  }
+
+  componentWillReceiveProps(props){
+    if(this.attendeesSub){
+      this.attendeesSub.unsubscribe()
+      this.attendeesSub = null
+    }
+    if(props.event){
+
+      this.attendeesSub = props.event.attendees.subscribe((attendees)=>{
+        this.setState(Object.assign({},this.state,{
+          waitlist: attendees.waitlist.slice(0),
+          attending: attendees.attending.slice(0),
+          notAttended: attendees.notAttended.slice(0)
+        }))
+      })
     }
   }
-  return (
-    <div>
-      <h3>Deltakere</h3>
-      <table className='mdl-data-table mdl-js-data-table attendee-lists'>
-        <List category='Møtt' attendees={hasMeet} />
-        <List category='Ikke møtt' attendees={notMeet} />
-        <List category='Venteliste' attendees={waitingList} />
-      </table>
-    </div>
-  )
+
+  componentWillUnmount(){
+    if(this.attendeesSub){
+      this.attendeesSub.unsubscribe()
+    }
+  }
+  
+  render(){
+    return (
+      <div>
+        <h3>Deltakere</h3>
+        <table className='mdl-data-table mdl-js-data-table attendee-lists'>
+          <List category='Møtt' attendees={this.state.attending} />
+          <List category='Ikke møtt' attendees={this.state.notAttended} />
+          <List category='Venteliste' attendees={this.state.waitlist} />
+        </table>
+      </div>
+    )
+  }
 }
 
 export default Attendees;

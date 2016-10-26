@@ -5,19 +5,17 @@
  * 
  * @prop {string} placeholder The placeholder text for the input field.
  */
-const Input = ( { placeholder, onSubmit } ) => {
+const Input = ( { placeholder, onSubmit, value } ) => {
   let _input = null
   let setRef = (ref) => {
     _input = ref
+    if(ref)
+      _input.value = (value!=null) ? value : _input.value
   }
   let submit = (evt) => {
     evt.preventDefault()
     if(_input){
-      onSubmit(_input.value).subscribe( (keepinput) => {
-        if(!keepinput){
-          _input.value = ""
-        }
-      })
+      onSubmit(_input.value)
     }
   }
 

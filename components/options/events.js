@@ -1,27 +1,20 @@
-import { eventService } from 'services/event';
 import React, { Component } from 'react'
 
 class Events extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      events: [{name: "Loading...", id:1}],
-      selected: 0
+      selected: props.event
     }
-  }
-
-  componentDidMount () {
-    eventService.getEvents().subscribe( ( events ) => {
-      this.setState(Object.assign({}, this.state, { events: events }),()=>{
-        this.selected = events[0]
-      })
-    })
   }
   set selected(event){
     this.setState(Object.assign({},this.state,{ selected: event }))
     if(this.props.onEventChanged){
       this.props.onEventChanged(event)
     }
+  }
+  get selected(){
+    return this.state.selected;
   }
   appendMDL(ref){
     if(ref){
@@ -30,9 +23,9 @@ class Events extends Component {
   }
   render () {
     let eventButtons = []
-    for(let event of this.state.events){
+    for(let event of this.props.events){
       let btnClass = 'mdl-button mdl-button--accent'
-      if(this.state.selected.id === event.id){
+      if(this.selected && this.selected.id === event.id){
         btnClass += ' mdl-button--raised'
       }
       eventButtons.push(
