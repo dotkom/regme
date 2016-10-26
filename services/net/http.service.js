@@ -61,14 +61,12 @@ export class HttpServiceProvider implements IHttpService{
             requestPair.subject.complete()
           })  
       })
-    //Fetch token in start of application
-    //this.renewToken()
   }
-  
   renewToken(){
     if(!this.waitingForToken){
       this.waitingForToken = true
       //Request new token
+
       this.post(`${API_BASE}${API_AUTH}`,{
         client_secret: CLIENT_SECRET,
         client_id: CLIENT_ID,

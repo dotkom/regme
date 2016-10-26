@@ -1,3 +1,4 @@
+
 /**
  * Showing the status of the application.
  * Component should:

@@ -41,3 +41,6 @@ jspm_packages
 
 # Bundle and style
 dist/
+
+# Config and secrets
+common/constants.js

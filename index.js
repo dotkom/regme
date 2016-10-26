@@ -5,7 +5,7 @@ require('./styles/base.less')
 
 import Header from './components/header'
 import Registration from './components/registration'
-import Options from './components/options'
+
 
 
 class App extends Component{
@@ -36,6 +36,7 @@ class App extends Component{
       </div>
     )
   }
+
 }
 
 ReactDOM.render(
