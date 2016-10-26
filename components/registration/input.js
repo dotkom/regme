@@ -9,6 +9,8 @@ const Input = ( { placeholder, onSubmit } ) => {
   let _input = null
   let setRef = (ref) => {
     _input = ref
+    if (ref)
+      _input.focus()
   }
   let submit = (evt) => {
     evt.preventDefault()
