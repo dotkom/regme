@@ -28,7 +28,6 @@ class Registration extends Component {
         minute: date.getMinutes(),
         second: date.getSeconds(),
       },
-      event: null,
       /*attendees: {
         listed: 0,
         registered: 0,
@@ -85,7 +84,7 @@ class Registration extends Component {
 
   }*/
   get event(){
-    return this.props.event || this.state.event;
+    return this.props.event;
   }
   handleSubmit(input){
     let responseStream = null
