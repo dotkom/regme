@@ -5,7 +5,7 @@ import { eventService } from 'services/event'
 import { userService } from 'services/user'
 import { attendeeService } from 'services/attendee'
 import { Observable } from 'rxjs'
-import { isRfid } from 'common/utils';
+import { isRfid, showToast } from 'common/utils'
 
 /**
  * Registration view. This is what the user see
@@ -16,7 +16,8 @@ import { isRfid } from 'common/utils';
  */
 const Placeholders = {
   default: "Skriv inn RFID...",
-  username: "Skriv inn brukernavn for å registrere RFID"
+  username: "Skriv inn brukernavn for å registrere RFID",
+  passOrUser: "Skriv inn brukernavn eller RFID"
 }
 
 class Registration extends Component {
@@ -107,8 +108,9 @@ class Registration extends Component {
        *      fail:
        *        kill app
        */
+
     }
-    if(!responseStream && this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50){
+    if(!responseStream && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)){
       responseStream = attendeeService.registerRfid(input,this.pRfid,this.event.id)
     }
     
@@ -118,7 +120,16 @@ class Registration extends Component {
       this.update = {status:'ERROR',message: 'Invalid input!'}
     }
   }
-
+  updateTime(){
+    let date = new Date()
+    this.setState(Object.assign({},this.state,{
+      time: {
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+        second: date.getSeconds(),
+      }
+    }))
+  }
   handleAttendeeResponse(stream){
     stream.subscribe(v => {
       this.update = {status:'OK',message: v.message}
@@ -128,25 +139,35 @@ class Registration extends Component {
         ivalue: ""
       }))
     },(v) => {
+      this.updateTime()
+      var toast = {
+        message: v.message,
+        timeout: 1500
+      }
+      showToast(toast);
       this.update = {status:'ERROR',message: v.message}
       let attendeeStatus = v
       let placeholder = "default"
       let ivalue = ""
       
       switch(v.attend_status){
+        case 50:
+          placeholder = "passOrUser"
+          break;
         case 40:
           placeholder = "username"
           break;
         case 30:
           //venteliste
           break;
+        
       }
       this.setState(Object.assign({},this.state,{
         attendee_status: attendeeStatus,
         placeholder: placeholder,
         ivalue: ivalue
       }))
-    })
+    },this.updateTime)
   }
   render () {
     let event = this.event
