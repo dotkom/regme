@@ -5,6 +5,8 @@ import { eventService } from 'services/event'
 import { userService } from 'services/user'
 import { attendeeService } from 'services/attendee'
 import { Observable } from 'rxjs'
+import { isRfid } from 'common/utils';
+
 /**
  * Registration view. This is what the user see
  * as the initial outlook. The component should:
@@ -77,9 +79,6 @@ class Registration extends Component {
   get pRfid(){
     return this.state.pRfid
   }
-  static isRfid(rfid){
-
-  }
   /*handleUsername(input){
 
   }*/
@@ -89,13 +88,7 @@ class Registration extends Component {
   handleSubmit(input){
     let responseStream = null
     this.update = {status:'WAIT',message: 'Venter...'}
-    if(this.attendeeStatus.attend_status == 40){
-      //Check if is rfid
-      if(!isRfid){
-        responseStream = attendeeService.registerRfid(input,this.pRfid,this.event.id);
-      }
-    }
-    else if(this.event){
+    if(isRfid(input) && this.event){
       this.setState(Object.assign({},this.state,{
         pRfid: input
       }))
@@ -115,8 +108,14 @@ class Registration extends Component {
        *        kill app
        */
     }
+    if(!responseStream && this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50){
+      responseStream = attendeeService.registerRfid(input,this.pRfid,this.event.id)
+    }
+    
     if(responseStream){
       this.handleAttendeeResponse(responseStream)
+    }else{
+      this.update = {status:'ERROR',message: 'Invalid input!'}
     }
   }
 
@@ -131,7 +130,7 @@ class Registration extends Component {
     },(v) => {
       this.update = {status:'ERROR',message: v.message}
       let attendeeStatus = v
-      let placeholder = "default"//this.state.placeholder
+      let placeholder = "default"
       let ivalue = ""
       
       switch(v.attend_status){
