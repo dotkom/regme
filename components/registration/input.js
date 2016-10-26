@@ -9,8 +9,10 @@ const Input = ( { placeholder, onSubmit, value } ) => {
   let _input = null
   let setRef = (ref) => {
     _input = ref
-    if(ref)
+    if (ref) {
+      _input.focus()
       _input.value = (value!=null) ? value : _input.value
+    }
   }
   let submit = (evt) => {
     evt.preventDefault()
