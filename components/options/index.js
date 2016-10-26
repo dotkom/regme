@@ -32,7 +32,7 @@ class Options extends Component {
     if(this.state.showOptions){
       optionBody = (
         <div>
-          <Events onEventChanged={ (event) => {this.event = event} } />
+          <Events event={ this.selectedEvent } onEventChanged={ (event) => {this.event = event} } />
           <Attendees event={ this.selectedEvent } />
         </div>
       )

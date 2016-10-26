@@ -61,9 +61,10 @@ class AttendeeServiceProvider implements IAttendeeService{
   }
   handleResponse(r){
     return r.catch( (error) => {
-      if(error.status == 400 || error.status == 100)
-        return Observable.fromPromise(error.json()).flatMap((r) => Observable.throw(r))
+      //if(error.status == 400 || error.status == 100)
+      return Observable.fromPromise(error.json()).flatMap((r) => Observable.throw(r))
         //return Observable.throw(Observable.fromPromise(error.json()))
+      
     })
   }
   getAttendees(event_id: number): Observable<Attendee[]>{

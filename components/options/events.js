@@ -6,14 +6,14 @@ class Events extends Component {
     super(props)
     this.state = {
       events: [{name: "Loading...", id:1}],
-      selected: 0
+      selected: props.event
     }
   }
 
   componentDidMount () {
     eventService.getEvents().subscribe( ( events ) => {
       this.setState(Object.assign({}, this.state, { events: events }),()=>{
-        this.selected = events[0]
+        this.selected = this.selected || events[0]
       })
     })
   }
@@ -22,6 +22,9 @@ class Events extends Component {
     if(this.props.onEventChanged){
       this.props.onEventChanged(event)
     }
+  }
+  get selected(){
+    return this.state.selected;
   }
   appendMDL(ref){
     if(ref){
@@ -32,7 +35,7 @@ class Events extends Component {
     let eventButtons = []
     for(let event of this.state.events){
       let btnClass = 'mdl-button mdl-button--accent'
-      if(this.state.selected.id === event.id){
+      if(this.selected && this.selected.id === event.id){
         btnClass += ' mdl-button--raised'
       }
       eventButtons.push(
