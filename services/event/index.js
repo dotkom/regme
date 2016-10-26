@@ -1,1 +1,3 @@
-export { eventService } from './event.service'
+export { eventService, EventServiceProvider } from './event.service'
+export { Event } from './event'
+

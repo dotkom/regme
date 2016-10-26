@@ -1,3 +1,4 @@
+
 /**
  * Showing the status of the application.
  * Component should:
@@ -37,7 +38,7 @@ const Status = ( { message, time, statusCode } ) => {
       case 'ERROR':
         return message
       default:
-        return 'Laster inn...'
+        return message || 'Laster inn...'
     }
   }
 

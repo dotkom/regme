@@ -1,12 +1,11 @@
 export class Attendee{
-  constructor(id,username,firstname,lastname,primary=false,registered=false){
+  constructor(id,username,firstname,lastname,date,registered=false){
     this._id = id
     this._username = username
     this._firstname = firstname
     this._lastname = lastname
     this._registered = registered
-    this._primary = primary
-    console.log(this.isPrimary(),this.isRegistered())
+    this._date = date
   }
   get id(){
     return this._id
@@ -23,10 +22,10 @@ export class Attendee{
   get fullname(){
     return `${this._firstname} ${this._lastname}`
   }
+  get date(){
+    return this._date
+  }
   isRegistered(){
     return this._registered
-  }
-  isPrimary(){
-    return this._primary
   }
 }
