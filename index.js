@@ -5,6 +5,7 @@ require('./styles/base.less')
 
 import Header from './components/header'
 import Registration from './components/registration'
+import Options from './components/options'
 
 
 
