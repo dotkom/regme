@@ -28,6 +28,7 @@ const Input = ( { placeholder, onSubmit, value } ) => {
           type="text"
           id="registration-input"
           pattern="[A-Za-z0-9]+"
+          autoComplete={false}
           ref={setRef} />
         <label className="mdl-textfield__label"
           htmlFor="registration-input">{ placeholder }</label>
