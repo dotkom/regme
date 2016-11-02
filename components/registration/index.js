@@ -5,6 +5,8 @@ import { eventService } from 'services/event'
 import { userService } from 'services/user'
 import { attendeeService } from 'services/attendee'
 import { Observable } from 'rxjs'
+import { isRfid, showToast } from 'common/utils'
+
 /**
  * Registration view. This is what the user see
  * as the initial outlook. The component should:
@@ -14,7 +16,8 @@ import { Observable } from 'rxjs'
  */
 const Placeholders = {
   default: "Skriv inn RFID...",
-  username: "Skriv inn brukernavn for å registrere RFID"
+  username: "Skriv inn brukernavn for å registrere RFID",
+  passOrUser: "Skriv inn brukernavn eller RFID"
 }
 
 class Registration extends Component {
@@ -77,9 +80,6 @@ class Registration extends Component {
   get pRfid(){
     return this.state.pRfid
   }
-  static isRfid(rfid){
-
-  }
   /*handleUsername(input){
 
   }*/
@@ -89,13 +89,7 @@ class Registration extends Component {
   handleSubmit(input){
     let responseStream = null
     this.update = {status:'WAIT',message: 'Venter...'}
-    if(this.attendeeStatus.attend_status == 40){
-      //Check if is rfid
-      if(!isRfid){
-        responseStream = attendeeService.registerRfid(input,this.pRfid,this.event.id);
-      }
-    }
-    else if(this.event){
+    if(isRfid(input) && this.event){
       this.setState(Object.assign({},this.state,{
         pRfid: input
       }))
@@ -114,12 +108,28 @@ class Registration extends Component {
        *      fail:
        *        kill app
        */
+
     }
+    if(!responseStream && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)){
+      responseStream = attendeeService.registerRfid(input,this.pRfid,this.event.id)
+    }
+    
     if(responseStream){
       this.handleAttendeeResponse(responseStream)
+    }else{
+      this.update = {status:'ERROR',message: 'Invalid input!'}
     }
   }
-
+  updateTime(){
+    let date = new Date()
+    this.setState(Object.assign({},this.state,{
+      time: {
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+        second: date.getSeconds(),
+      }
+    }))
+  }
   handleAttendeeResponse(stream){
     stream.subscribe(v => {
       this.update = {status:'OK',message: v.message}
@@ -129,25 +139,35 @@ class Registration extends Component {
         ivalue: ""
       }))
     },(v) => {
+      this.updateTime()
+      var toast = {
+        message: v.message,
+        timeout: 1500
+      }
+      showToast(toast);
       this.update = {status:'ERROR',message: v.message}
       let attendeeStatus = v
-      let placeholder = "default"//this.state.placeholder
+      let placeholder = "default"
       let ivalue = ""
       
       switch(v.attend_status){
+        case 50:
+          placeholder = "passOrUser"
+          break;
         case 40:
           placeholder = "username"
           break;
         case 30:
           //venteliste
           break;
+        
       }
       this.setState(Object.assign({},this.state,{
         attendee_status: attendeeStatus,
         placeholder: placeholder,
         ivalue: ivalue
       }))
-    })
+    },this.updateTime)
   }
   render () {
     let event = this.event

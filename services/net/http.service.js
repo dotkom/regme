@@ -84,7 +84,7 @@ export class HttpServiceProvider implements IHttpService{
               i.subject.complete()
             })
           }
-          this.requestQueue = {}
+          this.requestQueue = []
       },(e)=>{
         console.log("Error",e)
       },() => {
