@@ -68,15 +68,15 @@ class AttendeeServiceProvider implements IAttendeeService{
       
     })
   }
-  getAttendees(event_id: number): Observable<Attendee[]>{
+  getAttendees(event_id: number, page=1): Observable<Attendee[]>{
     let count = 0;
-    return http.get(`${API_BASE}${API_ATTENDEES}`,{"event": event_id})
+    return http.get(`${API_BASE}${API_ATTENDEES}`,{"event": event_id,"page":page})
       .map(result => result.results)
       .map(attendees => {
         let a = [];
         for(let attendee of attendees){
           a.push(new Attendee(
-            ++count,
+            ++count + page*10,
             "NONE",
             attendee.user.first_name,
             attendee.user.last_name,
@@ -86,6 +86,15 @@ class AttendeeServiceProvider implements IAttendeeService{
         }
         return a;
       })
+      .flatMap(attendees => {
+        if(attendees.length == 10){
+          return this.getAttendees(event_id,++page).zip(Observable.of(attendees),(a,b) => {
+            return a.concat(b);
+          });
+        }
+        return Observable.of(attendees);
+      })
+     
   }
 
 }

@@ -3,6 +3,11 @@ import React, { Component } from 'react'
 
 import List from './list'
 
+const orderMap = {
+  'NAME': (c) => c ? ( (a,b) => (a.lfullname > b.lfullname) ? -1 : 1 ) : ( (a,b) => (a.lfullname < b.lfullname) ? -1 : 1),
+  'DATE': (c) => c ? ( (a,b) => a.date - b.date ) : ( (a,b) => b.date - a.date )
+}
+
 class Attendees extends Component{
 
   constructor(props){
@@ -10,7 +15,9 @@ class Attendees extends Component{
     this.state = {
       waitlist: [],
       attending: [],
-      notAttended: []
+      notAttended: [],
+      orderby: 'DATE',
+      asc: true
     }
     this.attendeesSub = null
   }
@@ -30,27 +37,44 @@ class Attendees extends Component{
           waitlist: attendees.waitlist.slice(0),
           attending: attendees.attending.slice(0),
           notAttended: attendees.notAttended.slice(0)
-        }))
+        }),()=>{
+          this.reorder(this.state.orderby,this.state.asc);
+        })
       })
     }
   }
+  
   componentWillMount(){
     this.resub(this.props);
   }
+  
   componentWillUnmount(){
     if(this.attendeesSub){
       this.attendeesSub.unsubscribe()
     }
   }
   
+  reorder(orderby,asc){
+    let ofunc = orderMap[orderby](asc);
+    
+    this.setState(Object.assign({},this.state,{
+      waitlist: this.state.waitlist.slice(0).sort(ofunc),
+      attending: this.state.attending.slice(0).sort(ofunc),
+      notAttended: this.state.notAttended.slice(0).sort(ofunc),
+      asc: asc,
+      orderby: orderby
+    }))
+
+  }
+
   render(){
     return (
       <div>
         <h3>Deltakere</h3>
         <table className='mdl-data-table mdl-js-data-table attendee-lists'>
-          <List category='Møtt' attendees={this.state.attending} />
-          <List category='Ikke møtt' attendees={this.state.notAttended} />
-          <List category='Venteliste' attendees={this.state.waitlist} />
+          <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a,b) => this.reorder(a,b)} category='Møtt' attendees={this.state.attending} />
+          <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a,b) => this.reorder(a,b)} category='Ikke møtt' attendees={this.state.notAttended} />
+          <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a,b) => this.reorder(a,b)} category='Venteliste' attendees={this.state.waitlist} />
         </table>
       </div>
     )

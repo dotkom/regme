@@ -22,6 +22,9 @@ export class Attendee{
   get fullname(){
     return `${this._firstname} ${this._lastname}`
   }
+  get lfullname(){
+    return this.fullname.toLowerCase();
+  }
   get date(){
     return this._date
   }
