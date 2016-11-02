@@ -1,19 +1,29 @@
+.mdl-data-table tbody tr:hover{
+  background-color: @blue;
+}
+
 .attendee-lists, th, td {
   width: 100%;
-  background-color: @blue-dark;
-  border: none;
 }
 
 .attendee-lists {
-  td {
-    border: none;
+  border: none;
+
+  tr {
+    background-color: @blue-dark;
   }
+
   th {
     border-bottom: 1px solid;
     color: @white;
     font-weight: normal;
   }
+
+  td {
+    border: none;
+  }
 }
+
 .event-button-div {
   & > a {
     margin-left: 1%;
