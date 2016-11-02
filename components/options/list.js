@@ -1,7 +1,6 @@
 const List = ({ category, attendees }) => {
 
   let userList = []
-
   for(let attendee of attendees){
     userList.push(
       <tr key={attendee.id}>
