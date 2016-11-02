@@ -69,22 +69,23 @@ class AttendeeServiceProvider implements IAttendeeService{
     })
   }
   getAttendees(event_id: number): Observable<Attendee[]>{
+    let count = 0;
     return http.get(`${API_BASE}${API_ATTENDEES}`,{"event": event_id})
       .map(result => result.results)
-      .flatMap(v => Observable.from(v))
-      .flatMap(attendee => {
-        return http.get(`${API_BASE}${API_USERS}${attendee.user}/`)
-          .map(user => {
-            return new Attendee(
-              attendee.user,
-              "NONE",
-              user.first_name,
-              user.last_name,
-              new Date(attendee.timestamp),
-              attendee.attended
-            )
-          })
-      }).bufferCount(Infinity)
+      .map(attendees => {
+        let a = [];
+        for(let attendee of attendees){
+          a.push(new Attendee(
+            ++count,
+            "NONE",
+            attendee.user.first_name,
+            attendee.user.last_name,
+            new Date(attendee.timestamp),
+            attendee.attended
+          ))
+        }
+        return a;
+      })
   }
 
 }

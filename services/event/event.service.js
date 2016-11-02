@@ -35,9 +35,8 @@ class EventServiceProvider implements IEventService{
   }
 
   refresh(){
-    http.get(`${API_BASE}${API_EVENTS}`,{"ordering":"-event_start"})
+    http.get(`${API_BASE}${API_EVENTS}`,{"attendance_event__isnull":"False","event_end__gte":"","order_by":"event_start"})
       .map(r => {
-        //Fetch attendees
         let newEvents = []
         for(let a of r.results){
           if(a.attendance_event){
