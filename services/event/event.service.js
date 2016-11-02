@@ -35,7 +35,7 @@ class EventServiceProvider implements IEventService{
   }
 
   refresh(){
-    http.get(`${API_BASE}${API_EVENTS}`,{"attendance_event__isnull":"False","event_end__gte":"","order_by":"event_start"})
+    http.get(`${API_BASE}${API_EVENTS}`,{"attendance_event__isnull":"False","event_end__gte": new Date().toISOString().slice(0, 10),"order_by":"event_start"})
       .map(r => {
         let newEvents = []
         for(let a of r.results){
