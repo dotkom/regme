@@ -1,5 +1,7 @@
-const List = ({ category, attendees }) => {
 
+
+const List = ({ category, attendees, orderby, asc, onChange }) => {
+  
   let userList = []
   for(let attendee of attendees){
     userList.push(
@@ -9,11 +11,14 @@ const List = ({ category, attendees }) => {
       </tr>
     )
   }
+  let tableHeaders = [
+    <th key="1" onClick={() => onChange("NAME",!asc)} className={'mdl-data-table__cell--non-numeric ' + (orderby=="NAME" ? (asc ? 'mdl-data-table__header--sorted-ascending' : 'mdl-data-table__header--sorted-descending' ) : '')} colSpan='1'>{category}</th>,
+    <th key="2" onClick={() => onChange("DATE",!asc)} className={'mdl-data-table__cell--non-numeric ' + (orderby=="DATE" ? (asc ? 'mdl-data-table__header--sorted-ascending' : 'mdl-data-table__header--sorted-descending' ) : '')} colSpan='1'>Registrerings dato</th>
+  ]
   return (
     <tbody>
     <tr>
-      <th className='mdl-data-table__cell--non-numeric' colSpan='1'>{category}</th>
-      <th className='mdl-data-table__cell--non-numeric' colSpan='1'>Registrerings dato</th>
+      { tableHeaders }
     </tr>
     { userList }
     </tbody>
