@@ -1,5 +1,5 @@
 .mdl-data-table tbody tr:hover{
-  background-color: @blue;
+  background-color: rgba(0, 25, 50, 0.9);
 }
 
 .attendee-lists, th, td {
@@ -17,10 +17,31 @@
     border-bottom: 1px solid;
     color: @white;
     font-weight: normal;
+
+    &:hover {
+      color: @orange;
+    }
   }
 
   td {
     border: none;
+  }
+}
+
+.mdl-data-table th.mdl-data-table__header--sorted-ascending, .mdl-data-table th.mdl-data-table__header--sorted-descending {
+  color: @white;
+  border-bottom-color: @white;
+
+  &:before {
+    color: @orange;
+  }
+
+  &:hover{
+    color: @orange;
+
+    &:before {
+      color: @orange;
+    }
   }
 }
 
