@@ -20,7 +20,7 @@ class Input extends Component {
     this._input.focus()
   }
 
-  submit () {
+  submit (evt) {
     evt.preventDefault()
     if(this._input) {
       onSubmit(this._input.value)
