@@ -133,7 +133,7 @@ class Registration extends Component {
   handleAttendeeResponse(stream){
     stream.subscribe(v => {
       //this.event.refresh();
-      this.attendeeService.getCached(v.id).register()
+      attendeeService.getCached(v.attendee).register()
       this.update = {status:'OK',message: v.message}
       this.setState(Object.assign({},this.state,{
         attend_status: v,
@@ -169,7 +169,7 @@ class Registration extends Component {
         placeholder: placeholder,
         ivalue: ivalue
       }))
-    },this.updateTime)
+    },() => this.updateTime())
   }
   render () {
     let event = this.event

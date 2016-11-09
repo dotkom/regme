@@ -31,7 +31,7 @@ export class Attendee{
   }
   register(){
     this._registered = true
-    this.event.moveAttendee(this)
+    this._event.moveAttendee(this)
     //Do something with event
   }
   isRegistered(){

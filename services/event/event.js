@@ -52,8 +52,8 @@ export class Event{
     })
   }
   moveAttendee(attendee: Attendee){
-    this._waitList.filter(v => v!=attendee)
-    this._notAttendedList(v => v!=attendee)
+    this._waitList = this._waitList.filter(v => v!=attendee)
+    this._notAttendedList = this._notAttendedList.filter(v => v!=attendee)
     this._attendingList.push(attendee)
     this.refresh()
   }
@@ -61,7 +61,11 @@ export class Event{
     this._waitlistSubject.next(this._waitList)
     this._attendingSubject.next(this._attendingList)
     this._notAttendedSubject.next(this._attendingList)
-    this._attendeesSubject.next(this._attendees)
+    this._attendeesSubject.next({
+      waitlist: this._waitList,
+      attending: this._attendingList,
+      notAttended: this._notAttendedList
+    })
     
   }
   get organisation(){
