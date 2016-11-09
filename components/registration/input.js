@@ -23,7 +23,7 @@ class Input extends Component {
   submit (evt) {
     evt.preventDefault()
     if(this._input) {
-      onSubmit(this._input.value)
+      this.props.onSubmit(this._input.value)
     }
   }
 
@@ -36,7 +36,7 @@ class Input extends Component {
 
   render () {
     return (
-      <form onSubmit={ this.submit.bind(this) }>
+      <form onSubmit={ (evt) => this.submit(evt) }>
         <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label registration-input">
           <input className="mdl-textfield__input"
             type="text"
