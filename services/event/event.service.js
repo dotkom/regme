@@ -7,7 +7,8 @@ import { http } from 'services/net'
 
 interface IEventService{
   //Fetch events
-  getEvents(): Observable<Event[]>
+  getEvents(): Observable<Event[]>;
+  getCached(): Event;
   //Observable -> null if rfid is non-existing
   //registerAttendee(rfid: string): Observable<Attendee>
   //Observable -> null if failed 
@@ -21,19 +22,25 @@ class EventServiceProvider implements IEventService{
   
   constructor(){
     this._events = null
+    this._cache = {}
     this.eventSubject = new ReplaySubject(1)
     this.refresh()
   }
 
   set events(newEvents: Event[]){
     this._events = newEvents
+    for(let i in newEvents){
+      this._cache[i] = newEvents[i]
+    }
     this.eventSubject.next(newEvents)
   }
 
   get events(){
     return this._events
   }
-
+  getCached(event_id: number){
+    return this._cache[event_id]
+  }
   refresh(){
     http.get(`${API_BASE}${API_EVENTS}`,{"attendance_event__isnull":"False","event_end__gte": new Date().toISOString().slice(0, 10),"order_by":"event_start"})
       .map(r => {
@@ -46,9 +53,9 @@ class EventServiceProvider implements IEventService{
               company = new Company(ce.name,ce.site,ce.image ? ce.image.thum : null)
             }
             let event = new Event(a.id,a.title,a.attendance_event.max_capacity,[],company)
-            attendeeService.getAttendees(event.id).subscribe((attendees) => {
+            attendeeService.getAttendees(event).subscribe((attendees) => {
               attendees.sort((a,b)=>{
-                a.date > b.date
+                return a.date - b.date
               })
               for(let i of attendees){
                 event.addAttendee(i)

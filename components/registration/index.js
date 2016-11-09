@@ -93,7 +93,7 @@ class Registration extends Component {
       this.setState(Object.assign({},this.state,{
         pRfid: input
       }))
-      responseStream = attendeeService.registerAttendee(this.event.id,input)
+      responseStream = attendeeService.registerAttendee(this.event,input)
         
       /**
        * Get user from rfid ->
@@ -111,7 +111,7 @@ class Registration extends Component {
 
     }
     if(!responseStream && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)){
-      responseStream = attendeeService.registerRfid(input,this.pRfid,this.event.id)
+      responseStream = attendeeService.registerRfid(input,this.pRfid,this.event)
     }
     
     if(responseStream){
@@ -132,6 +132,8 @@ class Registration extends Component {
   }
   handleAttendeeResponse(stream){
     stream.subscribe(v => {
+      //this.event.refresh();
+      this.attendeeService.getCached(v.id).register()
       this.update = {status:'OK',message: v.message}
       this.setState(Object.assign({},this.state,{
         attend_status: v,
