@@ -31,7 +31,7 @@ import { http } from 'services/net'
 
 interface IAttendeeService{
   //Fetch events
-  getAttendees(event_id: number): Observable<Attendee[]>;
+  getAttendees(event: Event): Observable<Attendee[]>;
   //registerAttendee(rfid: string): Observable<Attendee>;
   //registerRfid(rfid: string, username: string): Observable<Attendee>;
 }
@@ -42,21 +42,30 @@ interface IAttendeeService{
 class AttendeeServiceProvider implements IAttendeeService{
   
   constructor(){
+    this.cache = {}
   }
 
-  registerAttendee(event_id:nubmer, rfid: string){
+  registerAttendee(event:Event, rfid: string){
     return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
       rfid: rfid,
-      event: event_id
+      event: event.id
     }))
+      .map(res => {
+        let ret = Object.assign({},res,{
+          event: event
+        })
+        return ret;
+      })
   }
-
-  registerRfid(username: string, rfid: string, event_id:number){
+  getCached(attendee_id: number){
+    return this.cache[attendee_id]
+  }
+  registerRfid(username: string, rfid: string, event:Event){
     if(username!=null && rfid!=null && rfid.length > 0){
       return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
         rfid: rfid,
         username: username,
-        event: event_id
+        event: event.id
       }))
     }
   }
@@ -68,27 +77,30 @@ class AttendeeServiceProvider implements IAttendeeService{
       
     })
   }
-  getAttendees(event_id: number, page=1): Observable<Attendee[]>{
+  getAttendees(event: Event, page=1): Observable<Attendee[]>{
     let count = 0;
-    return http.get(`${API_BASE}${API_ATTENDEES}`,{"event": event_id,"page":page})
+    return http.get(`${API_BASE}${API_ATTENDEES}`,{"event": event.id,"page":page})
       .map(result => result.results)
       .map(attendees => {
         let a = [];
         for(let attendee of attendees){
-          a.push(new Attendee(
-            ++count + page*10,
+          let at = new Attendee(
+            attendee.id,
             "NONE",
             attendee.user.first_name,
             attendee.user.last_name,
             new Date(attendee.timestamp),
-            attendee.attended
-          ))
+            attendee.attended,
+            event
+          )
+          a.push(at)
+          this.cache[at.id] = at
         }
         return a;
       })
       .flatMap(attendees => {
         if(attendees.length == 10){
-          return this.getAttendees(event_id,++page).zip(Observable.of(attendees),(a,b) => {
+          return this.getAttendees(event,++page).zip(Observable.of(attendees),(a,b) => {
             return a.concat(b);
           });
         }

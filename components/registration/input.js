@@ -30,7 +30,7 @@ class Input extends Component {
   setRef (ref) {
     this._input = ref
     if (ref) {
-      this._input.value = (this.value != null) ? this.value : this._input.value
+      this._input.value = (this.props.value != null) ? this.props.value : this._input.value
     }
   }
 

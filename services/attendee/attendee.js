@@ -1,11 +1,12 @@
 export class Attendee{
-  constructor(id,username,firstname,lastname,date,registered=false){
+  constructor(id,username,firstname,lastname,date,registered=false,event){
     this._id = id
     this._username = username
     this._firstname = firstname
     this._lastname = lastname
     this._registered = registered
     this._date = date
+    this._event = event
   }
   get id(){
     return this._id
@@ -27,6 +28,11 @@ export class Attendee{
   }
   get date(){
     return this._date
+  }
+  register(){
+    this._registered = true
+    this.event.moveAttendee(this)
+    //Do something with event
   }
   isRegistered(){
     return this._registered

@@ -27,7 +27,9 @@ export class Event{
       this.addAttendee(i)
     }
   }
-
+  get id(){
+    return this._id
+  }
   addAttendee(attendee){
     if(attendee.isRegistered()){
       this._attendingList.push(attendee)
@@ -48,6 +50,18 @@ export class Event{
       attending: this._attendingList,
       notAttended: this._notAttendedList
     })
+  }
+  moveAttendee(attendee: Attendee){
+    this._waitList.filter(v => v!=attendee)
+    this._notAttendedList(v => v!=attendee)
+    this._attendingList.push(attendee)
+    this.refresh()
+  }
+  refresh(){
+    this._waitlistSubject.next(this._waitList)
+    this._attendingSubject.next(this._attendingList)
+    this._notAttendedSubject.next(this._attendingList)
+    
   }
   get organisation(){
     return this._organisation

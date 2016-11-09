@@ -12,6 +12,7 @@ class Options extends Component {
       selectedEvent: null,
       events: [{name: "Loading...", id:1}],
     }
+    this.eventSub = null
   }
   componentDidMount () {
     eventService.getEvents().subscribe( ( events ) => {
@@ -28,6 +29,15 @@ class Options extends Component {
     return this.state.events;
   }
   set selectedEvent(event){
+    if(this.eventSub)
+      this.eventSub.unsubscribe
+    this.eventSub = event.attendees.subscribe(v => {
+      if(this.props.onOptionsChanged){
+        this.props.onOptionsChanged({
+          event: event
+        })
+      }
+    })
     this.setState(Object.assign({},this.state,{selectedEvent: event}),() => {
       if(this.props.onOptionsChanged){
         this.props.onOptionsChanged({

@@ -32,7 +32,6 @@ class Attendees extends Component{
     }
     if(props.event){
       this.attendeesSub = props.event.attendees.subscribe((attendees)=>{
-        console.log(attendees);
         this.setState(Object.assign({},this.state,{
           waitlist: attendees.waitlist.slice(0),
           attending: attendees.attending.slice(0),
