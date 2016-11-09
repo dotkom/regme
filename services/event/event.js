@@ -61,6 +61,7 @@ export class Event{
     this._waitlistSubject.next(this._waitList)
     this._attendingSubject.next(this._attendingList)
     this._notAttendedSubject.next(this._attendingList)
+    this._attendeesSubject.next(this._attendees)
     
   }
   get organisation(){
