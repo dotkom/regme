@@ -16,12 +16,12 @@ const List = ({ category, attendees, orderby, asc, onChange }) => {
     <th key="2" onClick={() => onChange("DATE",!asc)} className={'mdl-data-table__cell--non-numeric ' + (orderby=="DATE" ? (asc ? 'mdl-data-table__header--sorted-ascending' : 'mdl-data-table__header--sorted-descending' ) : '')} colSpan='1'>Registrerings dato</th>
   ]
   return (
-    <tbody>
-    <tr>
-      { tableHeaders }
-    </tr>
-    { userList }
-    </tbody>
+      <tbody>
+      <tr>
+        { tableHeaders }
+      </tr>
+      { userList }
+      </tbody>
   )
 }
 
