@@ -16,9 +16,9 @@ import { isRfid, showToast } from 'common/utils'
  *  - Show user stats in numbers.
  */
 const Placeholders = {
-  default: "Skriv inn RFID...",
-  username: "Skriv inn brukernavn for å registrere RFID",
-  passOrUser: "Skriv inn brukernavn eller RFID"
+  default: "Fyll inn RFID eller brukernavn",
+  username: "Fyll inn brukernavn for å registrere RFID",
+  passOrUser: "Fyll inn brukernavn eller RFID"
 }
 
 class Registration extends Component {
@@ -82,6 +82,9 @@ class Registration extends Component {
   get pRfid(){
     return this.state.pRfid
   }
+  get pUsername(){
+    return this.state.pUsername;
+  }
   /*handleUsername(input){
 
   }*/
@@ -91,26 +94,12 @@ class Registration extends Component {
   handleSubmit(input){
     let responseStream = null
     this.update = {status:'WAIT',message: 'Venter...'}
-    if(isRfid(input) && this.event){
+    if(this.event){
       this.setState(Object.assign({},this.state,{
-        pRfid: input
+        pRfid: isRfid(input) ? input : null,
+        pUsername: isRfid(input) ? null : input
       }))
       responseStream = attendeeService.registerAttendee(this.event,input)
-        
-      /**
-       * Get user from rfid ->
-       *  failed:  
-       *    Prompt for username -> Try to assign rfid to username ->
-       *      success: <- success
-       *  success:
-       *    Try to register ->
-       *      success:
-       *        move attendee from notAttended to attending ->
-       *          push changes
-       *      fail:
-       *        kill app
-       */
-
     }
     if(!responseStream && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)){
       responseStream = attendeeService.registerRfid(input,this.pRfid,this.event)
@@ -156,7 +145,7 @@ class Registration extends Component {
       let showModal = false;
       switch(v.attend_status){
         case 50:
-          placeholder = "passOrUser"
+          placeholder = "default"
           break;
         case 40:
           placeholder = "username"
@@ -182,7 +171,8 @@ class Registration extends Component {
   }
 
   acceptHandler () {
-    this.handleAttendeeResponse(attendeeService.registerAttendee(this.event, this.pRfid, true))
+    let userOrRfid = this.pRfid !=null ? this.pRfid : this.pUsername;
+    this.handleAttendeeResponse(attendeeService.registerAttendee(this.event,userOrRfid, true))
     this.update = {
       showModal: false
     }
