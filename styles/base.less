@@ -25,11 +25,21 @@ body {
 .regme-grid {
   width: 100%;
   box-sizing: border-box;
-  transform: translateY(calc(~"50vh - 233px"));
+  margin-top: calc(~"50vh - 233px");
 }
 
 .regme-grid > .regme-grid-cell {
   margin: auto;
   max-width: 960px;
   padding-bottom: 64px;
+}
+
+dialog {
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+._dialog_overlay {
+  z-index: 0 !important;
 }
