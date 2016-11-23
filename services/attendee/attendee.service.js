@@ -3,6 +3,7 @@ import { Event } from 'services/event'
 import { Attendee } from './attendee'
 
 import { API_BASE, API_EVENTS, API_ATTEND ,API_ATTENDEES, API_USERS } from 'common/constants'
+import { isRfid } from 'common/utils'
 import { http } from 'services/net'
 
 /**
@@ -47,7 +48,8 @@ class AttendeeServiceProvider implements IAttendeeService{
 
   registerAttendee(event:Event, rfid: string, approved: boolean = false){
     return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
-      rfid: rfid,
+      rfid: isRfid(rfid) ? rfid : null,
+      username: isRfid(rfid) ? null : rfid,
       event: event.id,
       approved: approved
     }))
