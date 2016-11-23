@@ -182,7 +182,7 @@ class Registration extends Component {
   }
 
   acceptHandler () {
-    attendeeService.registerAttendee(this.event, this.pRfid, true)
+    this.handleAttendeeResponse(attendeeService.registerAttendee(this.event, this.pRfid, true))
     this.update = {
       showModal: false
     }
