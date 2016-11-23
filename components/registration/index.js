@@ -82,6 +82,9 @@ class Registration extends Component {
   get pRfid(){
     return this.state.pRfid
   }
+  get pUsername(){
+    return this.state.pUsername;
+  }
   /*handleUsername(input){
 
   }*/
@@ -168,7 +171,8 @@ class Registration extends Component {
   }
 
   acceptHandler () {
-    this.handleAttendeeResponse(attendeeService.registerAttendee(this.event,this.pRfid !=null ? this.pRfid : this.pUsername, true))
+    let userOrRfid = this.pRfid !=null ? this.pRfid : this.pUsername;
+    this.handleAttendeeResponse(attendeeService.registerAttendee(this.event,userOrRfid, true))
     this.update = {
       showModal: false
     }
