@@ -36,7 +36,7 @@ h1, h2, h3, h4, h5, h6, p{
 .regme-grid {
   width: 100%;
   box-sizing: border-box;
-  transform: translateY(calc(~"50vh - 233px"));
+  margin-top: calc(~"50vh - 233px");
 }
 
 .regme-grid > .regme-grid-cell {
@@ -78,4 +78,14 @@ h1, h2, h3, h4, h5, h6, p{
   &:before, &:after {
     font-size: 1.2em !important;
   }
+}
+
+dialog {
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+._dialog_overlay {
+  z-index: 0 !important;
 }

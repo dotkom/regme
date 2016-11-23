@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Input from './input'
 import Status from './status'
+import { Modal } from '../modal'
 import { eventService } from 'services/event'
 import { userService } from 'services/user'
 import { attendeeService } from 'services/attendee'
@@ -12,7 +13,7 @@ import { isRfid, showToast } from 'common/utils'
  * as the initial outlook. The component should:
  *  - Show status of the system.
  *  - Handle input from user/RFID.
- *  - Show user stats in numbers. 
+ *  - Show user stats in numbers.
  */
 const Placeholders = {
   default: "Skriv inn RFID...",
@@ -41,7 +42,8 @@ class Registration extends Component {
       attendee_status: {},
       ivalue: null,
       pRfid: null,
-      placeholder: "default"
+      placeholder: "default",
+      showModal: false
     }
   }
 
@@ -160,7 +162,11 @@ class Registration extends Component {
           placeholder = "username"
           break;
         case 30:
-          //venteliste
+          this.update = {
+            status: "WAIT",
+            message: "Venter på bruker",
+            showModal: true
+          }
           break;
         
       }
@@ -171,6 +177,22 @@ class Registration extends Component {
       }))
     },() => this.updateTime())
   }
+
+  acceptHandler () {
+    attendeeService.registerAttendee(this.event, this.pRfid, true)
+    this.update = {
+      showModal: false
+    }
+  }
+
+  declineHandler () {
+    this.update = {
+      showModal: false,
+      status: 'ERROR',
+      message: 'Denne brukeren ble ikke godkjent.'
+    }
+  }
+
   render () {
     let event = this.event
     return (
@@ -184,10 +206,10 @@ class Registration extends Component {
           <span>Møtt: { event ? event.registeredCount : 0}</span>
           &nbsp;- <span>Påmeldt: { event ? event.totalCount : 0 }</span>
           &nbsp;- <span>Plasser: { event ? event.capacity : 0 }</span></p>
+        <Modal show={this.state.showModal} accept={ () => this.acceptHandler() } decline={ () => this.declineHandler() } content="Denne persjonen er på venteliste. Vil du at personen skal slippe inn?" />
       </div>
     )
   }
 }
 
 export default Registration
-
