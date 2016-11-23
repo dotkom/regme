@@ -1,15 +1,26 @@
 @import 'variables';
 @import 'components/components';
 
-.mdl-card {
-  width: 100%;
-  padding: 15px;
-}
-
 body {
-  background-color: #001932;
+  background-color: @blue-dark;
   color: @white;
   min-height: 100vh;
+
+  * {
+    line-height: 1em;
+  }
+}
+
+h1 { font-size: calc(~"56em / 14"); }
+h2 { font-size: calc(~"45em / 14"); }
+h3 { font-size: calc(~"34em / 14"); }
+h4 { font-size: calc(~"24em / 14"); }
+h5 { font-size: calc(~"20em / 14"); }
+h6 { font-size: calc(~"20em / 14"); }
+p { font-size: 1em; }
+
+h1, h2, h3, h4, h5, h6, p{
+  line-height: 1em;
 }
 
 .align-right {
@@ -32,6 +43,41 @@ body {
   margin: auto;
   max-width: 960px;
   padding-bottom: 64px;
+}
+
+.mdl-card {
+  width: 100%;
+  padding: 15px;
+}
+
+.mdl-button {
+  font-size: 1em;
+  height: auto;
+  line-height: 2.6;
+}
+
+.attendee-lists.mdl-data-table {
+  font-size: 1em;
+  height: auto;
+
+  th, td {
+    font-size: 1em;
+  }
+
+  th {
+    line-height: 2.4;
+    height: 3em;
+  }
+
+  td {
+    height: auto;
+  }
+}
+
+.mdl-data-table__header--sorted-descending, .mdl-data-table__header--sorted-ascending {
+  &:before, &:after {
+    font-size: 1.2em !important;
+  }
 }
 
 dialog {

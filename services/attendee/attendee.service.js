@@ -45,10 +45,11 @@ class AttendeeServiceProvider implements IAttendeeService{
     this.cache = {}
   }
 
-  registerAttendee(event:Event, rfid: string){
+  registerAttendee(event:Event, rfid: string, approved: boolean = false){
     return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
       rfid: rfid,
-      event: event.id
+      event: event.id,
+      approved: approved
     }))
       .map(res => {
         let ret = Object.assign({},res,{
