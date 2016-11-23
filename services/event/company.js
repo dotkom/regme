@@ -8,10 +8,10 @@ export class Company{
     return this._thumbnail
   }
   get site(){
-    return this.site
+    return this._site
   }
   get name(){
-    return this.name
+    return this._name
   }
 
 }

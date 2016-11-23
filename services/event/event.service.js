@@ -50,7 +50,8 @@ class EventServiceProvider implements IEventService{
             let company = null
             let ce = a.company_event[0]
             if(ce){
-              company = new Company(ce.name,ce.site,ce.image ? ce.image.thum : null)
+              ce = ce.company;
+              company = new Company(ce.name,ce.site,ce.image ? ce.image.thumb : null)
             }
             let event = new Event(a.id,a.title,a.attendance_event.max_capacity,[],company)
             attendeeService.getAttendees(event).subscribe((attendees) => {
