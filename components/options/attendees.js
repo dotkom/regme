@@ -79,7 +79,7 @@ class Attendees extends Component{
         <table className='mdl-data-table mdl-js-data-table attendee-lists'>
           <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a,b) => this.reorder(a,b)} category='Møtt' attendees={this.state.attending} />
           <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a,b) => this.reorder(a,b)} category='Ikke møtt' attendees={this.state.notAttended} />
-          <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a,b) => this.reorder(a,b)} category='Venteliste' attendees={this.state.waitlist} />
+          <List asc={true} orderby={'DATE'} onChange={()=>{}} category='Venteliste' attendees={this.state.waitlist} />
         </table>
       </div>
     )
