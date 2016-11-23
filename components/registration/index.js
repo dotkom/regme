@@ -153,7 +153,7 @@ class Registration extends Component {
       let attendeeStatus = v
       let placeholder = "default"
       let ivalue = ""
-      
+      let showModal = false;
       switch(v.attend_status){
         case 50:
           placeholder = "passOrUser"
@@ -162,24 +162,27 @@ class Registration extends Component {
           placeholder = "username"
           break;
         case 30:
-          this.update = {
+          showModal = true;
+          /*this.update = {
             status: "WAIT",
             message: "Venter på bruker",
             showModal: true
           }
+          console.log();*/
           break;
         
       }
       this.setState(Object.assign({},this.state,{
         attendee_status: attendeeStatus,
         placeholder: placeholder,
-        ivalue: ivalue
+        ivalue: ivalue,
+        showModal: showModal
       }))
     },() => this.updateTime())
   }
 
   acceptHandler () {
-    attendeeService.registerAttendee(this.event, this.pRfid, true)
+    this.handleAttendeeResponse(attendeeService.registerAttendee(this.event, this.pRfid, true))
     this.update = {
       showModal: false
     }
