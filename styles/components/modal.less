@@ -1,0 +1,27 @@
+.modal-icon {
+    float: left;
+    font-size: 3em;
+    padding: 0 .3em .1em 0;
+}
+
+.modal-icon::empty {
+  display: none;
+}
+
+.mdl-dialog {
+  &.status-danger {
+    background-color: #a00;
+  }
+
+  border-radius: 3px;
+  z-index: 2;
+
+  .mdl-dialog__content,
+  .mdl-button {
+    color: #eee;
+  }
+
+  .mdl-button:hover {
+    background-color: rgba(0, 0, 0, .1);
+  }
+}

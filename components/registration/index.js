@@ -199,7 +199,7 @@ class Registration extends Component {
           <span>Møtt: { event ? event.registeredCount : 0}</span>
           &nbsp;- <span>Påmeldt: { event ? event.totalCount : 0 }</span>
           &nbsp;- <span>Plasser: { event ? event.capacity : 0 }</span></p>
-        <Modal show={this.state.showModal} accept={ () => this.acceptHandler() } decline={ () => this.declineHandler() } content="Denne persjonen er på venteliste. Vil du at personen skal slippe inn?" />
+        <Modal show={this.state.showModal} accept={ () => this.acceptHandler() } decline={ () => this.declineHandler() } status="danger" icon="error_outline" content="Denne persjonen er på venteliste. Vil du at personen skal slippe inn?" />
       </div>
     )
   }
