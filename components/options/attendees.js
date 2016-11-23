@@ -1,3 +1,4 @@
+import { BASE } from "common/constants";
 
 import React, { Component } from 'react'
 
@@ -66,10 +67,15 @@ class Attendees extends Component{
 
   }
 
+  exportPDF(){
+    window.location.href = BASE + "events/" + this.props.event.id + "/attendees/";
+  }
+
   render(){
     return (
       <div>
         <h3>Deltakere</h3>
+        <input type="button" value="Eksporter til PDF" onClick={ () => this.exportPDF() } className="mdl-button mdl-button--accent" />
         <table className='mdl-data-table mdl-js-data-table attendee-lists'>
           <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a,b) => this.reorder(a,b)} category='Møtt' attendees={this.state.attending} />
           <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a,b) => this.reorder(a,b)} category='Ikke møtt' attendees={this.state.notAttended} />
