@@ -74,9 +74,8 @@ h1, h2, h3, h4, h5, h6, p{
   }
 }
 
-.mdl-data-table__header--sorted-descending:before,
-.mdl-data-table__header--sorted-ascending:before,
-.mdl-data-table__header--sorted-descending:after,
-.mdl-data-table__header--sorted-ascending:after {
-  font-size: 1.2em !important;  
+.mdl-data-table__header--sorted-descending, .mdl-data-table__header--sorted-ascending {
+  &:before, &:after {
+    font-size: 1.2em !important;
+  }
 }
