@@ -11,7 +11,6 @@
   margin-top: 15px;
 
   tr {
-
     &:nth-child(even) {
       background-color: lighten(@secondary-color, 1);
     }
@@ -21,6 +20,7 @@
     border: none;
     font-weight: bold;
     cursor: pointer;
+    color: @text-color;
 
     &:hover {
       color: @primary-color;
@@ -45,6 +45,14 @@
     &:before {
       color: @primary-color;
     }
+  }
+}
+
+
+.mdl-data-table th {
+  
+  &:last-child {
+    padding: 0;
   }
 }
 
