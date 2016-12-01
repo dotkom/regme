@@ -189,7 +189,7 @@ class Registration extends Component {
   render () {
     let event = this.event
     return (
-      <div>
+      <div className="mdl-card mdl-shadow--4dp">
         <h3>{ event ? event.name : '' } { (event && event.company) ? event.company.name : "" }</h3>
         <Status message={ this.state.message }
           time={ this.state.time }
