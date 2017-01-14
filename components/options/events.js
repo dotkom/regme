@@ -24,7 +24,7 @@ class Events extends Component {
   render () {
     let eventButtons = []
     for(let event of this.props.events){
-      let btnClass = 'mdl-button mdl-button--accent'
+      let btnClass = 'mdl-button mdl-button--colored'
       if(this.selected && this.selected.id === event.id){
         btnClass += ' mdl-button--raised'
       }
