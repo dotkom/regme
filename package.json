@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack -w",
-    "dev": "webpack-dev-server --inline --hot"
+    "dev": "webpack-dev-server --inline --hot",
+    "lint": "eslint common/ components/ services/ index.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,11 @@
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
     "css-loader": "^0.24.0",
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
