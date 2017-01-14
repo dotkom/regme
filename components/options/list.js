@@ -48,10 +48,3 @@ export default class List extends Component{
     )
   }
 }
-
-/*
-const List = ({ category, attendees, orderby, asc, onChange }) => {
-
-}
-*/
-//export default List;
