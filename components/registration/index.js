@@ -190,7 +190,9 @@ class Registration extends Component {
     let event = this.event
     return (
       <div className="mdl-card mdl-shadow--4dp">
-        <h3>{ event ? event.name : '' } { (event && event.company) ? event.company.name : "" }</h3>
+        <h3 className="event-title">
+          { event ? event.name : '' } { (event && event.company) ? event.company.name : "" }
+        </h3>
         <Status message={ this.state.message }
           time={ this.state.time }
           statusCode={ this.state.status } />
