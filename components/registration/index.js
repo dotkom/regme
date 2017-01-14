@@ -194,7 +194,9 @@ class Registration extends Component {
         <Status message={ this.state.message }
           time={ this.state.time }
           statusCode={ this.state.status } />
+        <hr />
         <Input value={ this.state.ivalue } placeholder={Placeholders[this.state.placeholder]} onSubmit={ (input) => this.handleSubmit(input) } />
+        <hr />
         <p>
           <span>Møtt: { event ? event.registeredCount : 0}</span>
           &nbsp;- <span>Påmeldt: { event ? event.totalCount : 0 }</span>
