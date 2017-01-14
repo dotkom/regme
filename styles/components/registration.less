@@ -1,7 +1,19 @@
-.registration-input {
-  transform: scale(2) translateX(25%);
-  margin: 3em auto;
-  width: 50%;
+.event-title {
+  display: block;
+  padding: 15px;
+  margin: -15px -15px 15px;
+  height: 128px;
+  color: @white;
+  background: url(/assets/images/logo_faint.svg) @header-color bottom right no-repeat;
+  background-size: auto 75%;
+}
+
+.label {
+  transition: background-color .5s;
+  color: @white;
+  margin: 0;
+  width: 100%;
+  border-radius: 3px;
 }
 
 .label-ok {
@@ -16,12 +28,10 @@
   background-color: #900;
 }
 
-.label {
-  transition: background-color .5s;
-  color: @white;
-  margin: 0;
-  width: 100%;
-  border-radius: 3px;
+.registration-input {
+  transform: scale(2) translateX(25%);
+  margin: 2em auto;
+  width: 50%;
 }
 
 .progress-bar {
