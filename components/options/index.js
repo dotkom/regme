@@ -1,75 +1,78 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { eventService } from 'services/event';
 
-import Events from './events'
-import Attendees from './attendees'
+import Events from './events';
+import Attendees from './attendees';
 
 class Options extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       showOptions: false,
       selectedEvent: null,
-      events: [{name: "Loading...", id:1}],
-    }
-    this.eventSub = null
+      events: [{ name: 'Loading...', id: 1 }],
+    };
+    this.eventSub = null;
   }
-  componentDidMount () {
-    eventService.getEvents().subscribe( ( events ) => {
-      this.setState(Object.assign({}, this.state, { events: events }),()=>{
-        this.selectedEvent = this.selectedEvent || events[0]
-      })
-    })
+  componentDidMount() {
+    eventService.getEvents().subscribe((events) => {
+      this.setState(Object.assign({}, this.state, { events }), () => {
+        this.selectedEvent = this.selectedEvent || events[0];
+      });
+    });
   }
-  
-  clickHandler(){
-    this.setState(Object.assign({}, this.state, {showOptions: !this.state.showOptions}))
+
+  clickHandler() {
+    this.setState(Object.assign({}, this.state, { showOptions: !this.state.showOptions }));
   }
-  get events(){
+
+  get events() {
     return this.state.events;
   }
-  set selectedEvent(event){
-    if(this.eventSub)
-      this.eventSub.unsubscribe
-    this.eventSub = event.attendees.subscribe(v => {
-      if(this.props.onOptionsChanged){
+  
+  set selectedEvent(event) {
+    if (this.eventSub) {
+      this.eventSub.unsubscribe;
+    }
+    this.eventSub = event.attendees.subscribe((v) => {
+      if (this.props.onOptionsChanged) {
         this.props.onOptionsChanged({
-          event: event
-        })
+          event,
+        });
       }
-    })
-    this.setState(Object.assign({},this.state,{selectedEvent: event}),() => {
-      if(this.props.onOptionsChanged){
+    });
+    this.setState(Object.assign({}, this.state, { selectedEvent: event }), () => {
+      if (this.props.onOptionsChanged) {
         this.props.onOptionsChanged({
-          event: event
-        })
+          event,
+        });
       }
-    })
+    });
   }
-  get selectedEvent(){
-    return this.state.selectedEvent
+  get selectedEvent() {
+    return this.state.selectedEvent;
   }
-  render(){
-    let optionBody = ''
-    if(this.state.showOptions){
+  render() {
+    let optionBody = '';
+    if (this.state.showOptions) {
       optionBody = (
         <div>
           <hr />
-          <Events events={this.events} event={ this.selectedEvent } onEventChanged={ (event) => {this.selectedEvent = event} } />
+          <Events events={this.events} event={this.selectedEvent} onEventChanged={(event) => { this.selectedEvent = event; }} />
           <hr />
-          <Attendees event={ this.selectedEvent } />
+          <Attendees event={this.selectedEvent} />
         </div>
-      )
+      );
     }
-    return(
+    return (
       <div className="mdl-card mdl-shadow--4dp">
-        <a className='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored' onClick={ () => {this.clickHandler()} }>Alternativer</a>
+        <a className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={() => { this.clickHandler(); }}>Alternativer</a>
         { optionBody }
       </div>
-    )  
+    );
   }
 
 }
 
-export default Options
+export default Options;
 
