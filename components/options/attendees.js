@@ -58,7 +58,7 @@ class Attendees extends Component{
     let ofunc = orderMap[orderby](asc);
     
     this.setState(Object.assign({},this.state,{
-      waitlist: this.state.waitlist.slice(0).sort(ofunc),
+      waitlist: this.state.waitlist.slice(0).sort(orderMap['DATE'](true)),
       attending: this.state.attending.slice(0).sort(ofunc),
       notAttended: this.state.notAttended.slice(0).sort(ofunc),
       asc: asc,
