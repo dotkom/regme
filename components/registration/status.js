@@ -1,3 +1,4 @@
+import React from 'react';
 
 /**
  * Showing the status of the application.
