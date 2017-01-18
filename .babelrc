@@ -1,4 +1,3 @@
 {
-  "presets": ["es2015", "react"],
-  "plugins": ["transform-react-require"]
+  "presets": ["es2015", "react"]
 }

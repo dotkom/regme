@@ -189,12 +189,16 @@ class Registration extends Component {
   render () {
     let event = this.event
     return (
-      <div>
-        <h3>{ event ? event.name : '' } { (event && event.company) ? event.company.name : "" }</h3>
+      <div className="mdl-card mdl-shadow--4dp">
+        <h3 className="event-title">
+          { event ? event.name : '' } { (event && event.company) ? event.company.name : "" }
+        </h3>
         <Status message={ this.state.message }
           time={ this.state.time }
           statusCode={ this.state.status } />
+        <hr />
         <Input value={ this.state.ivalue } placeholder={Placeholders[this.state.placeholder]} onSubmit={ (input) => this.handleSubmit(input) } />
+        <hr />
         <p>
           <span>Møtt: { event ? event.registeredCount : 0}</span>
           &nbsp;- <span>Påmeldt: { event ? event.totalCount : 0 }</span>
