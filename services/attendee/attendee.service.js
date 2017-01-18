@@ -1,15 +1,15 @@
-import { Observable, ReplaySubject, Subject } from 'rxjs'
-import { Event } from 'services/event'
-import { Attendee } from './attendee'
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Event } from 'services/event';
+import { Attendee } from './attendee';
 
-import { API_BASE, API_EVENTS, API_ATTEND ,API_ATTENDEES, API_USERS } from 'common/constants'
-import { isRfid } from 'common/utils'
-import { http } from 'services/net'
+import { API_BASE, API_EVENTS, API_ATTEND, API_ATTENDEES, API_USERS } from 'common/constants';
+import { isRfid } from 'common/utils';
+import { http } from 'services/net';
 
 /**
  * Status codes:
  * 50:
- *   des: no user with given username 
+ *   des: no user with given username
  *   context: try to register rfid for a user
  *   http: status: 400 BAD_REQUEST
  * 40:
@@ -27,91 +27,79 @@ import { http } from 'services/net'
  * 10:
  *   des: Attendee successfuly registered
  *   context: try to register an attendee
- *   http: status: 200 OK 
+ *   http: status: 200 OK
  */
 
-interface IAttendeeService{
-  //Fetch events
-  getAttendees(event: Event): Observable<Attendee[]>;
-  //registerAttendee(rfid: string): Observable<Attendee>;
-  //registerRfid(rfid: string, username: string): Observable<Attendee>;
-}
 
+class AttendeeServiceProvider {
 
-
-
-class AttendeeServiceProvider implements IAttendeeService{
-  
-  constructor(){
-    this.cache = {}
+  constructor() {
+    this.cache = {};
   }
 
-  registerAttendee(event:Event, rfid: string, approved: boolean = false){
-    return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
+  registerAttendee(event, rfid, approved = false) {
+    return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`, {
       rfid: isRfid(rfid) ? rfid : null,
       username: isRfid(rfid) ? null : rfid,
       event: event.id,
-      approved: approved
+      approved,
     }))
-      .map(res => {
-        let ret = Object.assign({},res,{
-          event: event
-        })
+      .map((res) => {
+        const ret = Object.assign({}, res, {
+          event,
+        });
         return ret;
-      })
+      });
   }
-  getCached(attendee_id: number){
-    return this.cache[attendee_id]
+  getCached(attendee_id) {
+    return this.cache[attendee_id];
   }
-  registerRfid(username: string, rfid: string, event:Event){
-    if(username!=null && rfid!=null && rfid.length > 0){
-      return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
-        rfid: rfid,
-        username: username,
-        event: event.id
-      }))
+  registerRfid(username, rfid, event) {
+    if (username != null && rfid != null && rfid.length > 0) {
+      return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`, {
+        rfid,
+        username,
+        event: event.id,
+      }));
     }
   }
-  handleResponse(r){
-    return r.catch( (error) => {
-      //if(error.status == 400 || error.status == 100)
-      return Observable.fromPromise(error.json()).flatMap((r) => Observable.throw(r))
-        //return Observable.throw(Observable.fromPromise(error.json()))
-      
-    })
+  handleResponse(r) {
+    return r.catch(error =>
+      // if(error.status == 400 || error.status == 100)
+       Observable.fromPromise(error.json()).flatMap(r => Observable.throw(r))
+        // return Observable.throw(Observable.fromPromise(error.json()))
+
+    );
   }
-  getAttendees(event: Event, page=1): Observable<Attendee[]>{
-    let count = 0;
-    return http.get(`${API_BASE}${API_ATTENDEES}`,{"event": event.id,"page":page})
+  getAttendees(event, page = 1) {
+    const count = 0;
+    return http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page })
       .map(result => result.results)
-      .map(attendees => {
-        let a = [];
-        for(let attendee of attendees){
-          let at = new Attendee(
+      .map((attendees) => {
+        const a = [];
+        for (const attendee of attendees) {
+          const at = new Attendee(
             attendee.id,
-            "NONE",
+            'NONE',
             attendee.user.first_name,
             attendee.user.last_name,
             new Date(attendee.timestamp),
             attendee.attended,
             event
-          )
-          a.push(at)
-          this.cache[at.id] = at
+          );
+          a.push(at);
+          this.cache[at.id] = at;
         }
         return a;
       })
-      .flatMap(attendees => {
-        if(attendees.length == 10){
-          return this.getAttendees(event,++page).zip(Observable.of(attendees),(a,b) => {
-            return a.concat(b);
-          });
+      .flatMap((attendees) => {
+        if (attendees.length == 10) {
+          return this.getAttendees(event, ++page).zip(Observable.of(attendees), (a, b) => a.concat(b));
         }
         return Observable.of(attendees);
-      })
-     
+      });
   }
 
 }
-//Export singleton
-export const attendeeService = new AttendeeServiceProvider()
+// Export singleton
+export const attendeeService = new AttendeeServiceProvider();
