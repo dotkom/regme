@@ -29,7 +29,7 @@ class Options extends Component {
   get events() {
     return this.state.events;
   }
-  
+
   set selectedEvent(event) {
     if (this.eventSub) {
       this.eventSub.unsubscribe;

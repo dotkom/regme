@@ -1,8 +1,7 @@
-import { Observable, ReplaySubject, Subject } from 'rxjs';
 
-import { API_BASE, API_EVENTS, API_ATTENDEES, API_USERS } from 'common/constants';
+import { API_BASE, API_USERS } from 'common/constants';
 import { http } from 'services/net';
-
+import { User } from '/user.js';
 
 export class UserServiceProvider {
 
