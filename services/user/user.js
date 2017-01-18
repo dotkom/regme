@@ -1,5 +1,3 @@
-export class User{
-  constructor(id,firstname,lastname){
-
-  }
+export class User {
+  constructor(id, firstname, lastname) {}
 }

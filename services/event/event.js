@@ -27,9 +27,7 @@ export class Event{
       this.addAttendee(i)
     }
   }
-  get id(){
-    return this._id
-  }
+
   addAttendee(attendee){
     if(attendee.isRegistered()){
       this._attendingList.push(attendee)
@@ -87,12 +85,12 @@ export class Event{
     return this._notAttendedSubject.asObservable()
   }
 
-  get name(){
-    return this._name
-  }
-
   get id(){
     return this._id
+  }
+  
+  get name(){
+    return this._name
   }
 
   get capacity(){

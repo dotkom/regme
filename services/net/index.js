@@ -1,1 +1,1 @@
-export { http, HttpServiceProvider } from './http.service'
+export { http, HttpServiceProvider } from './http.service';
