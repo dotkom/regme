@@ -5,20 +5,10 @@ import { Attendee, attendeeService } from 'services/attendee'
 import { API_BASE, API_EVENTS, API_ATTENDEES, API_USERS } from 'common/constants'
 import { http } from 'services/net'
 
-interface IEventService{
-  //Fetch events
-  getEvents(): Observable<Event[]>;
-  getCached(): Event;
-  //Observable -> null if rfid is non-existing
-  //registerAttendee(rfid: string): Observable<Attendee>
-  //Observable -> null if failed 
-  //registerRfid(rfid: string, username: string): Observable<Attendee>
-}
 
 
 
-
-class EventServiceProvider implements IEventService{
+class EventServiceProvider{
   
   constructor(){
     this._events = null
@@ -27,7 +17,7 @@ class EventServiceProvider implements IEventService{
     this.refresh()
   }
 
-  set events(newEvents: Event[]){
+  set events(newEvents){
     this._events = newEvents
     for(let i in newEvents){
       this._cache[i] = newEvents[i]
@@ -38,7 +28,7 @@ class EventServiceProvider implements IEventService{
   get events(){
     return this._events
   }
-  getCached(event_id: number){
+  getCached(event_id){
     return this._cache[event_id]
   }
   refresh(){
@@ -68,7 +58,7 @@ class EventServiceProvider implements IEventService{
       }).subscribe( eventList => this.events = eventList)
   }
 
-  getEvents(): Observable<Event[]>{
+  getEvents(){
     return this.eventSubject.asObservable()
   }
 

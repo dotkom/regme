@@ -30,23 +30,15 @@ import { http } from 'services/net'
  *   http: status: 200 OK 
  */
 
-interface IAttendeeService{
-  //Fetch events
-  getAttendees(event: Event): Observable<Attendee[]>;
-  //registerAttendee(rfid: string): Observable<Attendee>;
-  //registerRfid(rfid: string, username: string): Observable<Attendee>;
-}
 
 
-
-
-class AttendeeServiceProvider implements IAttendeeService{
+class AttendeeServiceProvider{
   
   constructor(){
     this.cache = {}
   }
 
-  registerAttendee(event:Event, rfid: string, approved: boolean = false){
+  registerAttendee(event, rfid, approved = false){
     return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
       rfid: isRfid(rfid) ? rfid : null,
       username: isRfid(rfid) ? null : rfid,
@@ -60,10 +52,10 @@ class AttendeeServiceProvider implements IAttendeeService{
         return ret;
       })
   }
-  getCached(attendee_id: number){
+  getCached(attendee_id){
     return this.cache[attendee_id]
   }
-  registerRfid(username: string, rfid: string, event:Event){
+  registerRfid(username, rfid, event){
     if(username!=null && rfid!=null && rfid.length > 0){
       return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`,{
         rfid: rfid,
@@ -80,7 +72,7 @@ class AttendeeServiceProvider implements IAttendeeService{
       
     })
   }
-  getAttendees(event: Event, page=1): Observable<Attendee[]>{
+  getAttendees(event, page=1){
     let count = 0;
     return http.get(`${API_BASE}${API_ATTENDEES}`,{"event": event.id,"page":page})
       .map(result => result.results)

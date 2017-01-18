@@ -2,31 +2,8 @@ import { Observable, Subject, } from 'rxjs'
 
 import { API_BASE, API_AUTH, CLIENT_SECRET, CLIENT_ID } from 'common/constants'
 
-//Useless, babel dose not like it if the 'methods' contains arguments
-interface IHttpService{
-  /** performes a get request
-   * @param {string} url
-   * @param {params} {key: value}
-   * @return Observable<{}> 
-   */
-  get(): Observable<any>;
 
-  /** Performs a post request
-   * @param {string} url
-   * @param {params} {key: value}
-   * @param {boolean} url_encoded 
-   * @return Observable<{}> 
-   */
-  post(): Observable<any>;
-
-  /** Performs a general request
-   * @param {Request} url
-   * @return Observable<{}> 
-   */
-  request(): Observable<any>;
-}
-
-export class HttpServiceProvider implements IHttpService{
+export class HttpServiceProvider{
   
   constructor(){
     //Request queue used for 503 and 401 responses
@@ -114,7 +91,10 @@ export class HttpServiceProvider implements IHttpService{
     }
     return r.json()
   }
-
+  /** Performs a general request
+   * @param {Request} url
+   * @return Observable<{}> 
+   */
   request(request){
     //Add token to request
     request.headers.set("Authorization", `Bearer ${this.auth_token}`)
@@ -123,7 +103,11 @@ export class HttpServiceProvider implements IHttpService{
     this.requestSubject.next({request: request, subject: resolver})
     return resolver.asObservable()
   }
-  
+  /** performes a get request
+   * @param {string} url
+   * @param {params} {key: value}
+   * @return Observable<{}> 
+   */
   get(url,params){
     let pUrl = url
     if(params){
@@ -144,8 +128,13 @@ export class HttpServiceProvider implements IHttpService{
     }
     return "?" + ret
   }
-
-  post(url,body,url_encoded): Observable<any>{
+  /** Performs a post request
+   * @param {string} url
+   * @param {params} {key: value}
+   * @param {boolean} url_encoded 
+   * @return Observable<{}> 
+   */
+  post(url,body,url_encoded){
     let pUrl = url
     let pBody = body
     let headers = new Headers()

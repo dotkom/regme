@@ -3,15 +3,10 @@ import { Observable, ReplaySubject, Subject } from 'rxjs'
 import { API_BASE, API_EVENTS, API_ATTENDEES, API_USERS } from 'common/constants'
 import { http } from 'services/net'
 
-interface IUserService{
-  getUserByRfid(): Observable<User>;
-  getUserById(): Observable<User>;
-  getUserByName(): Observable<User>;
-}
 
 export class UserServiceProvider{
 
-  getUserByRfid(rfid:string): Observable<User>{
+  getUserByRfid(rfid){
     return http.get(`${API_BASE}${API_USERS}`,{
       rfid: rfid
     }).map(data => data.results)
@@ -22,7 +17,7 @@ export class UserServiceProvider{
     })
   }
 
-  getUserById(id:number): Observable<User>{
+  getUserById(id){
     return http.get(`${API_BASE}${API_USERS}${id}/`)
       .map((user) => {
         if(user.first_name)
@@ -30,7 +25,7 @@ export class UserServiceProvider{
     })
   }
 
-  getUserByName(username: string): Observable<User>{
+  getUserByName(username){
     return http.get(`${API_BASE}${API_USERS}`,{
       username: username
     }).map(data => data.results)
