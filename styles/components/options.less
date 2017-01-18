@@ -1,5 +1,5 @@
 .mdl-data-table tbody tr:hover {
-  background-color: @secondary-color-dark-hover;
+  background-color: @secondary-color-hover;
 }
 
 .attendee-lists, th, td {
@@ -9,22 +9,18 @@
 .attendee-lists {
   border: none;
   margin-top: 15px;
-  color: @table-header-color;
 
   tr {
-    background-color: @secondary-color-dark;
-
     &:nth-child(even) {
-      background-color: lighten(@secondary-color-dark, 1);
+      background-color: lighten(@secondary-color, 1);
     }
   }
 
   th {
     border: none;
-    box-shadow: inset 0 -2px 0 @table-header-border-color;
-    color: @table-content-color;
     font-weight: bold;
     cursor: pointer;
+    color: @text-color;
 
     &:hover {
       color: @primary-color;
@@ -49,6 +45,14 @@
     &:before {
       color: @primary-color;
     }
+  }
+}
+
+
+.mdl-data-table th {
+  
+  &:last-child {
+    padding: 0;
   }
 }
 

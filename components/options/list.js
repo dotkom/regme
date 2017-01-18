@@ -35,8 +35,8 @@ export default class List extends Component{
     let collapseContent = collapse ? (<i className="material-icons">keyboard_arrow_left</i>) : (<i className="material-icons">keyboard_arrow_down</i>)  
     let tableHeaders = [
       <th key="1" onClick={() => onChange("NAME",!asc)} className={'mdl-data-table__cell--non-numeric ' + (orderby=="NAME" ? (asc ? 'mdl-data-table__header--sorted-ascending' : 'mdl-data-table__header--sorted-descending' ) : '')} colSpan='1'>{category}</th>,
-      <th key="2" onClick={() => onChange("DATE",!asc)} className={'mdl-data-table__cell--non-numeric ' + (orderby=="DATE" ? (asc ? 'mdl-data-table__header--sorted-ascending' : 'mdl-data-table__header--sorted-descending' ) : '')} colSpan='1'>Registrerings dato</th>,
-      <th key="3" onClick={() => this.toggleCollapse()} className='mdl-data-table_cell--non-numeric'>{collapseContent}</th>
+      <th key="2" onClick={() => onChange("DATE",!asc)} className={'mdl-data-table__cell--non-numeric ' + (orderby=="DATE" ? (asc ? 'mdl-data-table__header--sorted-ascending' : 'mdl-data-table__header--sorted-descending' ) : '')} colSpan='1'>Registreringsdato</th>,
+      <th key="3" onClick={() => this.toggleCollapse()}>{collapseContent}</th>
     ]
     return (
       <tbody>
@@ -48,10 +48,3 @@ export default class List extends Component{
     )
   }
 }
-
-/*
-const List = ({ category, attendees, orderby, asc, onChange }) => {
-
-}
-*/
-//export default List;

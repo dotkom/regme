@@ -1,48 +1,50 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import Header from './components/header';
+import Registration from './components/registration';
+import Options from './components/options';
 
-require('./styles/base.less')
+require('./styles/base.less');
 
-import Header from './components/header'
-import Registration from './components/registration'
-import Options from './components/options'
-
-class App extends Component{
-  constructor(props){
-    super(props)
+class App extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      options: null
-    }
+      options: null,
+    };
   }
-  set options(newOptions){
-    this.setState(Object.assign({},this.state,{options:newOptions}))
+  set options(newOptions) {
+    this.setState(Object.assign({ }, this.state, { options: newOptions }));
   }
-  get options(){
-    return this.state.options
+  get options() {
+    return this.state.options;
   }
-  render(){
-    return(
-      <div className='mdl-layout mdl-js-layout mdl-layout--fixed-header'>
+  render() {
+    return (
+      <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <Header />
-        <main className='mdl-layout__content regme-layout-content'>
-          <div className='mdl-grid regme-grid'>
-            <div className='mdl-cell regme-grid-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop mdl-cell--6-col-tablet mdl-cell--1-offset-tablet mdl-cell--4-col-phone'>
+        <main className="mdl-layout__content regme-layout-content">
+          <div className="mdl-grid regme-grid">
+            <div
+              className="mdl-cell regme-grid-cell mdl-cell--8-col-desktop
+                            mdl-cell--2-offset-desktop mdl-cell--6-col-tablet
+                            mdl-cell--1-offset-tablet mdl-cell--4-col-phone"
+            >
               <Registration event={this.options ? this.options.event : null} />
-              <Options onOptionsChanged={(options) => this.options = options}/>
+              <Options onOptionsChanged={options => this.options = options} />
             </div>
           </div>
         </main>
         <div className="mdl-js-snackbar mdl-snackbar">
-          <div className="mdl-snackbar__text"></div>
-          <button className="mdl-snackbar__action" type="button"></button>
+          <div className="mdl-snackbar__text" />
+          <button className="mdl-snackbar__action" type="button" />
         </div>
       </div>
-    )
+    );
   }
-
 }
 
 ReactDOM.render(
   <App />,
-  document.getElementById('app')
-)
+  document.getElementById('app'),
+);
