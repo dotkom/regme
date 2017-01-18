@@ -22,7 +22,7 @@ class Input extends Component {
 
   submit(evt) {
     evt.preventDefault();
-    if (this._input) {
+    if (this.input) {
       this.props.onSubmit(this.input.value);
     }
   }
@@ -30,7 +30,7 @@ class Input extends Component {
   setRef(ref) {
     this.input = ref;
     if (ref) {
-      this._input.value = (this.props.value != null) ? this.props.value : this.input.value;
+      this.input.value = (this.props.value != null) ? this.props.value : this.input.value;
     }
   }
 
