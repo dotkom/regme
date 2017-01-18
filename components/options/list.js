@@ -29,7 +29,7 @@ export default class List extends Component {
           <tr key={attendee.id}>
             <td className="mdl-data-table__cell--non-numeric">{ [attendee.firstname, attendee.lastname].join(' ') }</td>
             <td className="mdl-data-table__cell--non-numeric" colSpan="2">{ attendee.date.toLocaleString() }</td>
-          </tr>,
+          </tr>
         );
       }
     }

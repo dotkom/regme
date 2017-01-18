@@ -29,7 +29,7 @@ class Events extends Component {
         btnClass += ' mdl-button--raised';
       }
       eventButtons.push(
-        <a ref={a => this.appendMDL(a)} className={btnClass} onClick={() => { this.selected = event; }} key={event.id}>{event.name}</a>,
+        <a ref={a => this.appendMDL(a)} className={btnClass} onClick={() => { this.selected = event; }} key={event.id}>{event.name}</a>
       );
     }
 

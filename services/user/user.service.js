@@ -1,7 +1,7 @@
 
 import { API_BASE, API_USERS } from 'common/constants';
 import { http } from 'services/net';
-import { User } from '/user.js';
+import { User } from './user.js';
 
 export class UserServiceProvider {
 

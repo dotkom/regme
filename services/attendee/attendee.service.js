@@ -66,7 +66,7 @@ class AttendeeServiceProvider {
   handleResponse(r) {
     return r.catch(error =>
       // if(error.status == 400 || error.status == 100)
-       Observable.fromPromise(error.json()).flatMap(r => Observable.throw(r)),
+       Observable.fromPromise(error.json()).flatMap(r => Observable.throw(r))
         // return Observable.throw(Observable.fromPromise(error.json()))
 
     );
@@ -85,7 +85,7 @@ class AttendeeServiceProvider {
             attendee.user.last_name,
             new Date(attendee.timestamp),
             attendee.attended,
-            event,
+            event
           );
           a.push(at);
           this.cache[at.id] = at;
