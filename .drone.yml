@@ -10,3 +10,14 @@ pipeline:
     script:
       - cd /srv/www/regme
       - git pull
+      - npm install
+      - echo 'export const BASE = "https://online.ntnu.no/"' > common/constants.js
+      - echo 'export const API_BASE = "https://online.ntnu.no/api/v1/"' >> common/constants.js
+      - echo 'export const API_EVENTS = "events/"' >> common/constants.js
+      - echo 'export const API_AUTH = "auth/"' >> common/constants.js
+      - echo 'export const API_ATTENDEES = "attendees/"' >> common/constants.js
+      - echo 'export const API_ATTEND = "attend/"' >> common/constants.js
+      - echo 'export const API_USERS = "users/"' >> common/constants.js
+      - echo 'export const CLIENT_SECRET = "${REGME_CLIENT_SECRET}"' >> common/constants.js
+      - echo 'export const CLIENT_ID = "${REGME_CLIENT_ID}"' >> common/constants.js
+      - node /srv/www/regme/node_modules/webpack/bin/webpack.js
