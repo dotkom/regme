@@ -1,0 +1,12 @@
+pipeline:
+  deploy:
+    image: plugins/ssh
+    host: nansen.online.ntnu.no
+    user: root
+    port: 22
+    when:
+      event: push
+      branch: master
+    script:
+      - cd /srv/www/regme
+      - git pull
