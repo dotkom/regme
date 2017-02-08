@@ -7,7 +7,7 @@ pipeline:
     when:
       event: push
       branch: master
-    commands:
+    script:
       - cd /srv/www/regme
       - git pull
       - npm install
