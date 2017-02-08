@@ -20,6 +20,6 @@ pipeline:
       - echo 'export const API_USERS = "users/"' >> common/constants.js
       - echo 'export const CLIENT_SECRET = "$REGME_CLIENT_SECRET"' >> common/constants.js
       - echo 'export const CLIENT_ID = "$REGME_CLIENT_ID"' >> common/constants.js
-      - echo $REGME_CLIENT_ID > client_id
-      - echo ${REGME_CLIENT_ID} > client_id2
+      - echo $REGME_CLIENT_ID
+      - echo ${REGME_CLIENT_ID}
       - node /srv/www/regme/node_modules/webpack/bin/webpack.js
