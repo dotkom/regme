@@ -65,8 +65,8 @@ class Options extends Component {
       );
     }
     return (
-      <div className="mdl-card mdl-shadow--4dp">
-        <a className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={() => { this.clickHandler(); }}>Alternativer</a>
+      <div>
+        <a onClick={() => { this.clickHandler(); }}>Alternativer</a>
         { optionBody }
       </div>
     );
