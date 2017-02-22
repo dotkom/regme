@@ -32,11 +32,6 @@ class Registration extends Component {
         minute: date.getMinutes(),
         second: date.getSeconds(),
       },
-      /* attendees: {
-        listed: 0,
-        registered: 0,
-        waiting: 0,
-      },*/
       status: '',
       message: null,
       attendee_status: {},
@@ -110,16 +105,6 @@ class Registration extends Component {
     } else {
       this.update = { status: 'ERROR', message: 'Invalid input!' };
     }
-  }
-  updateTime() {
-    const date = new Date();
-    this.setState(Object.assign({}, this.state, {
-      time: {
-        hour: date.getHours(),
-        minute: date.getMinutes(),
-        second: date.getSeconds(),
-      },
-    }));
   }
   handleAttendeeResponse(stream) {
     stream.subscribe((v) => {
