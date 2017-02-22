@@ -80,9 +80,6 @@ class Registration extends Component {
   get pUsername() {
     return this.state.pUsername;
   }
-  /* handleUsername(input){
-
-  }*/
   get event() {
     return this.props.event;
   }
@@ -174,7 +171,7 @@ class Registration extends Component {
   render() {
     const event = this.event;
     return (
-      <div className="mdl-card mdl-shadow--4dp">
+      <div className="registration-container">
         <h3 className="event-title">
           { event ? event.name : '' } { (event && event.company) ? event.company.name : '' }
         </h3>
