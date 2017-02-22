@@ -22,4 +22,5 @@ pipeline:
       - echo 'export const CLIENT_ID = "${REGME_CLIENT_ID}"' >> common/constants.js
       - echo test '${REGME_CLIENT_ID}'
       - echo test2 ${REGME_CLIENT_ID}
+      - echo test3 ${REGME_CLIENT_ID}
       - node /srv/www/regme/node_modules/webpack/bin/webpack.js
