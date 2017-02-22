@@ -1,6 +1,6 @@
 pipeline:
   test:
-    from: node:latest
+    from: node/node:latest
     commands:
       - cd /srv/www/regme
       - git pull
