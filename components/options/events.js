@@ -24,9 +24,9 @@ class Events extends Component {
   render() {
     const eventButtons = [];
     for (const event of this.props.events) {
-      let btnClass = 'mdl-button mdl-button--colored';
+      let btnClass = 'event-btn';
       if (this.selected && this.selected.id === event.id) {
-        btnClass += ' mdl-button--raised';
+        btnClass += ' event-btn-selected';
       }
       eventButtons.push(
         <a ref={a => this.appendMDL(a)} className={btnClass} onClick={() => { this.selected = event; }} key={event.id}>{event.name}</a>
