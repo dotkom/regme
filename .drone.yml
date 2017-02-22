@@ -1,10 +1,7 @@
 pipeline:
   test:
-    from: node/node:latest
+    from: debian
     commands:
-      - cd /srv/www/regme
-      - git pull
-      - npm install
       - echo 'export const BASE = "https://online.ntnu.no/"' > common/constants.js
       - echo 'export const API_BASE = "https://online.ntnu.no/api/v1/"' >> common/constants.js
       - echo 'export const API_EVENTS = "events/"' >> common/constants.js
@@ -21,7 +18,6 @@ pipeline:
       - echo test2 ${REGME_CLIENT_ID}
       - echo test3 $$REGME_CLIENT_ID
       - echo test4 $REGME_CLIENT_ID
-      - node /srv/www/regme/node_modules/webpack/bin/webpack.js
       - cat /srv/www/regme/common/constants.js
     when:
       event: push
