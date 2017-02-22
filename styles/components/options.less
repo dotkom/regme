@@ -1,7 +1,9 @@
 .attendee-lists {
   width: 100%;
-  border: none;
   margin-top: 15px;
+  font-size: 1em;
+  height: auto;
+  background-color: transparent;
 
   tr {
     &:nth-child(even) {
@@ -10,11 +12,13 @@
   }
 
   th {
-    border: none;
     font-weight: bold;
     cursor: pointer;
     color: @text-color;
     width: 100%;
+    line-height: 2.4;
+    height: 3em;
+    font-size: 1em;
 
     &:hover {
       color: @primary-color;
@@ -26,8 +30,9 @@
   }
 
   td {
-    border: none;
     width: 100%;
+    height: auto;
+    font-size: 1em;
 
     .cell-non-numeric {
       text-align: right;
