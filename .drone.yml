@@ -3,6 +3,8 @@ pipeline:
     image: plugins/ssh
     host: nansen.online.ntnu.no
     user: root
+    REGME_CLIENT_ID: ${REGME_CLIENT_ID}
+    REGME_CLIENT_SECRET: ${REGME_CLIENT_SECRET}
     port: 22
     when:
       event: push
@@ -19,7 +21,10 @@ pipeline:
       - echo 'export const API_ATTEND = "attend/"' >> common/constants.js
       - echo 'export const API_USERS = "users/"' >> common/constants.js
       - echo 'export const CLIENT_SECRET = "${REGME_CLIENT_SECRET}"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "${REGME_CLIENT_ID}"' >> common/constants.js
+      - echo 'export const CLIENT_ID = "$REGME_CLIENT_ID"' >> common/constants.js
+      - echo 'export const CLIENT_ID = "$$REGME_CLIENT_ID"' >> common/constants.js
+      - echo 'export const CLIENT_ID = "$${REGME_CLIENT_ID}"' >> common/constants.js
+      - echo 'export const CLIENT_ID = "{REGME_CLIENT_ID}"' >> common/constants.js
       - echo test '${REGME_CLIENT_ID}'
       - echo test2 ${REGME_CLIENT_ID}
       - echo test3 $$REGME_CLIENT_ID
