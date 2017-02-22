@@ -73,8 +73,8 @@ class Attendees extends Component {
     return (
       <div>
         <h3>Deltakere</h3>
-        <input type="button" value="Eksporter til PDF" onClick={() => this.exportPDF()} className="mdl-button mdl-button--colored" />
-        <table className="mdl-data-table mdl-js-data-table attendee-lists">
+        <input type="button" value="Eksporter til PDF" onClick={() => this.exportPDF()} />
+        <table className="attendee-lists">
           <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a, b) => this.reorder(a, b)} category="Møtt" attendees={this.state.attending} />
           <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a, b) => this.reorder(a, b)} category="Ikke møtt" attendees={this.state.notAttended} />
           <List asc orderby={'DATE'} onChange={() => {}} category="Venteliste" attendees={this.state.waitlist} />

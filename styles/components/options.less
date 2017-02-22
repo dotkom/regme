@@ -1,12 +1,5 @@
-.mdl-data-table tbody tr:hover {
-  background-color: @secondary-color-hover;
-}
-
-.attendee-lists, th, td {
-  width: 100%;
-}
-
 .attendee-lists {
+  width: 100%;
   border: none;
   margin-top: 15px;
 
@@ -21,38 +14,24 @@
     font-weight: bold;
     cursor: pointer;
     color: @text-color;
+    width: 100%;
 
     &:hover {
       color: @primary-color;
+    }
+
+    &:last-child {
+      padding: 0;
     }
   }
 
   td {
     border: none;
-  }
-}
-
-.mdl-data-table th.mdl-data-table__header--sorted-ascending, .mdl-data-table th.mdl-data-table__header--sorted-descending {
-  color: @text-color;
-
-  &:before {
-    color: @primary-color;
+    width: 100%;
   }
 
-  &:hover{
-    color: @primary-color;
-
-    &:before {
-      color: @primary-color;
-    }
-  }
-}
-
-
-.mdl-data-table th {
-  
-  &:last-child {
-    padding: 0;
+  tbody tr:hover {
+    background-color: @secondary-color-hover;
   }
 }
 
