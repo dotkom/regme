@@ -42,12 +42,11 @@ const Status = ({ message, time, statusCode }) => {
   };
 
   return (
-    <div className={`color mdl-cell mdl-cell--12-col mdl-grid mdl-shadow--2dp label ${statusClass(statusCode)}`}>
-      <div className="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">{ statusMessage(statusCode, message) }</div>
-      <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone align-right">
+    <div className={`${statusClass(statusCode)}`}>
+      <div>{ statusMessage(statusCode, message) }</div>
+      <div>
         { `${dd(time.hour)}:${dd(time.minute)}:${dd(time.second)}` }
       </div>
-      <div className="mdl-progress mdl-js-progress mdl-progress__indeterminate progress-bar" />
     </div>
   );
 };
