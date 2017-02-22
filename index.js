@@ -21,24 +21,12 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <div>
         <Header />
-        <main className="mdl-layout__content regme-layout-content">
-          <div className="mdl-grid regme-grid">
-            <div
-              className="mdl-cell regme-grid-cell mdl-cell--8-col-desktop
-                            mdl-cell--2-offset-desktop mdl-cell--6-col-tablet
-                            mdl-cell--1-offset-tablet mdl-cell--4-col-phone"
-            >
-              <Registration event={this.options ? this.options.event : null} />
-              <Options onOptionsChanged={options => this.options = options} />
-            </div>
-          </div>
+        <main className="regme-layout-content">
+          <Registration event={this.options ? this.options.event : null} />
+          <Options onOptionsChanged={options => this.options = options} />
         </main>
-        <div className="mdl-js-snackbar mdl-snackbar">
-          <div className="mdl-snackbar__text" />
-          <button className="mdl-snackbar__action" type="button" />
-        </div>
       </div>
     );
   }
