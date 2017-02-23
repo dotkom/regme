@@ -6,7 +6,7 @@ import { eventService } from 'services/event';
 import { userService } from 'services/user';
 import { attendeeService } from 'services/attendee';
 import { Observable } from 'rxjs';
-import { isRfid, showToast } from 'common/utils';
+import { isRfid } from 'common/utils';
 
 /**
  * Registration view. This is what the user see
@@ -115,11 +115,6 @@ class Registration extends Component {
       }));
     }, (v) => {
       this.updateTime();
-      const toast = {
-        message: v.message,
-        timeout: 1500,
-      };
-      showToast(toast);
       this.update = { status: 'ERROR', message: v.message };
       const attendeeStatus = v;
       let placeholder = 'default';
