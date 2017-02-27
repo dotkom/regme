@@ -1,5 +1,5 @@
 pipeline:
-  deploy:
+  deployment:
     image: plugins/ssh
     host: nansen.online.ntnu.no
     user: root
