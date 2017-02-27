@@ -4,8 +4,8 @@ pipeline:
     host: nansen.online.ntnu.no
     user: root
     environment:
-      - REGME_CLIENT_ID: ${REGME_CLIENT_ID}
-      - REGME_CLIENT_SECRET: ${REGME_CLIENT_SECRET}
+      - REGME_CLIENT_ID=${REGME_CLIENT_ID}
+      - REGME_CLIENT_SECRET=${REGME_CLIENT_SECRET}
     port: 22
     when:
       event: push
