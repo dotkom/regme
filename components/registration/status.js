@@ -42,7 +42,7 @@ const Status = ({ message, time, statusCode }) => {
   };
 
   return (
-    <div className={`${statusClass(statusCode)}`}>
+    <div className={`label ${statusClass(statusCode)}`}>
       <div>{ statusMessage(statusCode, message) }</div>
       <div>
         { `${dd(time.hour)}:${dd(time.minute)}:${dd(time.second)}` }
