@@ -22,11 +22,11 @@ const Status = ({ message, time, statusCode }) => {
   const statusClass = (code) => {
     switch (code) {
       case 'OK':
-        return 'label-ok';
+        return 'status-ok';
       case 'ERROR':
-        return 'label-danger';
+        return 'status-danger';
       default:
-        return 'label-progress';
+        return 'status-progress';
     }
   };
 
@@ -42,7 +42,7 @@ const Status = ({ message, time, statusCode }) => {
   };
 
   return (
-    <div className={`label ${statusClass(statusCode)}`}>
+    <div className={`status ${statusClass(statusCode)}`}>
       <div>{ statusMessage(statusCode, message) }</div>
       <div>
         { `${dd(time.hour)}:${dd(time.minute)}:${dd(time.second)}` }
