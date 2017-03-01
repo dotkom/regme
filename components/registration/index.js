@@ -16,9 +16,8 @@ import { isRfid } from 'common/utils';
  *  - Show user stats in numbers.
  */
 const Placeholders = {
-  default: 'Fyll inn RFID eller brukernavn',
-  username: 'Fyll inn brukernavn for å registrere RFID',
-  passOrUser: 'Fyll inn brukernavn eller RFID',
+  default: 'Fyll inn RFID eller brukernavn...',
+  username: 'Fyll inn brukernavn for å registrere RFID...',
 };
 
 class Registration extends Component {
@@ -175,9 +174,7 @@ class Registration extends Component {
           time={this.state.time}
           statusCode={this.state.status}
         />
-        <hr />
         <Input value={this.state.ivalue} placeholder={Placeholders[this.state.placeholder]} onSubmit={input => this.handleSubmit(input)} />
-        <hr />
         <p>
           <span>Møtt: { event ? event.registeredCount : 0}</span>
           &nbsp;- <span>Påmeldt: { event ? event.totalCount : 0 }</span>

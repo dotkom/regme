@@ -37,16 +37,13 @@ class Input extends Component {
   render() {
     return (
       <form onSubmit={evt => this.submit(evt)}>
-        <div className="registration-input">
-          <input
-            type="text"
-            pattern="[A-Za-z0-9]+"
-            placeholder={ this.props.placeholder }
-            autoComplete={false}
-            ref={a => this.setRef(a)}
-          />
-          <span>Input er ikke gyldig!</span>
-        </div>
+        <input
+          type="text"
+          pattern="[A-Za-z0-9]+"
+          placeholder={ this.props.placeholder }
+          autoComplete={false}
+          ref={a => this.setRef(a)}
+        />
       </form>
     );
   }
