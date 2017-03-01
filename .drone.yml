@@ -1,37 +1,11 @@
 pipeline:
-  test:
-    from: node:latest
-    commands:
-      - cd /srv/www/regme
-      - git pull
-      - npm install
-      - echo 'export const BASE = "https://online.ntnu.no/"' > common/constants.js
-      - echo 'export const API_BASE = "https://online.ntnu.no/api/v1/"' >> common/constants.js
-      - echo 'export const API_EVENTS = "events/"' >> common/constants.js
-      - echo 'export const API_AUTH = "auth/"' >> common/constants.js
-      - echo 'export const API_ATTENDEES = "attendees/"' >> common/constants.js
-      - echo 'export const API_ATTEND = "attend/"' >> common/constants.js
-      - echo 'export const API_USERS = "users/"' >> common/constants.js
-      - echo 'export const CLIENT_SECRET = "${REGME_CLIENT_SECRET}"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "$REGME_CLIENT_ID"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "$$REGME_CLIENT_ID"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "$${REGME_CLIENT_ID}"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "{REGME_CLIENT_ID}"' >> common/constants.js
-      - echo test '${REGME_CLIENT_ID}'
-      - echo test2 ${REGME_CLIENT_ID}
-      - echo test3 $$REGME_CLIENT_ID
-      - echo test4 $REGME_CLIENT_ID
-      - node /srv/www/regme/node_modules/webpack/bin/webpack.js
-      - cat /srv/www/regme/common/constants.js
-    when:
-      event: push
-      branch: master
-  deploy:
+  deployment:
     image: plugins/ssh
     host: nansen.online.ntnu.no
     user: root
-    REGME_CLIENT_ID: ${REGME_CLIENT_ID}
-    REGME_CLIENT_SECRET: ${REGME_CLIENT_SECRET}
+    environment:
+      - REGME_CLIENT_ID=${REGME_CLIENT_ID}
+      - REGME_CLIENT_SECRET=${REGME_CLIENT_SECRET}
     port: 22
     when:
       event: push
@@ -40,20 +14,16 @@ pipeline:
       - cd /srv/www/regme
       - git pull
       - npm install
-      - echo 'export const BASE = "https://online.ntnu.no/"' > common/constants.js
-      - echo 'export const API_BASE = "https://online.ntnu.no/api/v1/"' >> common/constants.js
-      - echo 'export const API_EVENTS = "events/"' >> common/constants.js
-      - echo 'export const API_AUTH = "auth/"' >> common/constants.js
-      - echo 'export const API_ATTENDEES = "attendees/"' >> common/constants.js
-      - echo 'export const API_ATTEND = "attend/"' >> common/constants.js
-      - echo 'export const API_USERS = "users/"' >> common/constants.js
-      - echo 'export const CLIENT_SECRET = "${REGME_CLIENT_SECRET}"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "$REGME_CLIENT_ID"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "$$REGME_CLIENT_ID"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "$${REGME_CLIENT_ID}"' >> common/constants.js
-      - echo 'export const CLIENT_ID = "{REGME_CLIENT_ID}"' >> common/constants.js
-      - echo test '${REGME_CLIENT_ID}'
-      - echo test2 ${REGME_CLIENT_ID}
-      - echo test3 $$REGME_CLIENT_ID
-      - echo test4 $REGME_CLIENT_ID
+      - echo 'export const BASE = "https://online.ntnu.no/"' > common/constants2.js
+      - echo 'export const API_BASE = "https://online.ntnu.no/api/v1/"' >> common/constants2.js
+      - echo 'export const API_EVENTS = "events/"' >> common/constants2.js
+      - echo 'export const API_AUTH = "auth/"' >> common/constants2.js
+      - echo 'export const API_ATTENDEES = "attendees/"' >> common/constants2.js
+      - echo 'export const API_ATTEND = "attend/"' >> common/constants2.js
+      - echo 'export const API_USERS = "users/"' >> common/constants2.js
+      - echo 'export const CLIENT_SECRET = "${REGME_CLIENT_SECRET}"' >> common/constants2.js
+      - echo 'export const CLIENT_ID = "$REGME_CLIENT_ID"' >> common/constants2.js
+      - echo 'export const CLIENT_ID = "$$REGME_CLIENT_ID"' >> common/constants2.js
+      - echo 'export const CLIENT_ID = "$${REGME_CLIENT_ID}"' >> common/constants2.js
+      - echo 'export const CLIENT_ID = "{REGME_CLIENT_ID}"' >> common/constants2.js
       - node /srv/www/regme/node_modules/webpack/bin/webpack.js
