@@ -35,7 +35,7 @@ export default class List extends Component {
     const tableHeaders = [
       <th key="1" onClick={() => onChange('NAME', !asc)} className='cell-non-numeric' colSpan="1">{category}</th>,
       <th key="2" onClick={() => onChange('DATE', !asc)} className='cell-non-numeric' colSpan="1">Registreringsdato</th>,
-      <th key="3" onClick={() => this.toggleCollapse()}>{collapseContent}</th>,
+      <th key="3" onClick={() => this.toggleCollapse()}>placeholder</th>,
     ];
     return (
       <tbody>
