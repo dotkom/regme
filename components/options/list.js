@@ -33,7 +33,7 @@ export default class List extends Component {
       }
       if (attendees.length != 0) {
         userList.push(
-          <tr className="spacer" />
+          <tr key="spacer" className="spacer" />
         )
       }
     }
