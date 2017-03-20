@@ -17,7 +17,15 @@ input[type=text] {
   padding: 8px 16px;
   margin-bottom: 32px;
 
+  border: 2px solid #DDD;
   border-radius: 4px;
+
+  outline: none;
+
+  &:focus {
+    border-color: @primary;
+    box-shadow:0 0 4px @primary;
+  }
 
   .placeholder;
 
