@@ -65,8 +65,8 @@ class Options extends Component {
       );
     }
     return (
-      <div>
-        <a onClick={() => { this.clickHandler(); }}>Alternativer</a>
+      <div className="options">
+        <button onClick={() => { this.clickHandler(); }}>Alternativer</button>
         { optionBody }
       </div>
     );
