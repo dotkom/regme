@@ -165,7 +165,7 @@ class Registration extends Component {
   render() {
     const event = this.event;
     return (
-      <div className="registration-container">
+      <div className="registration">
         <h1>
           { event ? event.name : '' } { (event && event.company) ? event.company.name : '' }
         </h1>
