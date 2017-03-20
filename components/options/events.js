@@ -24,21 +24,20 @@ class Events extends Component {
   render() {
     const eventButtons = [];
     for (const event of this.props.events) {
-      let btnClass = 'event-btn';
+      let btnClass = '';
       if (this.selected && this.selected.id === event.id) {
-        btnClass += ' event-btn-selected';
+        btnClass = 'selected';
       }
       eventButtons.push(
-        <a ref={a => this.appendMDL(a)} className={btnClass} onClick={() => { this.selected = event; }} key={event.id}>{event.name}</a>
+        <button ref={a => this.appendMDL(a)} className={btnClass} onClick={() => { this.selected = event; }}
+           key={event.id}>{event.name}</button>
       );
     }
 
     return (
       <div className="events">
-        <h3>Arrangementer</h3>
-        <div className="event-button-div">
-          { eventButtons }
-        </div>
+        <h2>Arrangementer</h2>
+        { eventButtons }
       </div>
     );
   }
