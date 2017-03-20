@@ -58,7 +58,6 @@ class Options extends Component {
       optionBody = (
         <div className="options-content">
           <Events events={this.events} event={this.selectedEvent} onEventChanged={(event) => { this.selectedEvent = event; }} />
-          <hr />
           <Attendees event={this.selectedEvent} />
         </div>
       );

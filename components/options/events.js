@@ -37,7 +37,9 @@ class Events extends Component {
     return (
       <div className="events">
         <h2>Arrangementer</h2>
-        { eventButtons }
+        <div>
+          { eventButtons }
+        </div>
       </div>
     );
   }
