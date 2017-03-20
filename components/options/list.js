@@ -26,16 +26,21 @@ export default class List extends Component {
       for (const attendee of attendees) {
         userList.push(
           <tr key={attendee.id}>
-            <td className="cell-non-numeric">{ [attendee.firstname, attendee.lastname].join(' ') }</td>
-            <td className="cell-non-numeric" colSpan="2">{ attendee.date.toLocaleString() }</td>
+            <td>{ [attendee.firstname, attendee.lastname].join(' ') }</td>
+            <td>{ attendee.date.toLocaleString() }</td>
           </tr>
         );
+      }
+      if (attendees.length != 0) {
+        userList.push(
+          <tr className="spacer" />
+        )
       }
     }
     const tableHeaders = [
       <th key="1" onClick={() => onChange('NAME', !asc)} className='cell-non-numeric' colSpan="1">{category}</th>,
       <th key="2" onClick={() => onChange('DATE', !asc)} className='cell-non-numeric' colSpan="1">Registreringsdato</th>,
-      <th key="3" onClick={() => this.toggleCollapse()}>placeholder</th>,
+      // <th key="3" onClick={() => this.toggleCollapse()}>placeholder</th>,
     ];
     return (
       <tbody>
