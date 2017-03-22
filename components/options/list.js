@@ -31,16 +31,34 @@ export default class List extends Component {
           </tr>
         );
       }
-      if (attendees.length != 0) {
+      if (attendees.length !== 0) {
         userList.push(
           <tr key="spacer" className="spacer" />
         )
       }
     }
+    let ascDescName = '';
+    let ascDescDate = '';
+    if (orderby === 'NAME') {
+      if (asc) {
+        ascDescName = <i className="fa fa-sort-asc fa-stack-1x" />;
+      } else {
+        ascDescName = <i className="fa fa-sort-desc fa-stack-1x" />;
+      }
+    } else if (orderby === 'DATE') {
+      if (asc) {
+        ascDescDate = <i className="fa fa-sort-asc fa-stack-1x" />;
+      } else {
+        ascDescDate = <i className="fa fa-sort-desc fa-stack-1x" />;
+      }
+    }
+    let indicator = '';
+    if (category !== 'Venteliste') {
+      indicator = <i className="fa fa-sort fa-stack-1x" />;
+    }
     const tableHeaders = [
-      <th key="1" onClick={() => onChange('NAME', !asc)} className='cell-non-numeric' colSpan="1">{category}</th>,
-      <th key="2" onClick={() => onChange('DATE', !asc)} className='cell-non-numeric' colSpan="1">Registreringsdato</th>,
-      // <th key="3" onClick={() => this.toggleCollapse()}>placeholder</th>,
+      <th key="1" onClick={() => onChange('NAME', !asc)} ><span className="fa-stack">{indicator}{ascDescName}</span> {category}</th>,
+      <th key="2" onClick={() => onChange('DATE', !asc)} >Registreringsdato <span className="fa-stack">{indicator}{ascDescDate}</span></th>
     ];
     return (
       <tbody>
