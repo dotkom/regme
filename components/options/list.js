@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 export default class List extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export default class List extends Component {
         userList.push(
           <tr key={attendee.id}>
             <td>{ [attendee.firstname, attendee.lastname].join(' ') }</td>
-            <td>{ attendee.date.toLocaleString() }</td>
+            <td>{ moment(attendee.date).format('DD/MM/YYYY HH:mm:ss') }</td>
           </tr>
         );
       }
