@@ -14,12 +14,15 @@
     }
 
     tbody:not(:last-child) th {
-
       cursor: pointer;
 
       &:hover {
         color: @accent;
       }
+    }
+
+    tbody:last-child th {
+      cursor: default;
     }
 
     tr {
