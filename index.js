@@ -1,3 +1,7 @@
+// Polyfills for fetch
+import 'es6-promise/auto';
+import 'whatwg-fetch';
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Header from './components/header';
