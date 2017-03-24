@@ -120,8 +120,10 @@ export class Modal extends Component {
     return (
       <dialog id="modal-example" ref={ref => this.setDialog(ref)}>
         <p>{this.props.content}</p>
-        <button type="button" onClick={() => this.acceptHandler()}>{this.props.acceptText || 'Ja'}</button>
-        <button type="button" onClick={() => this.declineHandler()}>{this.props.declineText || 'Nei'}</button>
+        <div>
+          <button type="button" onClick={() => this.acceptHandler()}>{this.props.acceptText || 'Ja'}</button>
+          <button type="button" onClick={() => this.declineHandler()}>{this.props.declineText || 'Nei'}</button>
+        </div>
       </dialog>
     );
   }

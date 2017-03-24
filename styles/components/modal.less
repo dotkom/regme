@@ -1,0 +1,28 @@
+dialog[open] {
+
+  padding: 16px;
+
+  border: 2px solid #fff;
+  border-radius: 4px;
+
+  background-color: @background;
+  color: #fff;
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  p {
+    display: block;
+
+    margin-bottom: 8px;
+  }
+
+  div {
+    text-align: center;
+
+    button:first-child {
+      margin-right: 8px;
+    }
+  }
+}
