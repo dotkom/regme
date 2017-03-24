@@ -24,11 +24,12 @@ class App extends Component {
     return this.state.options;
   }
   render() {
+    const event = this.options ? this.options.event : null;
     return (
       <div>
-        <Header />
-        <main className="regme-layout-content">
-          <Registration event={this.options ? this.options.event : null} />
+        <Header event={event} />
+        <main>
+          <Registration event={event} />
           <Options onOptionsChanged={options => this.options = options} />
         </main>
       </div>

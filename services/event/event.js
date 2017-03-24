@@ -1,7 +1,7 @@
 import { Observable, ReplaySubject } from 'rxjs'
 
 export class Event{
-  constructor(id,name,capacity,attendees=[],org?){
+  constructor(id,name,capacity,attendees=[],org){
     this._name = name
     this._id = id
     this._capacity = capacity 
@@ -13,7 +13,7 @@ export class Event{
     this._attendingSubject = new ReplaySubject(1)
     this._waitlistSubject = new ReplaySubject(1)
     this._notAttendedSubject = new ReplaySubject(1)
-    this._organisation = org
+    this._organization = org
     this._attendeesSubject.next({
       waitlist: [],
       attending: [],
@@ -66,8 +66,8 @@ export class Event{
     })
     
   }
-  get organisation(){
-    return this._organisation
+  get organization(){
+    return this._organization
   }
   get attendees(){
     return this._attendeesSubject.asObservable()
