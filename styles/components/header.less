@@ -1,3 +1,41 @@
-img[alt='Online']{
-  width: 200px;
+header {
+
+  padding: 32px;
+
+  .outer {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    overflow: hidden;
+
+    .inner {
+      position: relative;
+
+      width: 550px;
+      height: 300px;
+
+      top: -130px;
+      right: -135px;
+
+      text-align: center;
+
+      background-color: #FFF;
+      transform: rotate(35deg);
+
+      &:empty {
+        display: none;
+      }
+
+      img {
+        position: relative;
+
+        top: 125px;
+        right: -50px;
+
+        transform: rotate(-35deg);
+      }
+    }
+  }
 }

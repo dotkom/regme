@@ -36,9 +36,10 @@ class EventServiceProvider {
         for (const a of r.results) {
           if (a.attendance_event) {
             let company = null;
-            const ce = a.company_event[0];
+            let ce = a.company_event[0];
             if (ce) {
-              company = new Company(ce.name, ce.site, ce.image ? ce.image.thum : null);
+              ce = ce.company;
+              company = new Company(ce.name, ce.site, ce.image ? ce.image.thumb : null);
             }
             const event = new Event(a.id, a.title, a.attendance_event.max_capacity, [], company);
             attendeeService.getAttendees(event).subscribe((attendees) => {

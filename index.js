@@ -1,3 +1,7 @@
+// Polyfills for fetch
+import 'es6-promise/auto';
+import 'whatwg-fetch';
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Header from './components/header';
@@ -20,25 +24,14 @@ class App extends Component {
     return this.state.options;
   }
   render() {
+    const event = this.options ? this.options.event : null;
     return (
-      <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <Header />
-        <main className="mdl-layout__content regme-layout-content">
-          <div className="mdl-grid regme-grid">
-            <div
-              className="mdl-cell regme-grid-cell mdl-cell--8-col-desktop
-                            mdl-cell--2-offset-desktop mdl-cell--6-col-tablet
-                            mdl-cell--1-offset-tablet mdl-cell--4-col-phone"
-            >
-              <Registration event={this.options ? this.options.event : null} />
-              <Options onOptionsChanged={options => this.options = options} />
-            </div>
-          </div>
+      <div>
+        <Header event={event} />
+        <main>
+          <Registration event={event} />
+          <Options onOptionsChanged={options => this.options = options} />
         </main>
-        <div className="mdl-js-snackbar mdl-snackbar">
-          <div className="mdl-snackbar__text" />
-          <button className="mdl-snackbar__action" type="button" />
-        </div>
       </div>
     );
   }

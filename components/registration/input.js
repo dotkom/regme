@@ -37,21 +37,13 @@ class Input extends Component {
   render() {
     return (
       <form onSubmit={evt => this.submit(evt)}>
-        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label registration-input">
-          <input
-            className="mdl-textfield__input"
-            type="text"
-            id="registration-input"
-            pattern="[A-Za-z0-9]+"
-            autoComplete={false}
-            ref={a => this.setRef(a)}
-          />
-          <label
-            className="mdl-textfield__label"
-            htmlFor="registration-input"
-          >{ this.props.placeholder }</label>
-          <span className="mdl-textfield__error">Input er ikke gyldig!</span>
-        </div>
+        <input
+          type="text"
+          pattern="[A-Za-z0-9]+"
+          placeholder={ this.props.placeholder }
+          autoComplete={false}
+          ref={a => this.setRef(a)}
+        />
       </form>
     );
   }
