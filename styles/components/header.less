@@ -1,41 +1,36 @@
 header {
-
   padding: 32px;
 
-  .outer {
-    position: absolute;
+}
 
-    top: 0;
-    right: 0;
+.corner-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+}
 
-    overflow: hidden;
+.corner {
+  position: relative;
+  top: -130px;
+  right: -135px;
 
-    .inner {
-      position: relative;
+  width: 550px;
+  height: 300px;
 
-      width: 550px;
-      height: 300px;
+  text-align: center;
 
-      top: -130px;
-      right: -135px;
+  background-color: #FFF;
+  transform: rotate(35deg);
 
-      text-align: center;
+  img {
+    position: relative;
+    top: 125px;
+    right: -50px;
+    transform: rotate(-35deg);
+  }
 
-      background-color: #FFF;
-      transform: rotate(35deg);
-
-      &:empty {
-        display: none;
-      }
-
-      img {
-        position: relative;
-
-        top: 125px;
-        right: -50px;
-
-        transform: rotate(-35deg);
-      }
-    }
+  &:empty {
+    display: none;
   }
 }

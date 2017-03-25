@@ -74,7 +74,7 @@ class Attendees extends Component {
       <div className="attendees">
         <h2>Deltakere</h2>
         <button onClick={() => this.exportPDF()}>Eksporter til PDF</button>
-        <table className="attendee-lists">
+        <table>
           <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a, b) => this.reorder(a, b)} category="Møtt" attendees={this.state.attending} />
           <List asc={this.state.asc} orderby={this.state.orderby} onChange={(a, b) => this.reorder(a, b)} category="Ikke møtt" attendees={this.state.notAttended} />
           <List asc orderby={'DATE'} onChange={() => {}} category="Venteliste" attendees={this.state.waitlist} />
