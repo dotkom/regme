@@ -6,7 +6,11 @@ const Header = ({event}) => {
   return (
     <header>
       <img src="assets/images/logo_online.svg" alt="Online"/>
-      {companyImg}
+      <div className="outer">
+        <div className="inner">
+          {companyImg}
+        </div>
+      </div>
     </header>
   );
 };
