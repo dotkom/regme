@@ -74,8 +74,8 @@ class AttendeeServiceProvider {
   getAttendees(event, page = 1) {
     const count = 0;
     return http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page })
-      .map(result => result.results)
-      .map((attendees) => {
+      .map((result) => {
+        let attendees = result.results;
         const a = [];
         for (const attendee of attendees) {
           const at = new Attendee(
@@ -90,13 +90,13 @@ class AttendeeServiceProvider {
           a.push(at);
           this.cache[at.id] = at;
         }
-        return a;
+        return {attendees: a, next: result.next};
       })
-      .flatMap((attendees) => {
-        if (attendees.length == 10) {
-          return this.getAttendees(event, ++page).zip(Observable.of(attendees), (a, b) => a.concat(b));
+      .flatMap((r) => {
+        if (r.next) {
+          return this.getAttendees(event, ++page).zip(Observable.of(r.attendees), (a, b) => a.concat(b));
         }
-        return Observable.of(attendees);
+        return Observable.of(r.attendees);
       });
   }
 
