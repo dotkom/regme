@@ -1,41 +1,35 @@
 header {
+  padding: 2rem;
+}
 
-  padding: 32px;
+.corner-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+}
 
-  .outer {
-    position: absolute;
+.corner {
+  position: relative;
+  top: -130px;
+  right: -135px;
 
-    top: 0;
-    right: 0;
+  width: 550px;
+  height: 300px;
 
-    overflow: hidden;
+  text-align: center;
 
-    .inner {
-      position: relative;
+  background-color: @light;
+  transform: rotate(35deg);
 
-      width: 550px;
-      height: 300px;
+  img {
+    position: relative;
+    top: 125px;
+    right: -50px;
+    transform: rotate(-35deg);
+  }
 
-      top: -130px;
-      right: -135px;
-
-      text-align: center;
-
-      background-color: #FFF;
-      transform: rotate(35deg);
-
-      &:empty {
-        display: none;
-      }
-
-      img {
-        position: relative;
-
-        top: 125px;
-        right: -50px;
-
-        transform: rotate(-35deg);
-      }
-    }
+  &:empty {
+    display: none;
   }
 }
