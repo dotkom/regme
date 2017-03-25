@@ -16,8 +16,8 @@ export class HttpServiceProvider {
     // Should be made for dynamic
     // Prevents 'DOS' protection
     this.requestSubject
-      // Zip each request with a interval stream
-      .zip(Observable.interval(100).skipUntil(this.requestSubject), (a, b) => a)
+      //Limit throughput by 100ms
+      .concatMap(v => Observable.of(v).delay(100))
       // Subscrive to this stream
       .subscribe((requestPair) => {
         // preforme request
