@@ -118,13 +118,11 @@ export class Modal extends Component {
    */
   render() {
     return (
-      <dialog className={`mdl-dialog status-${this.props.status ? this.props.status : 'original'}`} id="modal-example" ref={ref => this.setDialog(ref)}>
-        <div className="mdl-dialog__content">
-          <p><i className="material-icons modal-icon">{this.props.icon || ''}</i>{this.props.content}</p>
-        </div>
-        <div className="mdl-dialog__actions mdl-dialog__actions--full-width">
-          <button type="button" onClick={() => this.acceptHandler()} className="mdl-button">{this.props.acceptText || 'Ja'}</button>
-          <button type="button" onClick={() => this.declineHandler()} className="mdl-button">{this.props.declineText || 'Nei'}</button>
+      <dialog id="modal-example" ref={ref => this.setDialog(ref)}>
+        <p>{this.props.content}</p>
+        <div>
+          <button type="button" onClick={() => this.acceptHandler()}>{this.props.acceptText || 'Ja'}</button>
+          <button type="button" onClick={() => this.declineHandler()}>{this.props.declineText || 'Nei'}</button>
         </div>
       </dialog>
     );

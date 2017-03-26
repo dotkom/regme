@@ -6,7 +6,7 @@ import { eventService } from 'services/event';
 import { userService } from 'services/user';
 import { attendeeService } from 'services/attendee';
 import { Observable } from 'rxjs';
-import { isRfid, showToast } from 'common/utils';
+import { isRfid } from 'common/utils';
 
 /**
  * Registration view. This is what the user see
@@ -16,9 +16,8 @@ import { isRfid, showToast } from 'common/utils';
  *  - Show user stats in numbers.
  */
 const Placeholders = {
-  default: 'Fyll inn RFID eller brukernavn',
-  username: 'Fyll inn brukernavn for å registrere RFID',
-  passOrUser: 'Fyll inn brukernavn eller RFID',
+  default: 'Fyll inn RFID eller brukernavn...',
+  username: 'Fyll inn brukernavn for å registrere RFID...',
 };
 
 class Registration extends Component {
@@ -32,11 +31,6 @@ class Registration extends Component {
         minute: date.getMinutes(),
         second: date.getSeconds(),
       },
-      /* attendees: {
-        listed: 0,
-        registered: 0,
-        waiting: 0,
-      },*/
       status: '',
       message: null,
       attendee_status: {},
@@ -85,9 +79,6 @@ class Registration extends Component {
   get pUsername() {
     return this.state.pUsername;
   }
-  /* handleUsername(input){
-
-  }*/
   get event() {
     return this.props.event;
   }
@@ -111,16 +102,6 @@ class Registration extends Component {
       this.update = { status: 'ERROR', message: 'Invalid input!' };
     }
   }
-  updateTime() {
-    const date = new Date();
-    this.setState(Object.assign({}, this.state, {
-      time: {
-        hour: date.getHours(),
-        minute: date.getMinutes(),
-        second: date.getSeconds(),
-      },
-    }));
-  }
   handleAttendeeResponse(stream) {
     stream.subscribe((v) => {
       // this.event.refresh();
@@ -133,11 +114,6 @@ class Registration extends Component {
       }));
     }, (v) => {
       this.updateTime();
-      const toast = {
-        message: v.message,
-        timeout: 1500,
-      };
-      showToast(toast);
       this.update = { status: 'ERROR', message: v.message };
       const attendeeStatus = v;
       let placeholder = 'default';
@@ -189,23 +165,21 @@ class Registration extends Component {
   render() {
     const event = this.event;
     return (
-      <div className="mdl-card mdl-shadow--4dp">
-        <h3 className="event-title">
+      <div className="registration">
+        <h1>
           { event ? event.name : '' } { (event && event.company) ? event.company.name : '' }
-        </h3>
+        </h1>
         <Status
           message={this.state.message}
           time={this.state.time}
           statusCode={this.state.status}
         />
-        <hr />
         <Input value={this.state.ivalue} placeholder={Placeholders[this.state.placeholder]} onSubmit={input => this.handleSubmit(input)} />
-        <hr />
         <p>
           <span>Møtt: { event ? event.registeredCount : 0}</span>
           &nbsp;- <span>Påmeldt: { event ? event.totalCount : 0 }</span>
           &nbsp;- <span>Plasser: { event ? event.capacity : 0 }</span></p>
-        <Modal show={this.state.showModal} accept={() => this.acceptHandler()} decline={() => this.declineHandler()} status="danger" icon="error_outline" content="Denne persjonen er på venteliste. Vil du at personen skal slippe inn?" />
+        <Modal show={this.state.showModal} accept={() => this.acceptHandler()} decline={() => this.declineHandler()} content="Denne personen er på venteliste. Vil du at personen skal slippe inn?" />
       </div>
     );
   }

@@ -1,0 +1,71 @@
+.attendees button {
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  text-align: left;
+
+  line-height: 2;
+
+  .spacer {
+    height: 2rem;
+  }
+
+}
+
+tbody:not(:last-child) th {
+  cursor: pointer;
+
+  &:hover {
+    color: @accent;
+  }
+}
+
+tbody:last-child th {
+  cursor: default;
+}
+
+tr {
+  &:nth-child(2) {
+    border-top: 0.0625rem solid @light;
+  }
+
+  &:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.025);
+  }
+
+  &:last-child {
+    margin-bottom: 1rem;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.075);
+  }
+}
+
+th {
+  width: 50%;
+  font-weight: 600;
+
+  .fa-stack:empty {
+    display: none;
+  }
+
+  .fa-sort {
+    opacity: 0.25;
+  }
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+th, td {
+  padding: 0.5rem;
+
+  &:last-child {
+    text-align: right;
+  }
+}

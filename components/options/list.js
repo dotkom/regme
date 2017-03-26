@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 export default class List extends Component {
   constructor(props) {
@@ -20,24 +21,45 @@ export default class List extends Component {
     const onChange = this.props.onChange;
     const collapse = this.state.collapse;
 
-
     const userList = [];
 
     if (!collapse) {
       for (const attendee of attendees) {
         userList.push(
           <tr key={attendee.id}>
-            <td className="mdl-data-table__cell--non-numeric">{ [attendee.firstname, attendee.lastname].join(' ') }</td>
-            <td className="mdl-data-table__cell--non-numeric" colSpan="2">{ attendee.date.toLocaleString() }</td>
+            <td>{ [attendee.firstname, attendee.lastname].join(' ') }</td>
+            <td>{ moment(attendee.date).format('DD/MM/YYYY HH:mm:ss') }</td>
           </tr>
         );
       }
+      if (attendees.length !== 0) {
+        userList.push(
+          <tr key="spacer" className="spacer" />
+        )
+      }
     }
-    const collapseContent = collapse ? (<i className="material-icons">keyboard_arrow_left</i>) : (<i className="material-icons">keyboard_arrow_down</i>);
+    let ascDescName = '';
+    let ascDescDate = '';
+    if (orderby === 'NAME') {
+      if (asc) {
+        ascDescName = <i className="fa fa-sort-asc fa-stack-1x" />;
+      } else {
+        ascDescName = <i className="fa fa-sort-desc fa-stack-1x" />;
+      }
+    } else if (orderby === 'DATE') {
+      if (asc) {
+        ascDescDate = <i className="fa fa-sort-asc fa-stack-1x" />;
+      } else {
+        ascDescDate = <i className="fa fa-sort-desc fa-stack-1x" />;
+      }
+    }
+    let indicator = '';
+    if (category !== 'Venteliste') {
+      indicator = <i className="fa fa-sort fa-stack-1x" />;
+    }
     const tableHeaders = [
-      <th key="1" onClick={() => onChange('NAME', !asc)} className={`mdl-data-table__cell--non-numeric ${orderby == 'NAME' ? (asc ? 'mdl-data-table__header--sorted-ascending' : 'mdl-data-table__header--sorted-descending') : ''}`} colSpan="1">{category}</th>,
-      <th key="2" onClick={() => onChange('DATE', !asc)} className={`mdl-data-table__cell--non-numeric ${orderby == 'DATE' ? (asc ? 'mdl-data-table__header--sorted-ascending' : 'mdl-data-table__header--sorted-descending') : ''}`} colSpan="1">Registreringsdato</th>,
-      <th key="3" onClick={() => this.toggleCollapse()}>{collapseContent}</th>,
+      <th key="1" onClick={() => onChange('NAME', !asc)} ><span className="fa-stack">{indicator}{ascDescName}</span> {category}</th>,
+      <th key="2" onClick={() => onChange('DATE', !asc)} >Registreringsdato <span className="fa-stack">{indicator}{ascDescDate}</span></th>
     ];
     return (
       <tbody>

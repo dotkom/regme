@@ -1,27 +1,26 @@
-.modal-icon {
-  float: left;
-  font-size: 3em;
-  padding: 0 .3em .1em 0;
-}
+dialog[open] {
+  padding: 2rem;
 
-.modal-icon::empty {
-  display: none;
-}
+  border: 0.0625rem solid @light;
+  border-radius: 0.25rem;
 
-.mdl-dialog {
-  &.status-danger {
-    background-color: #a00;
+  background-color: @background;
+  color: @light;
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
-  border-radius: 3px;
-  z-index: 2;
-
-  .mdl-dialog__content,
-  .mdl-button {
-    color: #eee;
+  p {
+    display: block;
+    margin-bottom: 1rem;
   }
 
-  .mdl-button:hover {
-    background-color: rgba(0, 0, 0, .1);
+  div {
+    text-align: center;
+  }
+
+  button:first-child {
+    margin-right: 0.5rem;
   }
 }

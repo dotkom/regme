@@ -1,3 +1,35 @@
-img[alt='Online']{
-  width: 200px;
+header {
+  padding: 2rem;
+}
+
+.corner-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+.corner {
+  position: relative;
+  top: -130px;
+  right: -135px;
+
+  width: 550px;
+  height: 300px;
+
+  text-align: center;
+
+  background-color: @light;
+  transform: rotate(35deg);
+
+  img {
+    position: relative;
+    top: 125px;
+    right: -50px;
+    transform: rotate(-35deg);
+  }
+
+  &:empty {
+    display: none;
+  }
 }

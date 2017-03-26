@@ -56,17 +56,15 @@ class Options extends Component {
     let optionBody = '';
     if (this.state.showOptions) {
       optionBody = (
-        <div>
-          <hr />
+        <div className="options-content">
           <Events events={this.events} event={this.selectedEvent} onEventChanged={(event) => { this.selectedEvent = event; }} />
-          <hr />
           <Attendees event={this.selectedEvent} />
         </div>
       );
     }
     return (
-      <div className="mdl-card mdl-shadow--4dp">
-        <a className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={() => { this.clickHandler(); }}>Alternativer</a>
+      <div className="options">
+        <button onClick={() => { this.clickHandler(); }}>Alternativer</button>
         { optionBody }
       </div>
     );

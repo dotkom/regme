@@ -1,0 +1,22 @@
+.status {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 2rem;
+  padding: 1rem;
+
+  border: 0.125rem solid;
+  border-radius: 0.25rem;
+
+  background-color: rgba(255, 255, 255, 0.05);
+
+  &.status-ok {
+    border-color: #8BC34A;
+  }
+  &.status-progress {
+    border-color: #FF9800;
+  }
+  &.status-danger {
+    border-color: #F44336;
+  }
+}

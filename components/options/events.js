@@ -16,27 +16,23 @@ class Events extends Component {
   get selected() {
     return this.state.selected;
   }
-  appendMDL(ref) {
-    if (ref) {
-      componentHandler.upgradeElement(ref);
-    }
-  }
   render() {
     const eventButtons = [];
     for (const event of this.props.events) {
-      let btnClass = 'mdl-button mdl-button--colored';
+      let btnClass = '';
       if (this.selected && this.selected.id === event.id) {
-        btnClass += ' mdl-button--raised';
+        btnClass = 'selected';
       }
       eventButtons.push(
-        <a ref={a => this.appendMDL(a)} className={btnClass} onClick={() => { this.selected = event; }} key={event.id}>{event.name}</a>
+        <button className={btnClass} onClick={() => { this.selected = event; }}
+           key={event.id}>{event.name}</button>
       );
     }
 
     return (
-      <div>
-        <h3>Arrangementer</h3>
-        <div className="event-button-div">
+      <div className="events">
+        <h2>Arrangementer</h2>
+        <div>
           { eventButtons }
         </div>
       </div>
