@@ -33,11 +33,12 @@ export class HttpServiceProvider {
             handleResponse will resolve or will queue the request in case of
             401 error, when token is renewed it will then try to performe the request
           */
-          .flatMap(response => this.handleResponse(response, requestPair.request,requestPair.delay))
+          .flatMap(response => this.handleResponse(response, requestPair.request, requestPair.clone, requestPair.delay))
           // When the request is resolved, send it back to the source of the request
           .subscribe((r) => {
             requestPair.subject.next(r);
           }, (error) => {
+            console.log("Error:", error);
             requestPair.subject.error(error);
           }, () => {
             requestPair.subject.complete();
@@ -77,7 +78,7 @@ export class HttpServiceProvider {
     }
   }
 
-  handleResponse(r, req, delay) {
+  handleResponse(r, req, clone, delay) {
     /* TODO: handle 503(service unavailable) responses
       adjust delay up when a 503 responses happens
       and retry
@@ -98,7 +99,7 @@ export class HttpServiceProvider {
       if (r.status == 401 || r.status == 503) {
         // Add request to queue
         const resolver = new Subject();
-        this.requestQueue.push({ request: req, subject: resolver, delay: this.request_rate });
+        this.requestQueue.push({ request: req, clone: clone.clone(), subject: resolver, delay: this.request_rate });
         // Renew token if not waiting for token, because access denied
         this.renewToken();
         return resolver.asObservable();
@@ -111,12 +112,12 @@ export class HttpServiceProvider {
    * @param {Request} url
    * @return Observable<{}>
    */
-  request(request) {
+  request(request,clone) {
     // Add token to request
     request.headers.set('Authorization', `Bearer ${this.auth_token}`);
     const resolver = new Subject();
     // Push request into request 'stream'/queue
-    this.requestSubject.next({ request, subject: resolver, delay: this.request_rate });
+    this.requestSubject.next({ request, clone, subject: resolver, delay: this.request_rate });
     return resolver.asObservable();
   }
   /** performes a get request
@@ -131,7 +132,8 @@ export class HttpServiceProvider {
     }
     // Create request
     const request = new Request(pUrl, { method: 'get' });
-    return this.request(request);
+    const clone = request.clone();
+    return this.request(request,clone);
   }
 
   static urlEncode(data) {
@@ -168,7 +170,8 @@ export class HttpServiceProvider {
       body: pBody,
       headers,
     });
-    return this.request(request);
+    const clone = request.clone();
+    return this.request(request,clone);
   }
 }
 // Export single instance

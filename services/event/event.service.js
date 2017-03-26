@@ -12,7 +12,6 @@ class EventServiceProvider {
     this._events = null;
     this._cache = {};
     this.eventSubject = new ReplaySubject(1);
-    this.refresh();
   }
 
   set events(newEvents) {
