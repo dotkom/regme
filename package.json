@@ -39,6 +39,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "dialog-polyfill": "^0.4.5",
     "es6-promise": "^4.1.0",
     "moment": "^2.18.1",
