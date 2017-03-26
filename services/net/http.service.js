@@ -12,23 +12,28 @@ export class HttpServiceProvider {
     this.waitingForToken = false;
     this.requestSubject = new Subject();
     this.count = 0;
-    // Subject for handling requests, each request is seperated by 100ms
-    // Should be made for dynamic
+    this.request_rate = 1;
+    //How many 503 in a row? for a given delay
+    this.fail_in_row = {};
+    this.request_count = {};
+    // Subject for handling requests, each request is seperated by this.request_rate in ms
     // Prevents 'DOS' protection
     this.requestSubject
-      //Limit throughput by 100ms
-      .concatMap(v => Observable.of(v).delay(100))
+      //Limit throughput
+      .concatMap(v => Observable.of(v).delay(v.delay))
       // Subscrive to this stream
       .subscribe((requestPair) => {
         // preforme request
         this.count++;
+        this.request_count[requestPair.delay] = this.request_count[requestPair.delay] || 0
+        this.request_count[requestPair.delay]++;
         Observable.fromPromise(fetch(requestPair.request))
           /*
             Send response to handleResponse()
             handleResponse will resolve or will queue the request in case of
             401 error, when token is renewed it will then try to performe the request
           */
-          .flatMap(response => this.handleResponse(response, requestPair.request))
+          .flatMap(response => this.handleResponse(response, requestPair.request,requestPair.delay))
           // When the request is resolved, send it back to the source of the request
           .subscribe((r) => {
             requestPair.subject.next(r);
@@ -72,17 +77,28 @@ export class HttpServiceProvider {
     }
   }
 
-  handleResponse(r, req) {
+  handleResponse(r, req, delay) {
     /* TODO: handle 503(service unavailable) responses
       adjust delay up when a 503 responses happens
       and retry
     */
+    if(r.status == 503){
+      this.fail_in_row[delay] = this.fail_in_row[delay] || 0;
+      this.fail_in_row[delay]++;
+      //Adjust rate
+      this.request_rate += Math.ceil(10*this.fail_in_row[delay]/this.request_count[delay]);
+    }else{
+      this.fail_in_row[delay] = 0;  
+    }
+    console.log(this.request_rate);
+    
+    
     if (!r.ok) {
       // 401 Unauthorized
-      if (r.status == 401) {
+      if (r.status == 401 || r.status == 503) {
         // Add request to queue
         const resolver = new Subject();
-        this.requestQueue.push({ request: req, subject: resolver });
+        this.requestQueue.push({ request: req, subject: resolver, delay: this.request_rate });
         // Renew token if not waiting for token, because access denied
         this.renewToken();
         return resolver.asObservable();
@@ -100,7 +116,7 @@ export class HttpServiceProvider {
     request.headers.set('Authorization', `Bearer ${this.auth_token}`);
     const resolver = new Subject();
     // Push request into request 'stream'/queue
-    this.requestSubject.next({ request, subject: resolver });
+    this.requestSubject.next({ request, subject: resolver, delay: this.request_rate });
     return resolver.asObservable();
   }
   /** performes a get request
