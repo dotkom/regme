@@ -28,6 +28,9 @@ export class Event{
     }
   }
 
+  hasAttendees(){
+    return this._attendees.length > 0;
+  }
   addAttendee(attendee){
     if(attendee.isRegistered()){
       this._attendingList.push(attendee)

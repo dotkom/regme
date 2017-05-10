@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 
+
+import { attendeeService } from 'services/attendee';
+
+
 class Events extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selected: props.event,
-    };
+    this.state = {};
+    this.selected = props.event;
   }
   set selected(event) {
+    if(!event.hasAttendees())
+      attendeeService.getAttendees(event).subscribe((attendees) => {
+        attendees.sort((a, b) => a.date - b.date);
+        for (const i of attendees) {
+          event.addAttendee(i);
+        }
+      });
     this.setState(Object.assign({}, this.state, { selected: event }));
     if (this.props.onEventChanged) {
       this.props.onEventChanged(event);
