@@ -85,15 +85,15 @@ class Registration extends Component {
   handleSubmit(input) {
     let responseStream = null;
     this.update = { status: 'WAIT', message: 'Venter...' };
-    if (this.event) {
+    
+    if (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50) {
+      responseStream = attendeeService.registerRfid(input, this.pRfid, this.event);
+    } else if (this.event) {
       this.setState(Object.assign({}, this.state, {
         pRfid: isRfid(input) ? input : null,
         pUsername: isRfid(input) ? null : input,
       }));
       responseStream = attendeeService.registerAttendee(this.event, input);
-    }
-    if (!responseStream && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)) {
-      responseStream = attendeeService.registerRfid(input, this.pRfid, this.event);
     }
 
     if (responseStream) {
