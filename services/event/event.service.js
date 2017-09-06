@@ -42,12 +42,6 @@ class EventServiceProvider {
               company = new Company(ce.name, ce.site, ce.image ? ce.image.thumb : null);
             }
             const event = new Event(a.id, a.title, a.attendance_event.max_capacity, [], company);
-            attendeeService.getAttendees(event).subscribe((attendees) => {
-              attendees.sort((a, b) => a.date - b.date);
-              for (const i of attendees) {
-                event.addAttendee(i);
-              }
-            });
             newEvents.push(event);
           }
         }
