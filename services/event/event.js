@@ -22,7 +22,6 @@ export class Event{
     this._attendingSubject.next([]);
     this._waitlistSubject.next([]);
     this._notAttendedSubject.next([]);
-    
     for(let i of attendees){
       this.addAttendee(i);
     }

@@ -73,8 +73,6 @@ class AttendeeServiceProvider {
   }
   getAttendees(event, page = 1) {
     const count = 0;
-    if(event.hasAttendees())
-      return event.attendees;
     
     return http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page })
       .map((result) => {
@@ -91,6 +89,9 @@ class AttendeeServiceProvider {
             event
           );
           a.push(at);
+          if(this.getCached(at.id) == null)
+            event.addAttendee(at);
+          
           this.cache[at.id] = at;
         }
         return {attendees: a, next: result.next};
@@ -100,12 +101,6 @@ class AttendeeServiceProvider {
           return this.getAttendees(event, ++page).zip(Observable.of(r.attendees), (a, b) => a.concat(b));
         }
         return Observable.of(r.attendees);
-      }).map((attendees) => {
-        attendees.sort((a, b) => a.date - b.date);
-        for (const i of attendees) {
-          event.addAttendee(i);
-        }
-        return attendees;
       });
   }
 
