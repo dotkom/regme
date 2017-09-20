@@ -8,24 +8,28 @@ class Events extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.selected = props.event;
+  }
+
+
+  componentDidMount(){
+    if(this.props.event)
+      this.selected = this.props.event;
   }
   set selected(event) {
     if(!event.hasAttendees())
       attendeeService.getAttendees(event).subscribe((attendees) => {
-        attendees.sort((a, b) => a.date - b.date);
-        for (const i of attendees) {
-          event.addAttendee(i);
-        }
+        //Update app state
       });
     this.setState(Object.assign({}, this.state, { selected: event }));
     if (this.props.onEventChanged) {
       this.props.onEventChanged(event);
     }
   }
+  
   get selected() {
     return this.state.selected;
   }
+
   render() {
     const eventButtons = [];
     for (const event of this.props.events) {
