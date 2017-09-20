@@ -8,7 +8,12 @@ class Events extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.selected = props.event;
+  }
+
+
+  componentDidMount(){
+    if(this.props.event)
+      this.selected = this.props.event;
   }
   set selected(event) {
     if(!event.hasAttendees())
@@ -23,9 +28,11 @@ class Events extends Component {
       this.props.onEventChanged(event);
     }
   }
+  
   get selected() {
     return this.state.selected;
   }
+
   render() {
     const eventButtons = [];
     for (const event of this.props.events) {
