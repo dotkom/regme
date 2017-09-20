@@ -72,7 +72,7 @@ class Registration extends Component {
   }
   componentDidMount() {
     this.updateTime();
-    this.update = { status: 'WAIT', message: 'Henter evarrangementents...' };      
+    this.update = { status: 'WAIT', message: 'Henter arrangemententer...' };      
     eventService.getEvents().subscribe((events) => {
       this.updateTime();
       this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };

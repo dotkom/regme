@@ -73,6 +73,9 @@ class AttendeeServiceProvider {
   }
   getAttendees(event, page = 1) {
     const count = 0;
+    if(event.hasAttendees())
+      return event.attendees;
+    
     return http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page })
       .map((result) => {
         let attendees = result.results;
@@ -103,7 +106,7 @@ class AttendeeServiceProvider {
           event.addAttendee(i);
         }
         return attendees;
-      }) ;
+      });
   }
 
 }
