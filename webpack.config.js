@@ -2,45 +2,59 @@ var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
+var env = {
+  'RG_BASE': "http://localhost:8000/",
+  'RG_API_BASE': "api/v1/",
+  'RG_API_EVENTS': 'events/',
+  'RG_API_AUTH': 'auth/',
+  'RG_API_ATTENDEES': 'attendees/',
+  'RG_API_ATTEND': 'attend/',
+  'RG_API_USERS': 'users/',
+  'RG_CLIENT_SECRET': '',
+  'RG_CLIENT_ID': '',
+  'RG_SENTRY_ID': '',
+  'NODE_ENV': 'production'
+};
+
+
 module.exports = {
   entry: ['babel-polyfill','./index.js'],
   output: {
     path: path.join(__dirname, 'dist'),
-    publicPath: '/dist/',
-    filename: 'bundle.js'
+    publicPath: '/',
+    filename: '[name].js'
   },
-  resolve: {
-    root: [
-      path.resolve('.')
-    ]
+  resolve: { 
+    extensions: ['.js','.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        use: [
+          {
+            loader: 'babel-loader'
+          }
+        ]
       },
       {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract('style', 'css!less')
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'less-loader'
+        })
       }
     ]
   },
-  lessLoader: {
-    includePath: [path.resolve(__dirname, './styles')]
-  },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: module => (
+        module.context && module.context.indexOf('node_modules') !== -1
+      )
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    }),
-    new ExtractTextPlugin('styles.css')
+    new ExtractTextPlugin('styles.css'),
+    new webpack.EnvironmentPlugin(env)
   ]
 }
