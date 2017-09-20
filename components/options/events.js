@@ -18,10 +18,7 @@ class Events extends Component {
   set selected(event) {
     if(!event.hasAttendees())
       attendeeService.getAttendees(event).subscribe((attendees) => {
-        attendees.sort((a, b) => a.date - b.date);
-        for (const i of attendees) {
-          event.addAttendee(i);
-        }
+        //Update app state
       });
     this.setState(Object.assign({}, this.state, { selected: event }));
     if (this.props.onEventChanged) {

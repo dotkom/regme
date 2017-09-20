@@ -59,15 +59,25 @@ class Registration extends Component {
   set update(update) {
     this.setState(Object.assign({}, this.state, update));
   }
-
+  componentWillReceiveProps(props){
+    if(props.event && !props.event.hasAttendees()){
+      this.updateTime();
+      this.update = { status: 'WAIT', message: 'Henter deltagere...' };      
+      attendeeService.getAttendees(props.event).subscribe((attendees) => {
+        this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };      
+      }, () => {
+        this.update = { status: 'ERROR', message: 'Kunne ikke hente inn deltagere!' };      
+      });
+    }
+  }
   componentDidMount() {
     this.updateTime();
-
+    this.update = { status: 'WAIT', message: 'Henter evarrangementents...' };      
     eventService.getEvents().subscribe((events) => {
       this.updateTime();
       this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };
     }, (error) => {
-      this.update = { status: 'ERROR', message: 'Kunne ikke hente inn events!' };
+      this.update = { status: 'ERROR', message: 'Kunne ikke hente inn arrangement!' };
     });
   }
   get attendeeStatus() {

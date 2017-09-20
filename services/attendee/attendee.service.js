@@ -49,7 +49,7 @@ class AttendeeServiceProvider {
           event,
         });
         return ret;
-      });
+      }); 
   }
   getCached(attendee_id) {
     return this.cache[attendee_id];
@@ -97,7 +97,13 @@ class AttendeeServiceProvider {
           return this.getAttendees(event, ++page).zip(Observable.of(r.attendees), (a, b) => a.concat(b));
         }
         return Observable.of(r.attendees);
-      });
+      }).map((attendees) => {
+        attendees.sort((a, b) => a.date - b.date);
+        for (const i of attendees) {
+          event.addAttendee(i);
+        }
+        return attendees;
+      }) ;
   }
 
 }
