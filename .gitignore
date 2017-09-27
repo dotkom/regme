@@ -2,7 +2,7 @@
 logs
 *.log
 npm-debug.log*
-
+.env*
 # Runtime data
 pids
 *.pid
@@ -41,6 +41,3 @@ jspm_packages
 
 # Bundle and style
 dist/
-
-# Config and secrets
-common/constants.js

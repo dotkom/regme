@@ -1,46 +1,106 @@
 var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
+var env = {
+  'RG_BASE': "http://localhost:8000/",
+  'RG_API_BASE': "api/v1/",
+  'RG_API_EVENTS': 'events/',
+  'RG_API_AUTH': 'auth/',
+  'RG_API_ATTENDEES': 'attendees/',
+  'RG_API_ATTEND': 'attend/',
+  'RG_API_USERS': 'users/',
+  'RG_CLIENT_SECRET': '',
+  'RG_CLIENT_ID': '',
+  'RG_SENTRY_ID': '',
+  'NODE_ENV': 'production'
+};
+
+var APP_ENTRY = path.join(__dirname, './app');
+var APP_SRC = path.join(APP_ENTRY, './src');
+
+
+var extractLess = new ExtractTextPlugin({
+  filename: '[name].[hash].css',
+  disable: process.env.NODE_ENV === "development"
+});
+
 
 module.exports = {
-  entry: ['babel-polyfill','./index.js'],
+  entry: [
+    'babel-polyfill',
+    'whatwg-fetch',
+    'react-hot-loader/patch',
+    path.join(APP_SRC,'./index.js')
+  ],
   output: {
     path: path.join(__dirname, 'dist'),
-    publicPath: '/dist/',
-    filename: 'bundle.js'
+    publicPath: './',
+    filename: '[name].[hash].js'
   },
-  resolve: {
-    root: [
-      path.resolve('.')
-    ]
+  devtool:  'inline-source-map',
+  resolve: { 
+    extensions: ['.js','.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        use: [
+          {
+            loader: 'babel-loader'
+          }
+        ]
       },
       {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract('style', 'css!less')
-      }
+        use: extractLess.extract({
+          use: [
+            {loader: 'css-loader'},
+            {loader: 'less-loader',options:{
+              includePaths: [path.join(APP_SRC, './assets')]
+            }}
+          ],
+          fallback: 'style-loader'
+        })
+      },
+      {
+        test: /\.(png|gif|jpe?g)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)(\?[a-z0-9=&.]+)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
+      },
     ]
   },
-  lessLoader: {
-    includePath: [path.resolve(__dirname, './styles')]
-  },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
+    new HtmlWebpackPlugin({
+      template: 'app/index.html'
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
+    new webpack.EnvironmentPlugin(env),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: module => (
+        module.context && module.context.indexOf('node_modules') !== -1
+      )
     }),
-    new ExtractTextPlugin('styles.css')
+    extractLess
   ]
 }

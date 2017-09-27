@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import dialogPolyfill from 'dialog-polyfill';
 /**
  * This component creates an modal when the show property is set to true.
  * After shown you get two options, and it does not close until the user selects

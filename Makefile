@@ -2,7 +2,7 @@ default: install build
 
 install:
 	@echo Installing npm packages...
-	@npm install
+	@yarn
 
 build:
 	@echo Building project...

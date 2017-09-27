@@ -1,29 +1,25 @@
 pipeline:
   deployment:
     image: plugins/ssh
+    secret:
+      - source: regme_client_id
+        target: rg_client_id
+      - source: regme_client_secret
+        target: rg_client_secret
+      - source: ssh_key
+        target: ssh_key
+
     host: nansen.online.ntnu.no
     user: root
-    environment:
-      - REGME_CLIENT_ID=${REGME_CLIENT_ID}
-      - REGME_CLIENT_SECRET=${REGME_CLIENT_SECRET}
     port: 22
     when:
       event: push
       branch: master
+    environment:
+      - RG_BASE=https://online.ntnu.no
+      - NODE_ENV=production
     script:
       - cd /srv/www/regme
       - git pull
       - npm install
-      - echo 'export const BASE = "https://online.ntnu.no/"' > common/constants2.js
-      - echo 'export const API_BASE = "https://online.ntnu.no/api/v1/"' >> common/constants2.js
-      - echo 'export const API_EVENTS = "events/"' >> common/constants2.js
-      - echo 'export const API_AUTH = "auth/"' >> common/constants2.js
-      - echo 'export const API_ATTENDEES = "attendees/"' >> common/constants2.js
-      - echo 'export const API_ATTEND = "attend/"' >> common/constants2.js
-      - echo 'export const API_USERS = "users/"' >> common/constants2.js
-      - echo 'export const CLIENT_SECRET = "${REGME_CLIENT_SECRET}"' >> common/constants2.js
-      - echo 'export const CLIENT_ID = "$REGME_CLIENT_ID"' >> common/constants2.js
-      - echo 'export const CLIENT_ID = "$$REGME_CLIENT_ID"' >> common/constants2.js
-      - echo 'export const CLIENT_ID = "$${REGME_CLIENT_ID}"' >> common/constants2.js
-      - echo 'export const CLIENT_ID = "{REGME_CLIENT_ID}"' >> common/constants2.js
       - node /srv/www/regme/node_modules/webpack/bin/webpack.js
