@@ -1,6 +1,6 @@
 pipeline:
   deployment:
-    image: plugins/ssh
+    image: appleboy/drone-ssh
     secret:
       - source: regme_client_id
         target: rg_client_id
@@ -10,8 +10,9 @@ pipeline:
         target: ssh_key
 
     host: nansen.online.ntnu.no
-    user: root
+    username: root
     port: 22
+    key: $${SSH_KEY}
     when:
       event: push
       branch: master
