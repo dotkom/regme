@@ -3,9 +3,13 @@ import 'es6-promise/auto';
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Header from './components/header';
-import Registration from './components/registration';
-import Options from './components/options';
+
+import { initErrorReporting } from 'common/errorReporting';
+initErrorReporting();
+
+import Header from 'components/header';
+import Registration from 'components/registration';
+import Options from 'components/options';
 
 require('assets/styles/base.less');
 
