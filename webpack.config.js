@@ -2,6 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 var env = {
   'RG_BASE': "http://localhost:8000/",
   'RG_API_BASE': "api/v1/",
@@ -21,9 +22,10 @@ var APP_SRC = path.join(APP_ENTRY, './src');
 
 
 var extractLess = new ExtractTextPlugin({
-  filename: '[name].js',
+  filename: '[name].[hash].css',
   disable: process.env.NODE_ENV === "development"
 });
+
 
 module.exports = {
   entry: [
@@ -35,7 +37,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
-    filename: '[name].js'
+    filename: '[name].[hash].js'
   },
   devtool:  'inline-source-map',
   resolve: { 
@@ -99,6 +101,6 @@ module.exports = {
         module.context && module.context.indexOf('node_modules') !== -1
       )
     }),
-    new ExtractTextPlugin('styles.css'),
+    extractLess
   ]
 }

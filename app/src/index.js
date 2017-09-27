@@ -3,7 +3,6 @@ import 'es6-promise/auto';
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
 import { initErrorReporting } from 'common/errorReporting';
 initErrorReporting();
 
