@@ -16,8 +16,8 @@ pipeline:
       event: push
       branch: master
     environment:
-      - RG_BASE: https://online.ntnu.no
-      - NODE_ENV: production
+      - RG_BASE=https://online.ntnu.no
+      - NODE_ENV=production
     script:
       - cd /srv/www/regme
       - git pull
