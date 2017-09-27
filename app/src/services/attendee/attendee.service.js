@@ -49,7 +49,7 @@ class AttendeeServiceProvider {
           event,
         });
         return ret;
-      });
+      }); 
   }
   getCached(attendee_id) {
     return this.cache[attendee_id];
@@ -73,6 +73,7 @@ class AttendeeServiceProvider {
   }
   getAttendees(event, page = 1) {
     const count = 0;
+    
     return http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page })
       .map((result) => {
         let attendees = result.results;
@@ -88,6 +89,9 @@ class AttendeeServiceProvider {
             event
           );
           a.push(at);
+          if(this.getCached(at.id) == null)
+            event.addAttendee(at);
+          
           this.cache[at.id] = at;
         }
         return {attendees: a, next: result.next};
