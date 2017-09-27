@@ -1,7 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
-
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var env = {
   'RG_BASE': "http://localhost:8000/",
   'RG_API_BASE': "api/v1/",
@@ -16,14 +16,28 @@ var env = {
   'NODE_ENV': 'production'
 };
 
+var APP_ENTRY = path.join(__dirname, './app');
+var APP_SRC = path.join(APP_ENTRY, './src');
+
+
+var extractLess = new ExtractTextPlugin({
+  filename: '[name].js',
+  disable: process.env.NODE_ENV === "development"
+});
 
 module.exports = {
-  entry: ['babel-polyfill','./index.js'],
+  entry: [
+    'babel-polyfill',
+    'whatwg-fetch',
+    'react-hot-loader/patch',
+    path.join(APP_SRC,'./index.js')
+  ],
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
     filename: '[name].js'
   },
+  devtool:  'inline-source-map',
   resolve: { 
     extensions: ['.js','.jsx']
   },
@@ -40,14 +54,45 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'less-loader'
+        use: extractLess.extract({
+          use: [
+            {loader: 'css-loader'},
+            {loader: 'less-loader',options:{
+              includePaths: [path.join(APP_SRC, './assets')]
+            }}
+          ],
+          fallback: 'style-loader'
         })
-      }
+      },
+      {
+        test: /\.(png|gif|jpe?g)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)(\?[a-z0-9=&.]+)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
+      },
     ]
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: 'app/index.html'
+    }),
+    new webpack.EnvironmentPlugin(env),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: module => (
@@ -55,6 +100,5 @@ module.exports = {
       )
     }),
     new ExtractTextPlugin('styles.css'),
-    new webpack.EnvironmentPlugin(env)
   ]
 }

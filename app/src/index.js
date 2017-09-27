@@ -1,7 +1,5 @@
 // Polyfills for fetch
-import "babel-polyfill";
 import 'es6-promise/auto';
-import 'whatwg-fetch';
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
@@ -9,7 +7,7 @@ import Header from './components/header';
 import Registration from './components/registration';
 import Options from './components/options';
 
-require('./styles/base.less');
+require('assets/styles/base.less');
 
 class App extends Component {
   constructor(props) {
