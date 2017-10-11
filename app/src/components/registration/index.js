@@ -16,7 +16,7 @@ import { isRfid } from 'common/utils';
  *  - Show user stats in numbers.
  */
 const Placeholders = {
-  default: 'Fyll inn RFID eller brukernavn...',
+  default: 'Fyll inn RFID eller Online-brukernavn...',
   username: 'Fyll inn brukernavn for å registrere RFID...',
 };
 
