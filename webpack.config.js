@@ -13,7 +13,7 @@ var env = {
   'RG_API_USERS': 'users/',
   'RG_CLIENT_SECRET': '',
   'RG_CLIENT_ID': '',
-  'RG_SENTRY_ID': '',
+  'RG_SENTRY_DSN': '',
   'NODE_ENV': 'production'
 };
 
@@ -36,7 +36,7 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, 'dist'),
-    publicPath: './',
+    publicPath: '/',
     filename: '[name].[hash].js'
   },
   devtool:  'inline-source-map',
