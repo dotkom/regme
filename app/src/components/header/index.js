@@ -1,6 +1,6 @@
 import React from 'react';
 import { BASE } from 'common/constants';
-
+import online_logo from 'assets/images/logo_online.png'
 const Header = ({event}) => {
   const companyImg = event && event.organization ? (
     <div className="corner-container">
@@ -11,7 +11,7 @@ const Header = ({event}) => {
   ) : null;
   return (
     <header>
-      <img src="assets/images/logo_online.svg" alt="Online"/>
+      <img width={239} src={online_logo} alt="Online"/>
       {companyImg}
     </header>
   );
