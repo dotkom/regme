@@ -8,6 +8,8 @@ pipeline:
         target: rg_client_secret
       - source: ssh_key
         target: ssh_key
+      - source: rg_sentry_dsn
+        target: rg_sentry_dsn
 
     host: nansen.online.ntnu.no
     username: root
