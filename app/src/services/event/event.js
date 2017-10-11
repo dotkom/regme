@@ -52,8 +52,8 @@ export class Event{
     });
   }
   moveAttendee(attendee){
-    this._waitList = this._waitList.filter(v => v!=attendee);
-    this._notAttendedList = this._notAttendedList.filter(v => v!=attendee);
+    this._waitList = this._waitList.filter(v => v.id!=attendee.id);
+    this._notAttendedList = this._notAttendedList.filter(v => v.id!=attendee.id);
     this._attendingList.push(attendee);
     this.refresh();
   }
