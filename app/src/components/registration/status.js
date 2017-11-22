@@ -6,9 +6,9 @@ import React from 'react';
  *  - Display color appropriate for situation.
  *  - Show message for situation.
  *  - Show time when situation was created.
- *
- * @prop {string} message The current feedback
- * @prop {object} time Time object with hour, minute and second
+ * @prop {String} message - The current feedback
+ * @prop {Date} time - Time object with hour, minute and second
+ * @prop {String} statusCode - The status type
  */
 const Status = ({ message, time, statusCode }) => {
   /**

@@ -32,11 +32,25 @@ import { http } from 'services/net';
 
 
 class AttendeeServiceProvider {
-
+  
+  /**
+   * @class AttendeeServiceProvider
+   */
   constructor() {
+    /** @private */
     this.cache = {};
   }
-
+  
+  /**
+   * @method registerAttendee - Registers an attendee
+   * @memberof AttendeeServiceProvider
+   * @inner
+   * @public
+   * @param {Event} event - the event an attendee is being registerd for 
+   * @param {String} rfid - the attendees rfid
+   * @param {Boolean} approved - wether or not the attendee has been approved when on the waitinglist
+   * @returns {Observable<{}>}
+   */
   registerAttendee(event, rfid, approved = false) {
     return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`, {
       rfid: isRfid(rfid) ? rfid : null,
@@ -51,9 +65,28 @@ class AttendeeServiceProvider {
         return ret;
       }); 
   }
+  
+  /**
+   * @method getCached
+   * @memberof AttendeeServiceProvider
+   * @inner
+   * @public
+   * @param {Number} attendee_id - the attendee's id
+   * @returns {Attendee}
+   */
   getCached(attendee_id) {
     return this.cache[attendee_id];
   }
+
+  /**
+   * @method registerRfid - binds an rfid to a user
+   * @memberof AttendeeServiceProvider
+   * @inner
+   * @public
+   * @param {String} username 
+   * @param {String} rfid 
+   * @param {Event} event 
+   */
   registerRfid(username, rfid, event) {
     if (username != null && rfid != null && rfid.length > 0) {
       return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`, {
@@ -63,6 +96,15 @@ class AttendeeServiceProvider {
       }));
     }
   }
+
+  /**
+   * @method handleResponse - catches errors from an http response
+   * @memberof AttendeeServiceProvider
+   * @inner
+   * @private
+   * @param {Observable<{}>} r - Observable that resolves into an http/json response
+   * @returns {Observable<{}>}
+   */
   handleResponse(r) {
     return r.catch(error =>
       // if(error.status == 400 || error.status == 100)
@@ -71,6 +113,16 @@ class AttendeeServiceProvider {
 
     );
   }
+  
+  /**
+   * @method getAttendees
+   * @memberof AttendeeServiceProvider
+   * @inner
+   * @public
+   * @param {Event} event - the event to fetch attendees from
+   * @param {Number} page - what page to start fetching from 
+   * @returns {Observable<Array<Attendee>>} - an observable that resolves into a list of Attendees
+   */ 
   getAttendees(event, page = 1) {
     const count = 0;
     
@@ -97,6 +149,7 @@ class AttendeeServiceProvider {
         return {attendees: a, next: result.next};
       })
       .flatMap((r) => {
+        // Fetches the next page if it exists
         if (r.next) {
           return this.getAttendees(event, ++page).zip(Observable.of(r.attendees), (a, b) => a.concat(b));
         }

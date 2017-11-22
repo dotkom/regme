@@ -1,68 +1,64 @@
 import React, { Component } from 'react';
 import dialogPolyfill from 'dialog-polyfill';
+
 /**
  * This component creates an modal when the show property is set to true.
  * After shown you get two options, and it does not close until the user selects
  * one of them.
- *
- * @class Modal
- * @extends {Component}
  */
+
+/** 
+ * @typedef {Object} Modal~ModalProps
+ * @property {Boolean} show - wheter or not the modal should be displayed
+ * @property {String} conent - the contents of the modal
+ * @property {Function} accept - callback function called if the user accepts
+ * @property {Function} decline - callback function called if the user declines
+ * @property {String} [acceptText] - text shown on the accept button
+ * @property {String} [declineText] - text shown on the decline button
+*/
+
 export class Modal extends Component {
   /**
    * Creates an instance of Modal.
+   * @class Modal
+   * @extends {Component}
    *
-   * @param {{
-   *    show: boolean,
-   *    content: string,
-   *    accept: Function,
-   *    decline: Function,
-   *    acceptText?: string,
-   *    declineText?: string
-   * }} props
-   *
-   * @memberOf Modal
+   * @param {Modal~ModalProps} props
    */
   constructor(props) {
     super(props);
-
+    /** @private */
     this.open = false;
   }
 
   /**
-   * Called after the component is created.
-   *
-   * @memberOf Modal
+   * @method componentDidMount - Called after the component is created.
+   * @public
+   * @memberof Modal
+   * @inner
    */
   componentDidMount() {
     this.showModal(this.props.show);
   }
 
   /**
-   * The modal should check if it is shown before it gets closed and
+   * @method componentWillReceiveProps - The modal should check if it is shown before it gets closed and
    * the other way around.
-   *
-   * @param {{
-   *    show: boolean,
-   *    content: string,
-   *    accept: Function,
-   *    decline: Function,
-   *    acceptText?: string,
-   *    declineText?: string
-   * }} nextProps
-   *
-   * @memberOf Modal
+   * @inner
+   * @public
+   * @param {Modal~ModalProps} nextProps
+   * @memberof Modal
    */
   componentWillReceiveProps(nextProps) {
     this.showModal(nextProps.show);
   }
 
   /**
-   * Fills in support for dialog if it does not work in the browser.
-   *
+   * @method setDialog - Fills in support for dialog if it does not work in the browser.
+   * @inner
+   * @public
    * @param {any} ref
-   *
-   * @memberOf Modal
+   * @memberof Modal
    */
   setDialog(ref) {
     this.dialog = ref;
@@ -72,11 +68,12 @@ export class Modal extends Component {
   }
 
   /**
-   * Shows the modal.
-   *
+   * @method showModal - Shows the modal.
+   * @inner
+   * @public
    * @param {boolean} [show=true]
    *
-   * @memberOf Modal
+   * @memberof Modal
    */
   showModal(show = true) {
     if (this.open !== show) {
@@ -86,11 +83,11 @@ export class Modal extends Component {
   }
 
   /**
-   * * Decides what happend when the user accepts.
-   *
+   * @method acceptHandler - Decides what happend when the user accepts.
+   * @inner
+   * @public
    * @param {any} evt
-   *
-   * @memberOf Modal
+   * @memberof Modal
    */
   acceptHandler(evt) {
     this.showModal(false);
@@ -98,11 +95,12 @@ export class Modal extends Component {
   }
 
   /**
-   * Decides what happend when the user declines.
-   *
+   * @method - Decides what happend when the user declines.
+   * @inner
+   * @public
    * @param {any} evt
    *
-   * @memberOf Modal
+   * @memberof Modal
    */
   declineHandler(evt) {
     this.showModal(false);
@@ -110,11 +108,11 @@ export class Modal extends Component {
   }
 
   /**
-   * Render the component.
-   *
-   * @returns
-   *
-   * @memberOf Modal
+   * @method render - Render the component.
+   * @public
+   * @inner
+   * @returns {ReactElement}
+   * @memberof Modal
    */
   render() {
     return (
