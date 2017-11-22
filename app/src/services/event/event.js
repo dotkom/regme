@@ -1,7 +1,7 @@
 import { Observable, ReplaySubject } from 'rxjs'
 
 export class Event{
-  
+
   /**
    * @class Event
    * @param {Number} id - the event's database id
@@ -10,8 +10,7 @@ export class Event{
    * @param {Array<Attendee>} attendees - a list of registerd attendees
    * @param {Company} org - the company representing the event
    */
-  constructor(id,name,capacity,attendees=[],org){
-    /** @private */
+  constructor(id,name,capacity,attendees,org){
     this._name = name;
     /** @private */
     this._id = id;
@@ -47,7 +46,7 @@ export class Event{
     this._waitlistSubject.next([]);
     /** @private */
     this._notAttendedSubject.next([]);
-    for(let i of attendees){
+    for(let i of (attendees || [])){
       this.addAttendee(i);
     }
   }

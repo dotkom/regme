@@ -36,6 +36,7 @@ class Registration extends Component {
       attendee_status: {},
       ivalue: null,
       pRfid: null,
+      pUsername: null,
       placeholder: 'default',
       showModal: false,
     };
@@ -96,7 +97,7 @@ class Registration extends Component {
     let responseStream = null;
     this.update = { status: 'WAIT', message: 'Venter...' };
     //Only try to bind rfid to user if input is a username and not an rfid
-    if (!isRfid(input) && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)) {
+    if (!isRfid(input) && this.pRfid!=null && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)) {
       responseStream = attendeeService.registerRfid(input, this.pRfid, this.event);
     } else if (this.event) {
       this.setState(Object.assign({}, this.state, {
