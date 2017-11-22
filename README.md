@@ -7,7 +7,7 @@ App for self-registration at events.
 2. Install project dependencies ...\
   `npm install` or `make install` or `yarn`
 
-3. Build the project ...\
+3. Build the project and generate documentation ...\
   `npm run build` or `make`
 
 4. Build the project and watch for changes, re-building on changes ...\
@@ -20,6 +20,9 @@ App for self-registration at events.
 ## Project structure
 All the projects source files are located in app/src which is organized in a few different folders. src/assets contains all non javascript files including images, icons and stylesheets; src/common contains the shared independent javascript files like `constants`, so they're available all over the project;
 src/services contains the services and their respective class models, these services acts as interfaces between the frontend and backend API; and the last folder src/components contains all the project's react components. src/index.js defines the root component App and is only responsible for bootstraping the app.
+
+## Documentation
+Build the project once and the documentation should be genrated to ./docs
 
 ## Config
 All configuration is done via environment variables, note that the `/` at the end of all url's is required since urls are not cleaned at this point in time.
