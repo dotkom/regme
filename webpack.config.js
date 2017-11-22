@@ -2,6 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var JsDocPlugin = require('jsdoc-webpack-plugin-v2')
 
 var env = {
   'RG_BASE': "http://localhost:8000/",
@@ -101,6 +102,9 @@ module.exports = {
         module.context && module.context.indexOf('node_modules') !== -1
       )
     }),
-    extractLess
+    extractLess,
+    new JsDocPlugin({
+      conf: path.join(__dirname, './jsdoc.conf.json'),
+    })
   ]
 }

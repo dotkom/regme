@@ -52,6 +52,7 @@
     "dialog-polyfill": "^0.4.5",
     "es6-promise": "^4.1.0",
     "favicons-webpack-plugin": "^0.0.7",
+    "jsdoc-webpack-plugin-v2": "^2.0.2",
     "moment": "^2.18.1",
     "raven-js": "^3.17.0",
     "react": "^15.6.1",

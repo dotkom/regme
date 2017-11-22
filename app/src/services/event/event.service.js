@@ -8,13 +8,26 @@ import { http } from 'services/net';
 
 class EventServiceProvider {
 
+  /**
+   * @class EventServiceProvider
+   */
   constructor() {
+    /** @private */
     this._events = null;
+    /** @private */
     this._cache = {};
+    /** @private */
     this.eventSubject = new ReplaySubject(1);
+    
     this.refresh();
   }
 
+  /**
+   * @type {Array<Event>}
+   * @memberof EventServiceProvider 
+   * @inner
+   * @public
+   */
   set events(newEvents) {
     this._events = newEvents;
     for (const i in newEvents) {
@@ -23,12 +36,31 @@ class EventServiceProvider {
     this.eventSubject.next(newEvents);
   }
 
+  /**
+   * @type {Array<Event>}
+   * @public
+   */
   get events() {
     return this._events;
   }
+  
+  /**
+   * @method getCached
+   * @memberof EventServiceProvider
+   * @inner
+   * @public
+   * @param {Number} event_id - the event's id 
+   */
   getCached(event_id) {
     return this._cache[event_id];
   }
+
+  /**
+   * @method refresh - re-fetches all events
+   * @memberof EventServiceProvider
+   * @inner
+   * @public
+   */
   refresh() {
     http.get(`${API_BASE}${API_EVENTS}`, { attendance_event__isnull: 'False', event_end__gte: new Date().toISOString().slice(0, 10), order_by: 'event_start' })
       .map((r) => {
@@ -49,6 +81,13 @@ class EventServiceProvider {
       }).subscribe(eventList => this.events = eventList);
   }
 
+  /**
+   * @method getEvents
+   * @memberof EventServiceProvider
+   * @inner
+   * @public
+   * @returns Observable<Array<Event>>
+   */
   getEvents() {
     return this.eventSubject.asObservable();
   }
