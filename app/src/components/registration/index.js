@@ -36,6 +36,7 @@ class Registration extends Component {
       attendee_status: {},
       ivalue: null,
       pRfid: null,
+      pUsername: null,
       placeholder: 'default',
       showModal: false,
     };

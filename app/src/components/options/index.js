@@ -34,13 +34,15 @@ class Options extends Component {
     if (this.eventSub) {
       this.eventSub.unsubscribe;
     }
-    this.eventSub = event.attendees.subscribe((v) => {
-      if (this.props.onOptionsChanged) {
-        this.props.onOptionsChanged({
-          event,
-        });
-      }
-    });
+    if (event!=null){
+      this.eventSub = event.attendees.subscribe((v) => {
+        if (this.props.onOptionsChanged) {
+          this.props.onOptionsChanged({
+            event,
+          });
+        }
+      });
+    }
     this.setState(Object.assign({}, this.state, { selectedEvent: event }), () => {
       if (this.props.onOptionsChanged) {
         this.props.onOptionsChanged({
