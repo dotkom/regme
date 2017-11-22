@@ -14,7 +14,7 @@ export default class List extends Component {
     });
   }
   render() {
-    const attendees = this.props.attendees;
+    const attendees = this.props.attendees || [];
     const category = this.props.category;
     const orderby = this.props.orderby;
     const asc = this.props.asc;
