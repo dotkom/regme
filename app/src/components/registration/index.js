@@ -35,8 +35,7 @@ class Registration extends Component {
       message: null,
       attendee_status: {},
       ivalue: null,
-      pRfid: null,
-      pUsername: null,
+      pValue: null,
       placeholder: 'default',
       showModal: false,
     };
@@ -81,28 +80,24 @@ class Registration extends Component {
       this.update = { status: 'ERROR', message: 'Kunne ikke hente inn arrangement!' };
     });
   }
+
   get attendeeStatus() {
     return this.state.attendee_status;
   }
-  get pRfid() {
-    return this.state.pRfid;
-  }
-  get pUsername() {
-    return this.state.pUsername;
-  }
+
   get event() {
     return this.props.event;
   }
+
   handleSubmit(input) {
     let responseStream = null;
     this.update = { status: 'WAIT', message: 'Venter...' };
     //Only try to bind rfid to user if input is a username and not an rfid
-    if (!isRfid(input) && this.pRfid!=null && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)) {
-      responseStream = attendeeService.registerRfid(input, this.pRfid, this.event);
+    if (!isRfid(input) && isRfid(this.state.pInput) && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)) {
+      responseStream = attendeeService.registerRfid(input, this.state.pInput, this.event);
     } else if (this.event) {
       this.setState(Object.assign({}, this.state, {
-        pRfid: isRfid(input) ? input : null,
-        pUsername: isRfid(input) ? null : input,
+        pInput: input
       }));
       responseStream = attendeeService.registerAttendee(this.event, input);
     }
@@ -113,6 +108,7 @@ class Registration extends Component {
       this.update = { status: 'ERROR', message: 'Invalid input!' };
     }
   }
+
   handleAttendeeResponse(stream) {
     stream.subscribe((v) => {
       // this.event.refresh();
@@ -158,7 +154,7 @@ class Registration extends Component {
   }
 
   acceptHandler() {
-    const userOrRfid = this.pRfid != null ? this.pRfid : this.pUsername;
+    const userOrRfid = this.state.pInput;
     this.handleAttendeeResponse(attendeeService.registerAttendee(this.event, userOrRfid, true));
     this.update = {
       showModal: false,
