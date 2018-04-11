@@ -108,7 +108,7 @@ class AttendeeServiceProvider {
   handleResponse(r) {
     return r.catch(error =>
       // if(error.status == 400 || error.status == 100)
-       Observable.fromPromise(error.json()).flatMap(r => Observable.throw(r))
+       Observable.fromPromise(error.json ? error.json() : {message: "No json response in error"}).flatMap(r => Observable.throw(r))
         // return Observable.throw(Observable.fromPromise(error.json()))
 
     );
