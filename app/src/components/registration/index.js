@@ -45,6 +45,7 @@ class Registration extends Component {
    * This is called when the status gets updated
    * and needs to save the timestamp.
    */
+
   updateTime() {
     const date = new Date();
     this.setState(Object.assign({}, this.state, {
@@ -59,6 +60,7 @@ class Registration extends Component {
   set update(update) {
     this.setState(Object.assign({}, this.state, update));
   }
+  
   componentWillReceiveProps(props){
     if(props.event && !props.event.hasAttendees()){
       this.updateTime();
@@ -70,6 +72,7 @@ class Registration extends Component {
       });
     }
   }
+
   componentDidMount() {
     this.updateTime();
     this.update = { status: 'WAIT', message: 'Henter arrangemententer...' };      
@@ -93,7 +96,9 @@ class Registration extends Component {
     let responseStream = null;
     this.update = { status: 'WAIT', message: 'Venter...' };
     //Only try to bind rfid to user if input is a username and not an rfid
-    if (!isRfid(input) && isRfid(this.state.pInput) && (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50)) {
+    if (!isRfid(input) && isRfid(this.state.pInput) && 
+      (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50 || this.attendeeStatus.attend_status == 51)
+    ) {
       responseStream = attendeeService.registerRfid(input, this.state.pInput, this.event);
     } else if (this.event) {
       this.setState(Object.assign({}, this.state, {
@@ -101,7 +106,7 @@ class Registration extends Component {
       }));
       responseStream = attendeeService.registerAttendee(this.event, input);
     }
-
+    
     if (responseStream) {
       this.handleAttendeeResponse(responseStream);
     } else {
@@ -113,7 +118,7 @@ class Registration extends Component {
     stream.subscribe((v) => {
       // this.event.refresh();
       attendeeService.getCached(v.attendee).register();
-      this.update = { status: 'OK', message: v.message };
+      this.update = { status: 'OK', message: v.message != null ? v.message : message };
       this.setState(Object.assign({}, this.state, {
         attend_status: v,
         placeholder: 'default',
@@ -127,6 +132,8 @@ class Registration extends Component {
       const ivalue = '';
       let showModal = false;
       switch (v.attend_status) {
+
+        case 51:
         case 50:
           placeholder = 'default';
           break;

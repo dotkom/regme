@@ -95,6 +95,7 @@ class AttendeeServiceProvider {
         event: event.id,
       }));
     }
+    return Observable.throw({error: "Rfid or username is null"});
   }
 
   /**
