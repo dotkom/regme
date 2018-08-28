@@ -26,6 +26,7 @@ Build the project once and the documentation should be genrated to ./docs
 
 ## Config
 All configuration is done via environment variables, note that the `/` at the end of all url's is required since urls are not cleaned at this point in time.
+
 | Key | Description | Example | Default |
 | --- | ---         | ---     | ---     |
 | `RG_BASE` | The host entrypoint | `https://online.ntnu.no/` | `http://localhost:8000/` |
