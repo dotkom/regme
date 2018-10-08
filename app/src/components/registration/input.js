@@ -39,7 +39,7 @@ class Input extends Component {
       <form onSubmit={evt => this.submit(evt)}>
         <input
           type="text"
-          pattern="[A-Za-z0-9]+"
+          pattern="^[\w.@+-]+$"
           placeholder={ this.props.placeholder }
           autoComplete={false}
           ref={a => this.setRef(a)}
