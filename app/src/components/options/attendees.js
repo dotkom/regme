@@ -1,5 +1,7 @@
 import { BASE } from 'common/constants';
 
+import {ServiceContext} from 'services/ServiceProvider'
+
 import React, { Component } from 'react';
 
 import List from './list';
@@ -10,7 +12,6 @@ const orderMap = {
 };
 
 class Attendees extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -83,5 +84,6 @@ class Attendees extends Component {
     );
   }
 }
+
 
 export default Attendees;

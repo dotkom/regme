@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { eventService } from 'services/event';
+
+import { ServiceContext } from 'services/ServiceProvider';
+import { EventService } from 'services/event';
 
 import Events from './events';
 import Attendees from './attendees';
@@ -15,11 +17,14 @@ class Options extends Component {
     this.eventSub = null;
   }
   componentDidMount() {
-    eventService.getEvents().subscribe((events) => {
-      this.setState(Object.assign({}, this.state, { events }), () => {
-        this.selectedEvent = this.selectedEvent || events[0];
+    this.context.getService(EventService).subscribe((eventService) => {
+      eventService.getEvents().subscribe((events) => {
+        this.setState(Object.assign({}, this.state, { events }), () => {
+          this.selectedEvent = this.selectedEvent || events[0];
+        });
       });
-    });
+    })
+    
   }
 
   clickHandler() {
@@ -73,6 +78,8 @@ class Options extends Component {
   }
 
 }
+
+Options.contextType = ServiceContext;
 
 export default Options;
 

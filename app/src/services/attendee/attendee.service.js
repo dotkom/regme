@@ -4,7 +4,12 @@ import { Attendee } from './attendee';
 
 import { API_BASE, API_EVENTS, API_ATTEND, API_ATTENDEES, API_USERS } from 'common/constants';
 import { isRfid } from 'common/utils';
-import { http } from 'services/net';
+import { HttpService } from 'services/net';
+
+import { ServiceType } from 'services/ServiceType';
+
+export const AttendeeService = new ServiceType("Attendee", HttpService); 
+
 
 /**
  * Status codes:
@@ -31,16 +36,21 @@ import { http } from 'services/net';
  */
 
 
-class AttendeeServiceProvider {
+export class AttendeeServiceProvider {
   
   /**
    * @class AttendeeServiceProvider
    */
-  constructor() {
+  constructor(dependencies) {
     /** @private */
     this.cache = {};
+    this.http = dependencies[HttpService];
   }
-  
+
+  static getType(){
+    return AttendeeService;
+  }
+
   /**
    * @method registerAttendee - Registers an attendee
    * @memberof AttendeeServiceProvider
@@ -52,7 +62,7 @@ class AttendeeServiceProvider {
    * @returns {Observable<{}>}
    */
   registerAttendee(event, rfid, approved = false) {
-    return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`, {
+    return this.handleResponse(this.http.post(`${API_BASE}${API_ATTEND}`, {
       rfid: isRfid(rfid) ? rfid : null,
       username: isRfid(rfid) ? null : rfid,
       event: event.id,
@@ -89,7 +99,7 @@ class AttendeeServiceProvider {
    */
   registerRfid(username, rfid, event) {
     if (username != null && rfid != null && rfid.length > 0) {
-      return this.handleResponse(http.post(`${API_BASE}${API_ATTEND}`, {
+      return this.handleResponse(this.http.post(`${API_BASE}${API_ATTEND}`, {
         rfid,
         username,
         event: event.id,
@@ -127,7 +137,7 @@ class AttendeeServiceProvider {
   getAttendees(event, page = 1) {
     const count = 0;
     
-    return http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page })
+    return this.http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page })
       .map((result) => {
         let attendees = result.results;
         const a = [];
@@ -159,5 +169,3 @@ class AttendeeServiceProvider {
   }
 
 }
-// Export singleton
-export const attendeeService = new AttendeeServiceProvider();

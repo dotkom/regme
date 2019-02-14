@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import Input from './input';
 import Status from './status';
 import { Modal } from '../modal';
-import { eventService } from 'services/event';
+import { EventService } from 'services/event';
 import { userService } from 'services/user';
-import { attendeeService } from 'services/attendee';
+import { AttendeeService } from 'services/attendee';
 import { Observable } from 'rxjs';
 import { isRfid } from 'common/utils';
+
+
+import {ServiceContext} from 'services/ServiceProvider';
+
 
 /**
  * Registration view. This is what the user see
@@ -65,23 +69,31 @@ class Registration extends Component {
     if(props.event && !props.event.hasAttendees()){
       this.updateTime();
       this.update = { status: 'WAIT', message: 'Henter deltagere...' };      
-      attendeeService.getAttendees(props.event).subscribe((attendees) => {
-        this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };      
-      }, () => {
-        this.update = { status: 'ERROR', message: 'Kunne ikke hente inn deltagere!' };      
-      });
+      if (this.attendeeService) {
+        this.attendeeService.getAttendees(props.event).subscribe((attendees) => {
+          this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };      
+        }, () => {
+          this.update = { status: 'ERROR', message: 'Kunne ikke hente inn deltagere!' };      
+        });
+      }
     }
   }
 
   componentDidMount() {
     this.updateTime();
     this.update = { status: 'WAIT', message: 'Henter arrangemententer...' };      
-    eventService.getEvents().subscribe((events) => {
-      this.updateTime();
-      this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };
-    }, (error) => {
-      this.update = { status: 'ERROR', message: 'Kunne ikke hente inn arrangement!' };
+    this.context.getService(AttendeeService).subscribe((attendeeService) => {
+      this.attendeeService = attendeeService;
     });
+    this.context.getService(EventService).subscribe((eventService) => {
+      eventService.getEvents().subscribe((events) => {
+        this.updateTime();
+        this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };
+      }, (error) => {
+        this.update = { status: 'ERROR', message: 'Kunne ikke hente inn arrangement!' };
+      });
+
+    })    
   }
 
   get attendeeStatus() {
@@ -99,12 +111,12 @@ class Registration extends Component {
     if (!isRfid(input) && isRfid(this.state.pInput) && 
       (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50 || this.attendeeStatus.attend_status == 51)
     ) {
-      responseStream = attendeeService.registerRfid(input, this.state.pInput, this.event);
+      responseStream = this.attendeeService.registerRfid(input, this.state.pInput, this.event);
     } else if (this.event) {
       this.setState(Object.assign({}, this.state, {
         pInput: input
       }));
-      responseStream = attendeeService.registerAttendee(this.event, input);
+      responseStream = this.attendeeService.registerAttendee(this.event, input);
     }
     
     if (responseStream) {
@@ -117,7 +129,7 @@ class Registration extends Component {
   handleAttendeeResponse(stream) {
     stream.subscribe((v) => {
       // this.event.refresh();
-      attendeeService.getCached(v.attendee).register();
+      this.attendeeService.getCached(v.attendee).register();
       this.update = { status: 'OK', message: v.message != null ? v.message : message };
       this.setState(Object.assign({}, this.state, {
         attend_status: v,
@@ -162,7 +174,7 @@ class Registration extends Component {
 
   acceptHandler() {
     const userOrRfid = this.state.pInput;
-    this.handleAttendeeResponse(attendeeService.registerAttendee(this.event, userOrRfid, true));
+    this.handleAttendeeResponse(this.attendeeService.registerAttendee(this.event, userOrRfid, true));
     this.update = {
       showModal: false,
     };
@@ -198,5 +210,7 @@ class Registration extends Component {
     );
   }
 }
+
+Registration.contextType = ServiceContext;
 
 export default Registration;

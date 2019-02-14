@@ -12,6 +12,27 @@ import Options from 'components/options';
 
 require('assets/styles/base.less');
 
+import {ServiceManager} from 'services/ServiceManager';
+import {ServiceProvider} from 'services/ServiceProvider';
+
+import {HttpServiceProvider, UserServiceProvider, EventServiceProvider, AttendeeServiceProvider, EventService} from 'services';
+
+const serviceManager = new ServiceManager();
+
+
+// set up all services
+
+
+
+serviceManager.registerService(HttpServiceProvider);
+serviceManager.registerService(UserServiceProvider);
+serviceManager.registerService(AttendeeServiceProvider);
+serviceManager.registerService(EventServiceProvider);
+
+serviceManager.getService(EventService).subscribe(() => {
+  console.log("index got http service");
+})
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -28,16 +49,19 @@ class App extends Component {
   render() {
     const event = this.options ? this.options.event : null;
     return (
-      <div>
-        <Header event={event} />
-        <main>
-          <Registration event={event} />
-          <Options onOptionsChanged={options => this.options = options} />
-        </main>
-      </div>
+      <ServiceProvider serviceManager={serviceManager}>
+        <div>
+          <Header event={event} />
+          <main>
+            <Registration event={event} />
+            <Options onOptionsChanged={options => this.options = options} />
+          </main>
+        </div>
+      </ServiceProvider>
     );
   }
 }
+
 
 ReactDOM.render(
   <App />,

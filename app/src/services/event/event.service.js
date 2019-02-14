@@ -1,25 +1,33 @@
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { Event } from './event';
 import { Company } from './company';
-import { Attendee, attendeeService } from 'services/attendee';
 import { API_BASE, API_EVENTS, API_ATTENDEES, API_USERS } from 'common/constants';
-import { http } from 'services/net';
+import { http, HttpService } from 'services/net';
 
+import { ServiceType } from 'services/ServiceType';
 
-class EventServiceProvider {
+export const EventService = new ServiceType("Event", HttpService); 
+
+export class EventServiceProvider {
 
   /**
    * @class EventServiceProvider
    */
-  constructor() {
+  constructor(dependencies) {
+    console.log(dependencies);
     /** @private */
     this._events = null;
     /** @private */
     this._cache = {};
     /** @private */
     this.eventSubject = new ReplaySubject(1);
-    
+    this.http = dependencies[HttpService];
     this.refresh();
+  }
+
+
+  static getType(){
+    return EventService;
   }
 
   /**
@@ -62,7 +70,7 @@ class EventServiceProvider {
    * @public
    */
   refresh() {
-    http.get(`${API_BASE}${API_EVENTS}`, { attendance_event__isnull: 'False', event_end__gte: new Date().toISOString().slice(0, 10), order_by: 'event_start' })
+    this.http.get(`${API_BASE}${API_EVENTS}`, { attendance_event__isnull: 'False', event_end__gte: new Date().toISOString().slice(0, 10), order_by: 'event_start' })
       .map((r) => {
         const newEvents = [];
         for (const a of r.results) {
@@ -93,5 +101,3 @@ class EventServiceProvider {
   }
 
 }
-// Export singleton
-export const eventService = new EventServiceProvider();

@@ -2,10 +2,14 @@ import { Observable, Subject } from 'rxjs';
 
 import { API_BASE, API_AUTH, CLIENT_SECRET, CLIENT_ID } from 'common/constants';
 
+import { ServiceType } from 'services/ServiceType';
 
-export class HttpServiceProvider {
 
-  constructor() {
+export const HttpService = new ServiceType("Http");
+
+export class HttpServiceProvider{
+
+  constructor(dependencies, config) {
     // Request queue used for 503 and 401 responses
     this.requestQueue = [];
     this.auth_token = '';
@@ -72,6 +76,10 @@ export class HttpServiceProvider {
     }
   }
 
+  static getType(){
+    return HttpService;
+  }
+
   handleResponse(r, req) {
     /* TODO: handle 503(service unavailable) responses
       adjust delay up when a 503 responses happens
@@ -99,7 +107,7 @@ export class HttpServiceProvider {
     // Add token to request
     request.headers.set('Authorization', `Bearer ${this.auth_token}`);
     const resolver = new Subject();
-    // Push request into request 'stream'/queue
+    // Push reqHttpServiceProvideruest into request 'stream'/queue
     this.requestSubject.next({ request, subject: resolver });
     return resolver.asObservable();
   }
@@ -155,5 +163,3 @@ export class HttpServiceProvider {
     return this.request(request);
   }
 }
-// Export single instance
-export const http = new HttpServiceProvider();
