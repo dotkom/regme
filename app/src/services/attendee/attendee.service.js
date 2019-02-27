@@ -134,10 +134,9 @@ export class AttendeeServiceProvider {
    * @param {Number} page - what page to start fetching from 
    * @returns {Observable<Array<Attendee>>} - an observable that resolves into a list of Attendees
    */ 
-  getAttendees(event, page = 1) {
+  getAttendees(event, page = 1, page_size = 30) {
     const count = 0;
-    
-    return this.http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page })
+    return this.http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page, page_size })
       .map((result) => {
         let attendees = result.results;
         const a = [];
