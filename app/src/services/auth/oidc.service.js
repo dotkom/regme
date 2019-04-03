@@ -58,6 +58,7 @@ export class OidcServiceProvider {
       return this.getUser();
     }).catch((err) => {
       this.status.setStatus(new Status("ERROR", "Kunne ikke logge inn!"))
+      console.error(err);
       return Observable.of(null);
     });
   }

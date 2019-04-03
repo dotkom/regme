@@ -12,10 +12,11 @@ var env = {
   'RG_API_ATTENDEES': 'attendees/',
   'RG_API_ATTEND': 'attend/',
   'RG_API_USERS': 'users/',
-  'RG_CLIENT_SECRET': '',
-  'RG_CLIENT_ID': '',
+  'RG_OIDC_CLIENT_ID': '',
+  'RG_OIDC_AUTHORITY': 'http://localhost:8000/openid/',
+  'RG_OIDC_REDIRECT_URI': 'http://localhost:8080/auth',
   'RG_SENTRY_DSN': '',
-  'NODE_ENV': 'production'
+  'NODE_ENV': 'production',
 };
 
 var APP_ENTRY = path.join(__dirname, './app');
