@@ -6,7 +6,9 @@ import { http, HttpService } from 'services/net';
 
 import { ServiceType } from 'services/ServiceType';
 
-export const EventService = new ServiceType("Event", HttpService); 
+import { StatusService, Status } from 'services/status';
+
+export const EventService = new ServiceType("Event", HttpService, StatusService); 
 
 export class EventServiceProvider {
 
@@ -14,7 +16,6 @@ export class EventServiceProvider {
    * @class EventServiceProvider
    */
   constructor(dependencies) {
-    console.log(dependencies);
     /** @private */
     this._events = null;
     /** @private */
@@ -22,7 +23,9 @@ export class EventServiceProvider {
     /** @private */
     this.eventSubject = new ReplaySubject(1);
     this.http = dependencies[HttpService];
-    this.refresh();
+    this.status = dependencies[StatusService];
+    this.lastFetch = null;
+    //this.refresh();
   }
 
 
@@ -70,7 +73,9 @@ export class EventServiceProvider {
    * @public
    */
   refresh() {
-    this.http.get(`${API_BASE}${API_EVENTS}`, { attendance_event__isnull: 'False', event_end__gte: new Date().toISOString().slice(0, 10), order_by: 'event_start' })
+    this.lastFetch = new Date();
+    this.status.setStatus(new Status("WAIT", "Henter arrangementer..."));
+    this.http.get(`${API_BASE}${API_EVENTS}`, { attendance_event__isnull: 'False', event_end__gte: new Date().toISOString().slice(0, 10), order_by: 'event_start' , can_change: "True"})
       .map((r) => {
         const newEvents = [];
         for (const a of r.results) {
@@ -86,7 +91,12 @@ export class EventServiceProvider {
           }
         }
         return newEvents;
-      }).subscribe(eventList => this.events = eventList);
+      }).catch((err) => {
+        this.status.setStatus(new Status("ERROR", "Kunne ikke hente ut arrangementer"));
+      }).subscribe(eventList => {
+        this.status.setStatus(new Status("OK", "Arrangementer hentet ut"));
+        this.events = eventList
+      });
   }
 
   /**
@@ -97,6 +107,9 @@ export class EventServiceProvider {
    * @returns Observable<Array<Event>>
    */
   getEvents() {
+    if(!this.lastFetch){
+      this.refresh();
+    }
     return this.eventSubject.asObservable();
   }
 

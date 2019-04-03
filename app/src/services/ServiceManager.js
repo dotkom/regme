@@ -14,6 +14,7 @@ export class ServiceManager {
 
 
   registerService(service_cls, ...args){
+    console.log(service_cls);
     const type = service_cls.getType();
     const dependencies = type.getDependencies();
     
@@ -21,21 +22,9 @@ export class ServiceManager {
       throw new Error({error: "Service already registered", service: service_cls});
     }
     
-    let observable = Observable.of([])
 
-    if (dependencies.length >= 1) {
-      observable = Observable.zip(...dependencies.map((t) => this.getService(t)));
-    }
-    
-    // wait to register to after all dependencies has been registered
-    observable.map((deps) => {
-      let ret = {};
-      for(let dep of deps){
-        ret[dep.constructor.getType()] = dep;
-      }
-      return ret;
-
-    }).subscribe((deps) => {
+    // fetch dependencies
+    this.getServices(...dependencies).subscribe((deps) => {
       if (this.subjects[type] == null) {
         this.subjects[type] = new AsyncSubject();
       }
@@ -49,6 +38,22 @@ export class ServiceManager {
 
   }
 
+  getServices(...types){
+    let observable = Observable.of([]);
+    if(types.length >= 1){
+      observable = Observable.zip(...types.map((t) => this.getService(t)));
+    }
+    
+    return observable.map((services) => {
+      let ret = {};
+      for(let service of services){
+        ret[service.constructor.getType()] = service;
+      }
+      return ret;
+    });
+  
+  }
+
   getService(type){
     if(this.subjects[type] == null) {
       this.subjects[type] = new AsyncSubject();
@@ -56,7 +61,7 @@ export class ServiceManager {
     return this.subjects[type];
   }
 
-  getServices(){
+  getAllServices(){
     return this.serviceRegisterSubject;
   }
 

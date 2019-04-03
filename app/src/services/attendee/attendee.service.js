@@ -8,7 +8,9 @@ import { HttpService } from 'services/net';
 
 import { ServiceType } from 'services/ServiceType';
 
-export const AttendeeService = new ServiceType("Attendee", HttpService); 
+import { StatusService, Status } from 'services/status'; 
+
+export const AttendeeService = new ServiceType("Attendee", HttpService, StatusService); 
 
 
 /**
@@ -45,6 +47,7 @@ export class AttendeeServiceProvider {
     /** @private */
     this.cache = {};
     this.http = dependencies[HttpService];
+    this.status = dependencies[StatusService];
   }
 
   static getType(){
@@ -98,6 +101,7 @@ export class AttendeeServiceProvider {
    * @param {Event} event 
    */
   registerRfid(username, rfid, event) {
+    this.status.setStatus(new Status('WAIT', 'Registrere bruker'));
     if (username != null && rfid != null && rfid.length > 0) {
       return this.handleResponse(this.http.post(`${API_BASE}${API_ATTEND}`, {
         rfid,
@@ -105,7 +109,8 @@ export class AttendeeServiceProvider {
         event: event.id,
       }));
     }
-    return Observable.throw({error: "Rfid or username is null"});
+    this.status.setStatus('ERROR', 'Rfid or username is null');
+    return Observable.throw({message: "Rfid or username is null"});
   }
 
   /**
@@ -135,9 +140,11 @@ export class AttendeeServiceProvider {
    * @returns {Observable<Array<Attendee>>} - an observable that resolves into a list of Attendees
    */ 
   getAttendees(event, page = 1, page_size = 30) {
+    this.status.setStatus(new Status('WAIT', 'Henter deltagere...'));
     const count = 0;
     return this.http.get(`${API_BASE}${API_ATTENDEES}`, { event: event.id, page, page_size })
       .map((result) => {
+        
         let attendees = result.results;
         const a = [];
         for (const attendee of attendees) {
@@ -156,6 +163,8 @@ export class AttendeeServiceProvider {
           
           this.cache[at.id] = at;
         }
+        this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };
+        this.status.setStatus(new Status('WAIT', `Henter deltagere ${event.totalCount}`));
         return {attendees: a, next: result.next};
       })
       .flatMap((r) => {
@@ -163,7 +172,12 @@ export class AttendeeServiceProvider {
         if (r.next) {
           return this.getAttendees(event, ++page).zip(Observable.of(r.attendees), (a, b) => a.concat(b));
         }
+        this.status.setStatus(new Status('OK', 'Deltagere hentet.'));
         return Observable.of(r.attendees);
+      })
+      .catch((err) => {
+        this.status.setStatus(new Status('ERROR', 'Kunne ikke hente deltagere!'));
+        throw err;
       });
   }
 

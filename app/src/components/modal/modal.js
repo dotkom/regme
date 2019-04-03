@@ -116,8 +116,8 @@ export class Modal extends Component {
    */
   render() {
     return (
-      <dialog id="modal-example" ref={ref => this.setDialog(ref)}>
-        <p>{this.props.content}</p>
+      <dialog id="modal" ref={ref => this.setDialog(ref)}>
+        <p>{this.props.children}</p>
         <div>
           <button type="button" onClick={() => this.acceptHandler()}>{this.props.acceptText || 'Ja'}</button>
           <button type="button" onClick={() => this.declineHandler()}>{this.props.declineText || 'Nei'}</button>

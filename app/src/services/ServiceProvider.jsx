@@ -45,8 +45,9 @@ export class ServiceProvider extends Component{
 
   render(){
     const getService = (...a) => this.props.serviceManager.getService(...a);
+    const getServices = (...a) => this.props.serviceManager.getServices(...a);
     return(
-      <ServiceContext.Provider value={{services: this.state.services, getService}}>{this.props.children}</ServiceContext.Provider>
+      <ServiceContext.Provider value={{services: this.state.services, getService, getServices}}>{this.props.children}</ServiceContext.Provider>
     )
   }
 }

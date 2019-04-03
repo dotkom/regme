@@ -7,6 +7,11 @@ import { ServiceType } from 'services/ServiceType';
 
 export const HttpService = new ServiceType("Http");
 
+
+/*
+ TODO: Fail all 401 requests if token can't be fetched
+*/
+
 export class HttpServiceProvider{
 
   constructor(dependencies, config) {
@@ -43,8 +48,17 @@ export class HttpServiceProvider{
           });
       });
   }
+
+  setToken(token){
+    this.auth_token = token;
+  }
+
+  static getType(){
+    return HttpService;
+  }
+
   renewToken() {
-    if (!this.waitingForToken) {
+    /*if (!this.waitingForToken) {
       this.waitingForToken = true;
       // Request new token
       this.post(`${API_BASE}${API_AUTH}`, {
@@ -53,7 +67,8 @@ export class HttpServiceProvider{
         grant_type: 'client_credentials',
       }, true)
         .subscribe((data) => {
-          this.auth_token = data.access_token;
+          this.setToken(data.access_token);
+          //this.auth_token = data.access_token;
           // Performe requests from request queue
           for (const i of this.requestQueue) {
             this.request(i.request).subscribe((r) => {
@@ -73,12 +88,9 @@ export class HttpServiceProvider{
             this.waitingForToken = false;
           }, 5000);
         });
-    }
+    }*/
   }
 
-  static getType(){
-    return HttpService;
-  }
 
   handleResponse(r, req) {
     /* TODO: handle 503(service unavailable) responses

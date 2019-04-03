@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import Input from './input';
-import Status from './status';
+import StatusComponent from './status';
 import { Modal } from '../modal';
 import { EventService } from 'services/event';
 import { userService } from 'services/user';
 import { AttendeeService } from 'services/attendee';
+import { StatusService, Status } from 'services/status';
+import { OidcService } from 'services/auth';
 import { Observable } from 'rxjs';
 import { isRfid } from 'common/utils';
 
 
-import {ServiceContext} from 'services/ServiceProvider';
+import { ServiceContext } from 'services/ServiceProvider';
 
 
 /**
@@ -35,13 +37,14 @@ class Registration extends Component {
         minute: date.getMinutes(),
         second: date.getSeconds(),
       },
-      status: '',
+      status: null,
       message: null,
       attendee_status: {},
       ivalue: null,
       pValue: null,
       placeholder: 'default',
       showModal: false,
+      loggedIn: false,
     };
   }
 
@@ -50,15 +53,10 @@ class Registration extends Component {
    * and needs to save the timestamp.
    */
 
-  updateTime() {
-    const date = new Date();
-    this.setState(Object.assign({}, this.state, {
-      time: {
-        hour: date.getHours(),
-        minute: date.getMinutes(),
-        second: date.getSeconds(),
-      },
-    }));
+  updateStatus(status){
+    this.setState({
+      status: status
+    })
   }
 
   set update(update) {
@@ -67,33 +65,34 @@ class Registration extends Component {
   
   componentWillReceiveProps(props){
     if(props.event && !props.event.hasAttendees()){
-      this.updateTime();
-      this.update = { status: 'WAIT', message: 'Henter deltagere...' };      
+      //this.updateTime();
+      //this.update = { status: 'WAIT', message: 'Henter deltagere...' };      
       if (this.attendeeService) {
         this.attendeeService.getAttendees(props.event).subscribe((attendees) => {
-          this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };      
-        }, () => {
-          this.update = { status: 'ERROR', message: 'Kunne ikke hente inn deltagere!' };      
+          this.updateStatus(new Status('OK', 'Systemet er klar til bruk!'));
         });
       }
     }
   }
 
   componentDidMount() {
-    this.updateTime();
-    this.update = { status: 'WAIT', message: 'Henter arrangemententer...' };      
-    this.context.getService(AttendeeService).subscribe((attendeeService) => {
-      this.attendeeService = attendeeService;
-    });
-    this.context.getService(EventService).subscribe((eventService) => {
-      eventService.getEvents().subscribe((events) => {
-        this.updateTime();
-        this.update = { status: 'OK', message: 'Systemet er klar til bruk!' };
-      }, (error) => {
-        this.update = { status: 'ERROR', message: 'Kunne ikke hente inn arrangement!' };
+    //this.updateTime();
+    //this.update = { status: 'WAIT', message: 'Henter arrangemententer...' };      
+    this.context.getServices(AttendeeService, StatusService, EventService, OidcService).subscribe((services) => {
+      console.log("registration componentMount", services);
+      this.attendeeService = services[AttendeeService];
+      this.statusService = services[StatusService];
+      this.eventService = services[EventService];
+      this.authService = services[OidcService];
+      this.authService.onUserChange((user) => {
+        this.setState({
+          loggedIn: !!user
+        });
       });
-
-    })    
+      this.statusService.onStatusUpdate().subscribe((newStatus) => {
+        this.updateStatus(newStatus);
+      })
+    });    
   }
 
   get attendeeStatus() {
@@ -106,7 +105,7 @@ class Registration extends Component {
 
   handleSubmit(input) {
     let responseStream = null;
-    this.update = { status: 'WAIT', message: 'Venter...' };
+    //this.update = { status: 'WAIT', message: 'Venter...' };
     //Only try to bind rfid to user if input is a username and not an rfid
     if (!isRfid(input) && isRfid(this.state.pInput) && 
       (this.attendeeStatus.attend_status == 40 || this.attendeeStatus.attend_status == 50 || this.attendeeStatus.attend_status == 51)
@@ -121,8 +120,6 @@ class Registration extends Component {
     
     if (responseStream) {
       this.handleAttendeeResponse(responseStream);
-    } else {
-      this.update = { status: 'ERROR', message: 'Invalid input!' };
     }
   }
 
@@ -130,15 +127,14 @@ class Registration extends Component {
     stream.subscribe((v) => {
       // this.event.refresh();
       this.attendeeService.getCached(v.attendee).register();
-      this.update = { status: 'OK', message: v.message != null ? v.message : message };
+      this.updateStatus(new Status('OK', v.message));
       this.setState(Object.assign({}, this.state, {
         attend_status: v,
         placeholder: 'default',
         ivalue: '',
       }));
     }, (v) => {
-      this.updateTime();
-      this.update = { status: 'ERROR', message: v.message };
+      this.updateStatus(new Status('ERROR', v.message));
       const attendeeStatus = v;
       let placeholder = 'default';
       const ivalue = '';
@@ -169,7 +165,9 @@ class Registration extends Component {
         ivalue,
         showModal,
       }));
-    }, () => this.updateTime());
+    }, () => {
+      /*this.updateTime() */
+    });
   }
 
   acceptHandler() {
@@ -183,8 +181,7 @@ class Registration extends Component {
   declineHandler() {
     this.update = {
       showModal: false,
-      status: 'ERROR',
-      message: 'Denne brukeren ble ikke godkjent.',
+      status: new Status('Error', 'Denne brukeren ble ikke godkjent.')
     };
   }
 
@@ -195,17 +192,18 @@ class Registration extends Component {
         <h1>
           { event ? event.name : '' } { (event && event.company) ? event.company.name : '' }
         </h1>
-        <Status
-          message={this.state.message}
-          time={this.state.time}
-          statusCode={this.state.status}
-        />
+
+        {this.state.status ? <StatusComponent
+          status = {this.state.status}
+        /> : null}
         <Input value={this.state.ivalue} placeholder={Placeholders[this.state.placeholder]} onSubmit={input => this.handleSubmit(input)} />
         <p>
           <span>Møtt: { event ? event.registeredCount : 0}</span>
           &nbsp;- <span>Påmeldt: { event ? event.totalCount : 0 }</span>
           &nbsp;- <span>Plasser: { event ? event.capacity : 0 }</span></p>
-        <Modal show={this.state.showModal} accept={() => this.acceptHandler()} decline={() => this.declineHandler()} content="Denne personen er på venteliste. Vil du at personen skal slippe inn?" />
+        <Modal show={this.state.showModal} accept={() => this.acceptHandler()} decline={() => this.declineHandler()}>
+          Denne personen er på venteliste. Vil du at personen skal slippe inn?
+        </Modal>
       </div>
     );
   }
