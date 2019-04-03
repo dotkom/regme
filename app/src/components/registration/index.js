@@ -79,7 +79,6 @@ class Registration extends Component {
     //this.updateTime();
     //this.update = { status: 'WAIT', message: 'Henter arrangemententer...' };      
     this.context.getServices(AttendeeService, StatusService, EventService, OidcService).subscribe((services) => {
-      console.log("registration componentMount", services);
       this.attendeeService = services[AttendeeService];
       this.statusService = services[StatusService];
       this.eventService = services[EventService];
@@ -150,12 +149,6 @@ class Registration extends Component {
           break;
         case 30:
           showModal = true;
-          /* this.update = {
-            status: "WAIT",
-            message: "Venter på bruker",
-            showModal: true
-          }
-          console.log();*/
           break;
 
       }

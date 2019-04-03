@@ -58,37 +58,6 @@ export class HttpServiceProvider{
   }
 
   renewToken() {
-    /*if (!this.waitingForToken) {
-      this.waitingForToken = true;
-      // Request new token
-      this.post(`${API_BASE}${API_AUTH}`, {
-        client_secret: CLIENT_SECRET,
-        client_id: CLIENT_ID,
-        grant_type: 'client_credentials',
-      }, true)
-        .subscribe((data) => {
-          this.setToken(data.access_token);
-          //this.auth_token = data.access_token;
-          // Performe requests from request queue
-          for (const i of this.requestQueue) {
-            this.request(i.request).subscribe((r) => {
-              i.subject.next(r);
-            }, (error) => {
-              i.subject.error(error);
-            }, () => {
-              i.subject.complete();
-            });
-          }
-          this.requestQueue = [];
-        }, (e) => {
-          console.log('Error', e);
-        }, () => {
-        // Use a timeout to prevent a feedback loop
-          setTimeout(() => {
-            this.waitingForToken = false;
-          }, 5000);
-        });
-    }*/
   }
 
 

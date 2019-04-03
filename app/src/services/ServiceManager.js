@@ -14,7 +14,6 @@ export class ServiceManager {
 
 
   registerService(service_cls, ...args){
-    console.log(service_cls);
     const type = service_cls.getType();
     const dependencies = type.getDependencies();
     

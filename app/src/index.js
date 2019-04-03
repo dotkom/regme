@@ -34,7 +34,6 @@ import {
 
 const serviceManager = new ServiceManager();
 
-console.log(OIDC_SETTINGS);
 
 // set up all services
 serviceManager.registerService(HttpServiceProvider);
