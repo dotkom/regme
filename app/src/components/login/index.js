@@ -58,7 +58,7 @@ class LoginComponent extends Component{
   render(){
     return (
       <div>
-        <StatusComponent status={this.state.loginStatus}/>
+        <div>{this.state.loginStatus.message}</div>
         <Modal show={this.state.showModal && this.state.ready} acceptText="Login" declineText="Cancel" accept={() => this.tryLogin()} decline={() => this.declineLogin()}>
           Logg in for å bruke regme
         </Modal>
