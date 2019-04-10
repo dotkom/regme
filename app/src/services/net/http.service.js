@@ -2,10 +2,19 @@ import { Observable, Subject } from 'rxjs';
 
 import { API_BASE, API_AUTH, CLIENT_SECRET, CLIENT_ID } from 'common/constants';
 
+import { ServiceType } from 'services/ServiceType';
 
-export class HttpServiceProvider {
 
-  constructor() {
+export const HttpService = new ServiceType("Http");
+
+
+/*
+ TODO: Fail all 401 requests if token can't be fetched
+*/
+
+export class HttpServiceProvider{
+
+  constructor(dependencies, config) {
     // Request queue used for 503 and 401 responses
     this.requestQueue = [];
     this.auth_token = '';
@@ -39,38 +48,18 @@ export class HttpServiceProvider {
           });
       });
   }
-  renewToken() {
-    if (!this.waitingForToken) {
-      this.waitingForToken = true;
-      // Request new token
-      this.post(`${API_BASE}${API_AUTH}`, {
-        client_secret: CLIENT_SECRET,
-        client_id: CLIENT_ID,
-        grant_type: 'client_credentials',
-      }, true)
-        .subscribe((data) => {
-          this.auth_token = data.access_token;
-          // Performe requests from request queue
-          for (const i of this.requestQueue) {
-            this.request(i.request).subscribe((r) => {
-              i.subject.next(r);
-            }, (error) => {
-              i.subject.error(error);
-            }, () => {
-              i.subject.complete();
-            });
-          }
-          this.requestQueue = [];
-        }, (e) => {
-          console.log('Error', e);
-        }, () => {
-        // Use a timeout to prevent a feedback loop
-          setTimeout(() => {
-            this.waitingForToken = false;
-          }, 5000);
-        });
-    }
+
+  setToken(token){
+    this.auth_token = token;
   }
+
+  static getType(){
+    return HttpService;
+  }
+
+  renewToken() {
+  }
+
 
   handleResponse(r, req) {
     /* TODO: handle 503(service unavailable) responses
@@ -99,7 +88,7 @@ export class HttpServiceProvider {
     // Add token to request
     request.headers.set('Authorization', `Bearer ${this.auth_token}`);
     const resolver = new Subject();
-    // Push request into request 'stream'/queue
+    // Push reqHttpServiceProvideruest into request 'stream'/queue
     this.requestSubject.next({ request, subject: resolver });
     return resolver.asObservable();
   }
@@ -155,5 +144,3 @@ export class HttpServiceProvider {
     return this.request(request);
   }
 }
-// Export single instance
-export const http = new HttpServiceProvider();

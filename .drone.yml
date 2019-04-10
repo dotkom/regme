@@ -5,8 +5,6 @@ pipeline:
     secrets:
       - source: regme_client_id
         target: rg_client_id
-      - source: regme_client_secret
-        target: rg_client_secret
       - source: ssh_key
         target: ssh_key
       - source: rg_sentry_dsn

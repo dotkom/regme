@@ -17,7 +17,14 @@ export const API_ATTENDEES = process.env.RG_API_ATTENDEES;
 export const API_ATTEND = process.env.RG_API_ATTEND;
 /** @const */
 export const API_USERS = process.env.RG_API_USERS;
-/** @const */
-export const CLIENT_SECRET = process.env.RG_CLIENT_SECRET;
-/** @const */
-export const CLIENT_ID = process.env.RG_CLIENT_ID;
+
+
+export const OIDC_SETTINGS = {
+  authority: process.env.RG_OIDC_AUTHORITY,
+  client_id: process.env.RG_OIDC_CLIENT_ID,
+  response_type: 'id_token token',
+  redirect_uri: process.env.RG_OIDC_REDIRECT_URI,
+  scope: ['openid', 'profile', 'email', 'onlineweb4'].join(' '),
+  automaticSilentRenew: true,
+  popupWindowFeatures: 'location=no,toolbar=no,width=900,height=700,left=100,top=100'
+}

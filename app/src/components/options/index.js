@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { eventService } from 'services/event';
+
+import { ServiceContext } from 'services/ServiceProvider';
+import { EventService } from 'services/event';
+import { OidcService } from 'services/auth';
 
 import Events from './events';
 import Attendees from './attendees';
@@ -15,11 +18,20 @@ class Options extends Component {
     this.eventSub = null;
   }
   componentDidMount() {
-    eventService.getEvents().subscribe((events) => {
-      this.setState(Object.assign({}, this.state, { events }), () => {
-        this.selectedEvent = this.selectedEvent || events[0];
+    this.context.getServices(EventService, OidcService).subscribe((services) => {
+      this.eventService = services[EventService];
+      this.authService = services[OidcService];
+      this.authService.onUserChange().subscribe((user) => {
+        if(user){
+          this.eventService.getEvents().subscribe((events) => {
+            this.setState(Object.assign({}, this.state, { events }), () => {
+              this.selectedEvent = this.selectedEvent || events[0];
+            });
+          });
+        }
       });
-    });
+    })
+    
   }
 
   clickHandler() {
@@ -73,6 +85,8 @@ class Options extends Component {
   }
 
 }
+
+Options.contextType = ServiceContext;
 
 export default Options;
 

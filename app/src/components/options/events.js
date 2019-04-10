@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-
-import { attendeeService } from 'services/attendee';
+import { ServiceContext } from 'services/ServiceProvider';
+import { AttendeeService } from 'services/attendee';
 
 
 class Events extends Component {
@@ -12,12 +12,16 @@ class Events extends Component {
 
 
   componentDidMount(){
-    if(this.props.event)
-      this.selected = this.props.event;
+    this.context.getService(AttendeeService).subscribe((attendeeService) => {
+      this.attendeeService = attendeeService;
+      if(this.props.event)
+        this.selected = this.props.event;
+    });
   }
+
   set selected(event) {
     if(!event.hasAttendees())
-      attendeeService.getAttendees(event).subscribe((attendees) => {
+      this.attendeeService.getAttendees(event).subscribe((attendees) => {
         //Update app state
       });
     this.setState(Object.assign({}, this.state, { selected: event }));
@@ -53,5 +57,7 @@ class Events extends Component {
     );
   }
 }
+
+Events.contextType = ServiceContext;
 
 export default Events;

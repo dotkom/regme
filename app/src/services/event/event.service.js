@@ -1,25 +1,36 @@
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { Event } from './event';
 import { Company } from './company';
-import { Attendee, attendeeService } from 'services/attendee';
 import { API_BASE, API_EVENTS, API_ATTENDEES, API_USERS } from 'common/constants';
-import { http } from 'services/net';
+import { http, HttpService } from 'services/net';
 
+import { ServiceType } from 'services/ServiceType';
 
-class EventServiceProvider {
+import { StatusService, Status } from 'services/status';
+
+export const EventService = new ServiceType("Event", HttpService, StatusService); 
+
+export class EventServiceProvider {
 
   /**
    * @class EventServiceProvider
    */
-  constructor() {
+  constructor(dependencies) {
     /** @private */
     this._events = null;
     /** @private */
     this._cache = {};
     /** @private */
     this.eventSubject = new ReplaySubject(1);
-    
-    this.refresh();
+    this.http = dependencies[HttpService];
+    this.status = dependencies[StatusService];
+    this.lastFetch = null;
+    //this.refresh();
+  }
+
+
+  static getType(){
+    return EventService;
   }
 
   /**
@@ -62,7 +73,9 @@ class EventServiceProvider {
    * @public
    */
   refresh() {
-    http.get(`${API_BASE}${API_EVENTS}`, { attendance_event__isnull: 'False', event_end__gte: new Date().toISOString().slice(0, 10), order_by: 'event_start' })
+    this.lastFetch = new Date();
+    this.status.setStatus(new Status("WAIT", "Henter arrangementer..."));
+    this.http.get(`${API_BASE}${API_EVENTS}`, { attendance_event__isnull: 'False', event_end__gte: new Date().toISOString().slice(0, 10), order_by: 'event_start' , can_change: "True"})
       .map((r) => {
         const newEvents = [];
         for (const a of r.results) {
@@ -78,7 +91,12 @@ class EventServiceProvider {
           }
         }
         return newEvents;
-      }).subscribe(eventList => this.events = eventList);
+      }).catch((err) => {
+        this.status.setStatus(new Status("ERROR", "Kunne ikke hente ut arrangementer"));
+      }).subscribe(eventList => {
+        this.status.setStatus(new Status("OK", "Arrangementer hentet ut"));
+        this.events = eventList
+      });
   }
 
   /**
@@ -89,9 +107,10 @@ class EventServiceProvider {
    * @returns Observable<Array<Event>>
    */
   getEvents() {
+    if(!this.lastFetch){
+      this.refresh();
+    }
     return this.eventSubject.asObservable();
   }
 
 }
-// Export singleton
-export const eventService = new EventServiceProvider();

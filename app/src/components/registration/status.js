@@ -10,13 +10,18 @@ import React from 'react';
  * @prop {Date} time - Time object with hour, minute and second
  * @prop {String} statusCode - The status type
  */
-const Status = ({ message, time, statusCode }) => {
+const Status = ({ status }) => {
   /**
    * Double digit short function. Making the input
    * number to a string with 2 digits minimum.
    *
    * @param {number} number
    */
+
+  const message = status.getMessage();
+  const time = status.getTime();
+  const statusCode = status.getStatusCode();
+
   const dd = number => (number < 10 ? '0' : '') + number;
 
   const statusClass = (code) => {

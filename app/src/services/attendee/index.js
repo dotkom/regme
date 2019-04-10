@@ -1,2 +1,2 @@
 export { Attendee } from './attendee';
-export { attendeeService, AttendeeServiceProvider } from './attendee.service';
+export { AttendeeService, AttendeeServiceProvider } from './attendee.service';
