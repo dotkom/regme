@@ -123,22 +123,22 @@ class Registration extends Component {
   }
 
   handleAttendeeResponse(stream) {
-    stream.subscribe((v) => {
+    stream.subscribe(({ detail }) => {
       // this.event.refresh();
-      this.attendeeService.getCached(v.attendee).register();
-      this.updateStatus(new Status('OK', v.message));
+      this.attendeeService.getCached(detail.attendee).register();
+      this.updateStatus(new Status('OK', detail.message));
       this.setState(Object.assign({}, this.state, {
-        attend_status: v,
+        attend_status: detail,
         placeholder: 'default',
         ivalue: '',
       }));
-    }, (v) => {
-      this.updateStatus(new Status('ERROR', v.message));
-      const attendeeStatus = v;
+    }, ({ detail }) => {
+      this.updateStatus(new Status('ERROR', detail.message));
+      const attendeeStatus = detail;
       let placeholder = 'default';
       const ivalue = '';
       let showModal = false;
-      switch (v.attend_status) {
+      switch (detail.attend_status) {
 
         case 51:
         case 50:

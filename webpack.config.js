@@ -10,7 +10,7 @@ var env = {
   'RG_API_EVENTS': 'events/',
   'RG_API_AUTH': 'auth/',
   'RG_API_ATTENDEES': 'attendees/',
-  'RG_API_ATTEND': 'attend/',
+  'RG_API_ATTEND': 'attendees/register_attendance/',
   'RG_API_USERS': 'users/',
   'RG_OIDC_CLIENT_ID': '',
   'RG_OIDC_AUTHORITY': 'http://localhost:8000/openid/',
