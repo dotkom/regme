@@ -140,6 +140,7 @@ export class HttpServiceProvider{
       method: 'POST',
       body: pBody,
       headers,
+      credentials: "omit"
     });
     return this.request(request);
   }
